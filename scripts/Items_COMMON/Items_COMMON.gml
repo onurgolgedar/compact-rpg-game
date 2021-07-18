@@ -13,28 +13,28 @@ function Items_COMMON() {
 	#macro CLOTHES_000 500
 	#macro CLOTHES_001 501
 	#macro CLOTHES_002 502
-	#macro CLOTHES_003 504
+	#macro CLOTHES_003 502
 }
 
 function get_item_COMMON(_code) {
 	switch (_code) {
 		case SWORD_000:
-			return {name: "Sword 1", code: 0, type: ITEMTYPE_SWORD, physicalPower_base: 7, magicalPower_base: 17, criticalChance_base: 0, attackSpeed_base: 1.2, worth_base: 200, sprite: sprSword_045, physicalPower: undefined, magicalPower: undefined, criticalChance: undefined, attackSpeed: undefined, worth: undefined, upgrade: 0}
+			return {name: "Sword 1", code: SWORD_000, type: ITEMTYPE_SWORD, physicalPower_base: 7, magicalPower_base: 17, criticalChance_base: 0, attackSpeed_base: 1.2, worth_base: 200, sprite: sprSword_045, physicalPower: undefined, magicalPower: undefined, criticalChance: undefined, attackSpeed: undefined, worth: undefined, upgrade: 0}
 		case SWORD_001:
-			return {name: "Sword 2", code: 1, type: ITEMTYPE_SWORD, physicalPower_base: 13, magicalPower_base: 11, criticalChance_base: 0, attackSpeed_base: 1.1, worth_base: 200, sprite: sprSword_021, physicalPower: undefined, magicalPower: undefined, criticalChance: undefined, attackSpeed: undefined, worth: undefined, upgrade: 0}
+			return {name: "Sword 2", code: SWORD_001, type: ITEMTYPE_SWORD, physicalPower_base: 13, magicalPower_base: 11, criticalChance_base: 0, attackSpeed_base: 1.1, worth_base: 200, sprite: sprSword_021, physicalPower: undefined, magicalPower: undefined, criticalChance: undefined, attackSpeed: undefined, worth: undefined, upgrade: 0}
 		case SWORD_002:
-			return {name: "Sword 3", code: 2, type: ITEMTYPE_SWORD, physicalPower_base: 18, magicalPower_base: 7, criticalChance_base: 0, attackSpeed_base: 1.4, worth_base: 200, sprite: sprSword_005, physicalPower: undefined, magicalPower: undefined, criticalChance: undefined, attackSpeed: undefined, worth: undefined, upgrade: 0}
+			return {name: "Sword 3", code: SWORD_002, type: ITEMTYPE_SWORD, physicalPower_base: 18, magicalPower_base: 7, criticalChance_base: 0, attackSpeed_base: 1.4, worth_base: 200, sprite: sprSword_005, physicalPower: undefined, magicalPower: undefined, criticalChance: undefined, attackSpeed: undefined, worth: undefined, upgrade: 0}
 		case SWORD_003:
-			return {name: "Sword 4", code: 3, type: ITEMTYPE_SWORD, physicalPower_base: 21, magicalPower_base: 0, criticalChance_base: 0, attackSpeed_base: 1.4, worth_base: 200, sprite: sprSword_046, physicalPower: undefined, magicalPower: undefined, criticalChance: undefined, attackSpeed: undefined, worth: undefined, upgrade: 0}
+			return {name: "Sword 4", code: SWORD_003, type: ITEMTYPE_SWORD, physicalPower_base: 21, magicalPower_base: 0, criticalChance_base: 0, attackSpeed_base: 1.4, worth_base: 200, sprite: sprSword_046, physicalPower: undefined, magicalPower: undefined, criticalChance: undefined, attackSpeed: undefined, worth: undefined, upgrade: 0}
 
 		case CLOTHES_000:
-			return {name: "Clothes 1", code: 501, type: ITEMTYPE_CLOTHES, maxHp_base: 0, maxMana_base: 40, slowRate_base: 0, worth_base: 400, sprite: sprClothes_010, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0}
+			return {name: "Clothes 1", code: CLOTHES_000, type: ITEMTYPE_CLOTHES, maxHp_base: 0, maxMana_base: 40, slowRate_base: 0, worth_base: 400, sprite: sprClothes_010, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0}
 		case CLOTHES_001:
-			return {name: "Clothes 2", code: 502, type: ITEMTYPE_CLOTHES, maxHp_base: 30, maxMana_base: 15, slowRate_base: 0, worth_base: 400, sprite: sprClothes_009, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0}
+			return {name: "Clothes 2", code: CLOTHES_001, type: ITEMTYPE_CLOTHES, maxHp_base: 30, maxMana_base: 15, slowRate_base: 0, worth_base: 400, sprite: sprClothes_009, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0}
 		case CLOTHES_002:
-			return {name: "Clothes 3", code: 503, type: ITEMTYPE_CLOTHES, maxHp_base: 60, maxMana_base: 0, slowRate_base: 10, worth_base: 400, sprite: sprClothes_020, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0}
+			return {name: "Clothes 3", code: CLOTHES_002, type: ITEMTYPE_CLOTHES, maxHp_base: 60, maxMana_base: 0, slowRate_base: 10, worth_base: 400, sprite: sprClothes_020, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0}
 		case CLOTHES_003:
-			return {name: "Clothes 4", code: 504, type: ITEMTYPE_CLOTHES, maxHp_base: 90, maxMana_base: 0, slowRate_base: 20, worth_base: 400, sprite: sprClothes_007, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0}
+			return {name: "Clothes 4", code: CLOTHES_003, type: ITEMTYPE_CLOTHES, maxHp_base: 90, maxMana_base: 0, slowRate_base: 20, worth_base: 400, sprite: sprClothes_007, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0}
 	}
 }
 
