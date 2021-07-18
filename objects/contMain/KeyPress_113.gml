@@ -1,0 +1,1 @@
+game_set_speed(50, gamespeed_fps)

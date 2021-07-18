@@ -1,0 +1,1 @@
+vertex_delete_buffer(mymask)

@@ -1,0 +1,2 @@
+tte_ext_input_create()
+tte_ext_input_set_font(font)

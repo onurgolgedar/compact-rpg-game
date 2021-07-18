@@ -1,0 +1,1 @@
+image_angle += image_angular_velocity
