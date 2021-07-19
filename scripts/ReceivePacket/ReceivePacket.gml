@@ -334,6 +334,40 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				}
 				break
 				
+			case CODE_DROP_COIN:
+				var coinCenter = instance_create_layer(real(data[1]), real(data[2]), "Floor", objCoinCenter)
+				coinCenter.value = real(data[3])
+				coinCenter.id_server = real(data[0])
+				break
+				
+			case CODE_COLLECT_COIN:
+				var player = global.playerInstances[? real(data[0])]
+				
+				if (player != undefined) {
+					// ?
+					with (objCoinCenter) {
+						if (id_server = real(data[1])) {
+							collector = player
+							
+							var ds_size = ds_list_size(coins)
+							for (var i = 0; i < ds_size; i++) {
+								var coin = ds_list_find_value(coins, i)
+								coin.moving = true
+								coin.collector = player
+
+								with (coin) {
+									var pow = 120
+									var dir = point_direction(x, y, player.x, player.y)
+									ds_map_add(spds, irandom(999999), {xx: lengthdir_x(pow, dir), yy: lengthdir_y(pow, dir)})
+								}
+							}
+							
+							break
+						}
+					}
+				}
+				break
+				
 			case CODE_TELL_PLAYER_MAXMANA:
 				var player = global.playerInstances[? real(data[0])]
 			
@@ -548,6 +582,12 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				
 					var row = db_create_row(socketID_sender)
 					db_add_row(global.DB_SRV_TABLE_players, row)
+					
+					if (db_get_row(global.DB_SRV_TABLE_wallets, socketID_sender) == undefined) {
+						var walletRow = db_create_row(data[0])
+						walletRow[? WALLETS_GOLD_SERVER] = 0
+						db_add_row(global.DB_SRV_TABLE_wallets, walletRow)
+					}
 				
 					ini_open("boxes.dbfile")
 						var _str = ini_read_string("Boxes", string(data[0]), "")
@@ -808,6 +848,12 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				
 			case _CODE_GET_BOXES:
 				net_server_send(socketID_sender, CODE_GET_BOXES, get_boxes_grid_SERVER(socketID_sender), BUFFER_TYPE_STRING)
+				break
+				
+			case _CODE_DROP_COIN:
+				var coinCenter = instance_create(real(data[0]), real(data[1]), objCoinCenter_SERVER)
+				coinCenter.value = 100
+				net_server_send(socketID_sender, CODE_DROP_COIN, string(coinCenter)+"|"+string(coinCenter.x)+"|"+string(coinCenter.y)+"|"+string(coinCenter.value), BUFFER_TYPE_STRING)
 				break
 				
 			case _CODE_CHANGE_BOX_POSITION:

@@ -1,0 +1,1 @@
+net_client_send(_CODE_DROP_COIN, string(x)+"|"+string(y), BUFFER_TYPE_STRING)

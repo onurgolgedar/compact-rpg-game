@@ -55,4 +55,7 @@ function NetCodes() {
 	#macro CODE_GET_BOXES 7001
 	#macro CODE_CHANGE_BOX_POSITION 7002
 	#macro CODE_APPEARENCE 7003
+	
+	#macro CODE_DROP_COIN 7500
+	#macro CODE_COLLECT_COIN 7501
 }

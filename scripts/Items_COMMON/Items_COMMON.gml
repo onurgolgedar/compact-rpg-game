@@ -13,7 +13,7 @@ function Items_COMMON() {
 	#macro CLOTHES_000 500
 	#macro CLOTHES_001 501
 	#macro CLOTHES_002 502
-	#macro CLOTHES_003 502
+	#macro CLOTHES_003 503
 }
 
 function get_item_COMMON(_code) {

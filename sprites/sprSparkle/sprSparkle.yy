@@ -194,7 +194,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Other",
-    "path": "folders/Lufulus' Creatures/Sprites/Other.yy",
+    "path": "folders/1- Sprites/Other.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprSparkle",
