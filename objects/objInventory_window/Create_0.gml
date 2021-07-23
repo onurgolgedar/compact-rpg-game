@@ -76,7 +76,7 @@ function main_loop() {
 		boxFocused_j = undefined
 	}
 	
-	if (isBoxHeld and mouseOnButton < pageCount)
+	if (global.held_box != undefined and mouseOnButton < pageCount)
 		page = mouseOnButton+1
 
 	function_call(main_loop, 1/20, true)
@@ -90,11 +90,6 @@ page = 1
 boxWidth = 50
 boxHeight = 50
 boxBetween = 6
-
-isBoxHeld = false
-held_box_i = undefined
-held_box_j = undefined
-held_box = undefined
 	
 boxFocused = undefined
 boxFocused_textbox = undefined

@@ -3,9 +3,9 @@ if (collector != undefined and instance_exists(collector)) {
 	for (var i = 0; i < ds_size; i++) {
 		var coin = ds_list_find_value(coins, i)
 		with (coin) {
-			var pow = 320
+			var pow = min(180+point_distance(x, y, other.collector.x, other.collector.y)/3, 350)
 			var dir = point_direction(x, y, other.collector.x, other.collector.y)
-			ds_map_add(spds, other.collector, {xx: lengthdir_x(pow, dir), yy: lengthdir_y(pow, dir)})
+			ds_map_add(spds, irandom(99999), {xx: lengthdir_x(pow, dir), yy: lengthdir_y(pow, dir)})
 		}
 	}
 }

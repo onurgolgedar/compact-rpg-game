@@ -1,3 +1,3 @@
 function delta() {
-	return delta_time/1000000
+	return clamp(delta_time/1000000, 1/240, 1/15)
 }

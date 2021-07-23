@@ -1,25 +1,20 @@
-if (is_mouse_on() and !is_click_blocked()) {
-	isBoxHeld = false
-	held_box_i = undefined
-	held_box_j = undefined
-	held_box = undefined
-	
+if (is_mouse_on() and !is_click_blocked()) {	
 	for (var i = global.bc_hor_COMMON*(page-1); i < global.bc_hor_COMMON*page; i++) {
 		for (var j = 0; j < global.bc_ver_COMMON; j++) {
 			var box = ds_grid_get(boxes, i, j)
 			
 			if (is_mouse_on_box(i, j)) {
 				if (box.item != undefined) {
-					isBoxHeld = true
-					held_box_i = i
-					held_box_j = j
-					held_box = box
+					global.held_box_i = i
+					global.held_box_j = j
+					global.held_box = box
+					global.held_from = object_get_name(object_index)
 				}
 			}
 		}
 	}
 	
-	if (isBoxHeld)
+	if (global.held_box != undefined)
 		exit
 		
 	if (mouseOnButton < pageCount)

@@ -73,7 +73,10 @@ draw_set_color(c_white) draw_set_alpha(0.4)
     
 	draw_set_center() draw_set_font(fontMain)
 		draw_text(button_x+button_width/2, button_y+button_height/2+2, "Equipments")
+	
+		draw_sprite(sprCoin, -1, x+width-offset-100, button_y+button_height/2+2)
 	draw_set_default()
+	draw_text(x+width-offset-85, button_y+3, real(global.gold))
 	
 	if (instance_exists(objEquipment_window)) {
 		draw_set_alpha(0.25)
@@ -107,17 +110,12 @@ draw_set_color(c_white) draw_set_alpha(0.4)
 				var item_xx = (box_positions.xx_start+box_positions.xx_end)/2
 				var item_yy = (box_positions.yy_start+box_positions.yy_end)/2
 				
-				if (i != held_box_i or j != held_box_j)  {
+				if (i != global.held_box_i or j != global.held_box_j)  {
 					draw_outline_origin(box.item.sprite, -1, item_xx, item_yy, 0.47, 0.47, 60, boxes_alpha[i][j])
 					draw_sprite_origin_ext(box.item.sprite, -1, item_xx, item_yy, 0.47, 0.47, 60, c_white, boxes_alpha[i][j])
 				}
 			}
 		}
-	}
-	
-	if (held_box != undefined) {
-		draw_outline_origin(held_box.item.sprite, -1, global.dmx, global.dmy, 0.47, 0.47, 60, 1)
-		draw_sprite_origin_ext(held_box.item.sprite, -1, global.dmx, global.dmy, 0.47, 0.47, 60, c_white, 1)
 	}
 draw_set_default() draw_set_alpha(1)
 

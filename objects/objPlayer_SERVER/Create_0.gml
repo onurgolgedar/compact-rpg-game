@@ -46,6 +46,7 @@ event_inherited()
 
 socketID = undefined
 playerRow = undefined
+accountID = undefined
 
 class = undefined
 skills = ds_map_create()

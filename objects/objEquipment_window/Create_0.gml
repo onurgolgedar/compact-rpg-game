@@ -13,7 +13,7 @@ function is_mouse_on_box(i, j) {
 function get_box_positions(i, j) {
 	j -= global.bc_ver_COMMON
 	
-	// Head
+	// Necklace
 	if (i == 0 and j == 0) {
 		i += 1
 	}
@@ -96,11 +96,6 @@ title = "Equipments"
 boxWidth = 50
 boxHeight = 50
 boxBetween = 6
-
-isBoxHeld = false
-held_box_i = undefined
-held_box_j = undefined
-held_box = undefined
 	
 boxFocused = undefined
 boxFocused_textbox = undefined

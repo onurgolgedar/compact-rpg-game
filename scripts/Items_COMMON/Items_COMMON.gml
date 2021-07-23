@@ -1,5 +1,5 @@
 function Items_COMMON() {
-	#macro ITEMTYPE_HEAD 0
+	#macro ITEMTYPE_NECKLACE 0
 	#macro ITEMTYPE_SWORD 1
 	#macro ITEMTYPE_CLOTHES 2
 	#macro ITEMTYPE_SHIELD 3

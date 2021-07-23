@@ -37,6 +37,9 @@ function change_active_box(type, box_i, box_j, box_confirmation_number) {
 		box = global.boxEmpty_COMMON
 		
 	if (box.item != undefined) {
+		if (box.item.type != type)
+			return false
+		
 		setup_item_COMMON(box.item)
 		if (get_box_confirmation_number_COMMON(box) != box_confirmation_number)
 			return false

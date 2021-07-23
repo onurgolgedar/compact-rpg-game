@@ -13,16 +13,19 @@ function change_active_box_SERVER(socketID, type, box_i, box_j, box_confirmation
 		box = global.boxEmpty_COMMON
 	
 	if (box.item != undefined) {
+		if (box.item.type != type)
+			return -1
+		
 		setup_item_COMMON(box.item)
 		if (get_box_confirmation_number_COMMON(box) != box_confirmation_number)
-			return undefined
+			return -1
 	}
 	
 	var active_box_before = get_active_box_SERVER(socketID, type)
 	if (active_box_before == undefined and box == global.boxEmpty_COMMON)
-		return undefined
+		return -1
 	
-	var result = undefined
+	var result = -1
 	active_box_before.tag.isActive = false
 			
 	if (box != global.boxEmpty_COMMON) {
@@ -37,12 +40,10 @@ function change_active_box_SERVER(socketID, type, box_i, box_j, box_confirmation
 				
 	result = box
 	
-	if (result != undefined) {
-		var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID, PLAYERS_INSTANCE_SERVER)
-		if (instance != undefined and instance_exists(instance))
-			with (instance)
-				recalculate_character_statistics_SERVER()
-	}
+	var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID, PLAYERS_INSTANCE_SERVER)
+	if (instance != undefined and instance_exists(instance))
+		with (instance)
+			recalculate_character_statistics_SERVER()
 	
 	return result
 }

@@ -1,5 +1,5 @@
 /// @param id*
-function is_click_blocked(_id) {
+function is_click_blocked(_id) {	
 	var _window = _id == undefined ? id : _id
 		
 	with (parWindow) {

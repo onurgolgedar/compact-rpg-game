@@ -149,3 +149,11 @@ draw_set_alpha(0.5) draw_set_color(c_white)
 	draw_text_transformed(76, display_get_gui_height()-48, "Ping: "+string(global.ping_udp), 0.7, 0.7, 0)
 	draw_text_transformed(76, display_get_gui_height()-68, "Receive Errors: "+string(global.networkErrors_count), 0.7, 0.7, 0)
 draw_set_alpha(1) draw_set_color(c_black)
+
+if (instance_exists(objInventory_window)) {
+	with (objInventory_window)
+		if (global.held_box != undefined) {
+			draw_outline_origin(global.held_box.item.sprite, -1, global.dmx, global.dmy, 0.47, 0.47, 60, 1)
+			draw_sprite_origin_ext(global.held_box.item.sprite, -1, global.dmx, global.dmy, 0.47, 0.47, 60, c_white, 1)
+		}
+}

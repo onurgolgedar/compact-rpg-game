@@ -313,9 +313,8 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				break
 			
 			case CODE_SET_WALLET:
-				if (global.socketID_player == real(data[0]))
-					global.gold = real(data[1])
-				break
+				global.gold = data[0]
+			break
 		
 			case CODE_TELL_PLAYER_ENERGY:
 				var player = global.playerInstances[? real(data[0])]
@@ -366,6 +365,9 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						}
 					}
 				}
+				
+				if (global.socketID_player == real(data[0]))
+					global.gold = real(data[2])
 				break
 				
 			case CODE_TELL_PLAYER_MAXMANA:
@@ -583,11 +585,13 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					var row = db_create_row(socketID_sender)
 					db_add_row(global.DB_SRV_TABLE_players, row)
 					
-					if (db_get_row(global.DB_SRV_TABLE_wallets, socketID_sender) == undefined) {
-						var walletRow = db_create_row(data[0])
+					var walletRow = db_get_row(global.DB_SRV_TABLE_wallets, onlineAccount[? ONLINEACCOUNTS_ACCID_SERVER])
+					if (walletRow == undefined) {
+						walletRow = db_create_row(data[0])
 						walletRow[? WALLETS_GOLD_SERVER] = 0
 						db_add_row(global.DB_SRV_TABLE_wallets, walletRow)
 					}
+				
 				
 					ini_open("boxes.dbfile")
 						var _str = ini_read_string("Boxes", string(data[0]), "")
@@ -656,6 +660,8 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, account[? ACCOUNTS_CLASS_SERVER], BUFFER_TYPE_STRING)
 					
 					net_server_send(socketID_sender, CODE_GET_BOXES, get_boxes_grid_SERVER(socketID_sender), BUFFER_TYPE_STRING)
+					
+					net_server_send(socketID_sender, CODE_SET_WALLET, walletRow[? WALLETS_GOLD_SERVER], BUFFER_TYPE_INT32) // ?
 	
 					var instance = spawn_player(socketID_sender)
 					instance.name = account[? ACCOUNTS_NICKNAME_SERVER]
@@ -758,7 +764,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				}
 				
 				var walletRow = db_create_row(data[0])
-				walletRow[? WALLETS_GOLD_SERVER] = data[5]
+				walletRow[? WALLETS_GOLD_SERVER] = real(data[5])
 				db_add_row(global.DB_SRV_TABLE_wallets, walletRow)
 				db_save_table(global.DB_SRV_TABLE_wallets)
 				
@@ -826,7 +832,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				else
 					box = change_active_box_SERVER(socketID_sender, real(data[0]), undefined, undefined, data[3])
 					
-				if (box != undefined) {
+				if (box != -1) {
 					if (data[1] != "undefined")
 						net_server_send(socketID_sender, CODE_CHANGE_ACTIVE_BOX, data[0]+"|"+data[1]+"|"+data[2]+"|"+data[3], BUFFER_TYPE_STRING)
 					else
@@ -852,8 +858,8 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				
 			case _CODE_DROP_COIN:
 				var coinCenter = instance_create(real(data[0]), real(data[1]), objCoinCenter_SERVER)
-				coinCenter.value = 100
-				net_server_send(socketID_sender, CODE_DROP_COIN, string(coinCenter)+"|"+string(coinCenter.x)+"|"+string(coinCenter.y)+"|"+string(coinCenter.value), BUFFER_TYPE_STRING)
+				coinCenter.value = 20
+				net_server_send(SOCKET_ID_ALL, CODE_DROP_COIN, string(coinCenter)+"|"+string(coinCenter.x)+"|"+string(coinCenter.y)+"|"+string(coinCenter.value), BUFFER_TYPE_STRING)
 				break
 				
 			case _CODE_CHANGE_BOX_POSITION:
