@@ -1,26 +1,28 @@
 var mouseOnBody = is_mouse_on()
 
-draw_set_color(c_white) draw_set_alpha(0.4)
-	draw_set_color(c_black)
+draw_set_color(c_white) draw_set_alpha(0.9)
+	draw_set_color(COLOR_WINDOW_BACK)
 		draw_roundrect_ext(x-offset, y-offset, x+width+offset, y+height+offset, 15, 15, 0)
-	draw_set_color(COLOR_WINDOW)
+	draw_set_color(COLOR_WINDOW) draw_set_alpha(0.43)
 		draw_roundrect_ext(x, y+height_ext_top+offset, x+width, y+height, 15, 15, 0)
 		draw_roundrect_ext(x+offset, y+height_ext_top+offset+offset, x+width-offset, y+height-height_ext_bot-offset-height_ext_bot_more, 15, 15, 0)
 	draw_set_color(COLOR_WINDOW)
 		draw_roundrect_ext(x, y, x+width, y+height_ext_top/2-offset/2, 15, 15, 0)
+	draw_set_alpha(1) draw_set_color(c_black)
+	//draw_roundrect(x-offset, y-offset, x+width+offset, y+height+offset, 1)
 		
-	draw_set_color(c_white)
+	draw_set_color(c_white) draw_set_alpha(0.4)
 		draw_roundrect_ext(x+offset, y+height-height_ext_bot-height_ext_bot_more, x+width-offset, y+height-offset-height_ext_bot_more, 15, 15, 0)
 		draw_roundrect_ext(x+offset, y+height-offset-height_ext_bot_more+offset, x+width-offset, y+height-offset, 15, 15, 0)
 	
 	draw_set_color(c_white) draw_set_alpha(1) draw_set_font(fontWindowTitle) draw_set_center()
-		draw_text_outlined(x+width/2, y+(height_ext_top/2-offset/2)/2, title, 2, c_black, 10, 1, 1, 0)
+		draw_text_outlined(x+width/2, y+(height_ext_top/2-offset/2)/2+2, title, 2, c_black, 10, 0.7, 0.7, 0)
 	
 	mouseOnButton = undefined
 	var pageButtonEdge = 22
 	var pageButton_x, pageButton_y
 	for (var i = 0; i < pageCount; i++) {
-		draw_set_alpha(0.6)
+		draw_set_alpha(1)
 		pageButton_x[i] = x+offset+i*(offset*2+pageButtonEdge)
 		pageButton_y[i] = y+(height_ext_top/2-offset/2)/2+pageButtonEdge/2+offset*2
     
@@ -51,13 +53,11 @@ draw_set_color(c_white) draw_set_alpha(0.4)
 	var button_y = y+height-offset-height_ext_bot_more+offset*2
 	var button_width = 130
 	var button_height = 30
-	draw_set_alpha(0.6)
+	draw_set_alpha(1)
 	if (mouseOnBody and global.dmx > button_x and global.dmx < button_x+button_width and
 		global.dmy > button_y and global.dmy < button_y+button_height and !is_click_blocked()) {
-		if (!instance_exists(objEquipment_window)) {
-			draw_set_color(c_lime)
-			mouseOnButton = 100
-		}
+		draw_set_color(!instance_exists(objEquipments_window) ? c_lime : c_red)
+		mouseOnButton = 100
 	}
 	else
 		draw_set_color(c_dkgray)
@@ -70,20 +70,14 @@ draw_set_color(c_white) draw_set_alpha(0.4)
 		button_x+button_width, button_y+button_height, 0)
 	draw_set_color(c_black)
 	draw_set_alpha(1)
-    
+
+	
 	draw_set_center() draw_set_font(fontMain)
 		draw_text(button_x+button_width/2, button_y+button_height/2+2, "Equipments")
 	
 		draw_sprite(sprCoin, -1, x+width-offset-100, button_y+button_height/2+2)
 	draw_set_default()
 	draw_text(x+width-offset-85, button_y+3, real(global.gold))
-	
-	if (instance_exists(objEquipment_window)) {
-		draw_set_alpha(0.25)
-			draw_roundrect(button_x, button_y,
-			button_x+button_width, button_y+button_height, 0)
-		draw_set_alpha(1)
-	}
 	
 	for (var i = global.bc_hor_COMMON*(page-1); i < global.bc_hor_COMMON*page; i++) {
 		for (var j = 0; j < global.bc_ver_COMMON; j++) {

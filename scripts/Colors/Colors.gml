@@ -1,5 +1,4 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
 function Colors() {
 	#macro COLOR_WINDOW c_maroon
+	#macro COLOR_WINDOW_BACK make_color_rgb(20, 20, 20)
 }

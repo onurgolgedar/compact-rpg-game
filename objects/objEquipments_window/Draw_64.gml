@@ -1,18 +1,20 @@
-draw_set_color(c_white) draw_set_alpha(0.4)
-	draw_set_color(c_black)
+draw_set_color(c_white) draw_set_alpha(0.9)
+	draw_set_color(COLOR_WINDOW_BACK)
 		draw_roundrect_ext(x-offset, y-offset, x+width+offset, y+height+offset, 15, 15, 0)
-	draw_set_color(COLOR_WINDOW)
+	draw_set_color(COLOR_WINDOW) draw_set_alpha(0.43)
 		draw_roundrect_ext(x, y+height_ext_top+offset, x+width, y+height, 15, 15, 0)
 		draw_roundrect_ext(x+offset, y+height_ext_top+offset+offset, x+width-offset, y+height-height_ext_bot-offset-height_ext_bot_more, 15, 15, 0)
 	draw_set_color(COLOR_WINDOW)
 		draw_roundrect_ext(x, y, x+width, y+height_ext_top, 15, 15, 0)
+	draw_set_alpha(1) draw_set_color(c_black)
+	//draw_roundrect(x-offset, y-offset, x+width+offset, y+height+offset, 1)
 		
 	/*draw_set_color(c_white)
 		draw_roundrect_ext(x+offset, y+height-height_ext_bot-height_ext_bot_more, x+width-offset, y+height-offset-height_ext_bot_more, 15, 15, 0)
 		draw_roundrect_ext(x+offset, y+height-offset-height_ext_bot_more+offset, x+width-offset, y+height-offset, 15, 15, 0)*/
 	
 	draw_set_color(c_white) draw_set_alpha(1) draw_set_font(fontWindowTitle) draw_set_center()
-		draw_text_outlined(x+width/2, y+height_ext_top/2, title, 2, c_black, 10, 1, 1, 0)
+		draw_text_outlined(x+width/2-10, y+height_ext_top/2+2, title, 2, c_black, 10, 0.7, 0.7, 0)
 		
 	for (var i = 0; i < global.bc_hor_COMMON; i++) {
 		for (var j = global.bc_ver_COMMON; j < global.bc_ver_COMMON+1; j++) {

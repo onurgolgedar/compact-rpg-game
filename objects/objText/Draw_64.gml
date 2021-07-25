@@ -1,7 +1,7 @@
 if (surface != undefined) {
 	draw_set_color(c_black) draw_set_alpha(0.7)
 		draw_roundrect_ext(x, y, x+text_width+padding_x*2, y-padding_y*2-text_height, 9, 9, false)
-	draw_set_alpha(0.7) draw_set_color(c_maroon)
+	draw_set_alpha(0.7) draw_set_color(COLOR_WINDOW)
 		draw_roundrect_ext(x+spacing, y-spacing, x+text_width+padding_x*2-spacing, y-padding_y*2-text_height+spacing, 9, 9, false)
 	draw_set_color(c_white) draw_set_alpha(1)
 	

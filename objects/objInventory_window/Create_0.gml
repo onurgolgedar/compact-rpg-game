@@ -3,7 +3,7 @@ event_inherited()
 function inventory_refresh() {
 	var eq_x = undefined
 	var eq_y = undefined
-	with (objEquipment_window) {
+	with (objEquipments_window) {
 		eq_x = x
 		eq_y = y
 	}
@@ -12,7 +12,7 @@ function inventory_refresh() {
 	window.page = page
 	
 	if (eq_x != undefined)
-		return instance_create_layer(eq_x, eq_y, "Windows", objEquipment_window)
+		return instance_create_layer(eq_x, eq_y, "Windows", objEquipments_window)
 		
 	return window
 }
@@ -83,7 +83,7 @@ function main_loop() {
 }
 function_call(main_loop, 1/20, true)
 
-title = "Inventory"
+title = "INVENTORY"
 pageCount = global.pageCount_COMMON
 page = 1
 

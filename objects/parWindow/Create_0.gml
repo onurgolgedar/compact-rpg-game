@@ -11,10 +11,14 @@ mouseOnButton = undefined
 isHeld = false
 held_offset_x = undefined
 held_offset_y = undefined
+isOnExitButton = false
 
 onFront = true
 minDepth = 999
 owner = undefined
+
+width = undefined
+height = undefined
 
 depth -= instance_number(parWindow)*2
 event_user(0)

@@ -16,7 +16,7 @@ if (!is_click_blocked() and global.held_box != undefined) {
 		}
 		
 		if (mouseOn_box != undefined) {
-			if (global.held_from == object_get_name(objEquipment_window))
+			if (global.held_from == object_get_name(objEquipments_window))
 				net_client_send(_CODE_CHANGE_ACTIVE_BOX, string(global.held_box.item.type)+"|"+string(mouseOn_box_i)+"|"+string(mouseOn_box_j)+"|"+get_box_confirmation_number_COMMON(mouseOn_box), BUFFER_TYPE_STRING)
 			else if (global.held_from == object_get_name(objInventory_window)) {
 				net_client_send(_CODE_CHANGE_BOX_POSITION, string(global.held_box_i)+"|"+string(global.held_box_j)+"|"+string(mouseOn_box_i)+"|"+string(mouseOn_box_j), BUFFER_TYPE_STRING)

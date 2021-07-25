@@ -35,7 +35,7 @@
     "path": "folders/2- Objects/Windows.yy",
   },
   "resourceVersion": "1.0",
-  "name": "objEquipment_window",
+  "name": "objEquipments_window",
   "tags": [],
   "resourceType": "GMObject",
 }

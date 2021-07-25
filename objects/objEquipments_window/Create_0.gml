@@ -91,7 +91,7 @@ function main_loop() {
 }
 function_call(main_loop, 1/20, true)
 
-title = "Equipments"
+title = "EQUIPMENTS"
 
 boxWidth = 50
 boxHeight = 50
