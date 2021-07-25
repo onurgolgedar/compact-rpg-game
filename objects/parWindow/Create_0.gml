@@ -1,6 +1,14 @@
 function refresh() {
 	instance_destroy()
-	return instance_create_layer(x, y, "Windows", object_index)
+	
+	var _depth = depth
+	var _onFront = onFront
+	var window = instance_create_layer(x, y, "Windows", object_index)
+	window.alarm[11] = -1
+	window.depth = _depth
+	window.onFront = _onFront
+	
+	return window
 }
 
 function is_mouse_on() {
@@ -13,7 +21,7 @@ held_offset_x = undefined
 held_offset_y = undefined
 isOnExitButton = false
 
-onFront = true
+onFront = false
 minDepth = 999
 owner = undefined
 
@@ -21,4 +29,4 @@ width = undefined
 height = undefined
 
 depth -= instance_number(parWindow)*2
-event_user(0)
+alarm[11] = 1
