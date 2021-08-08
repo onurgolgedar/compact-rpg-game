@@ -29,8 +29,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "2- Objects",
-    "path": "folders/2- Objects.yy",
+    "name": "Effects",
+    "path": "folders/2- Objects/Effects.yy",
   },
   "resourceVersion": "1.0",
   "name": "efFireTiny",

@@ -1,4 +1,5 @@
 event_inherited()
 
+// Skills Init
 for (var i = 0; i < 5; i++)
-	skills[i] = { index: undefined, cooldown: 0, mana: undefined, energy: undefined, maxcooldown: undefined, code: undefined}
+	skills[i] = { index: undefined, cooldown: undefined, mana: undefined, energy: undefined, sprite: sprNothingness, maxcooldown: undefined, code: undefined }

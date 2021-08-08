@@ -1,4 +1,4 @@
-function spawn_player(socketID) {
+function spawn_player_SERVER(socketID) {
 	with (objPlayer)
 		if (id.socketID == socketID)
 			instance_destroy()
@@ -12,67 +12,70 @@ function spawn_player(socketID) {
 	newPlayer.name = accountRow[? ACCOUNTS_NICKNAME_SERVER]
 	newPlayer.class = accountRow[? ACCOUNTS_CLASS_SERVER]
 	
+	var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID))
+	newPlayer.level = accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER]
+	
 	with (newPlayer) {
 		targetID = socketID
 		
 		recalculate_character_statistics_SERVER()
 		
-		var skill_index
+		/*var skill_index
 		skill_index = SKILL_0
 		ds_map_add(skills, 0,
 		{
 			index: skill_index,
-			cooldownmax: global.skill_cooldown_max[skill_index],
+			cooldownmax: global.skill_cooldown_max_COMMON[skill_index],
 			cooldown: 0,
-			code: global.skill_code[skill_index],
-			object: global.skill_object[skill_index],
-			casttimemax: global.skill_casttime_max[skill_index],
+			code: global.skill_code_COMMON[skill_index],
+			object: global.skill_object_SERVER[skill_index],
+			casttimemax: global.skill_casttime_max_COMMON[skill_index],
 			casttime: undefined,
-			mana: global.skill_mana[skill_index],
-			energy: global.skill_energy[skill_index]
+			mana: global.skill_mana_COMMON[skill_index],
+			energy: global.skill_energy_COMMON[skill_index]
 		})
 		
 		skill_index = SKILL_1
 		ds_map_add(skills, 1,
 		{
 			index: skill_index,
-			cooldownmax: global.skill_cooldown_max[skill_index],
+			cooldownmax: global.skill_cooldown_max_COMMON[skill_index],
 			cooldown: 0,
-			code: global.skill_code[skill_index],
-			object: global.skill_object[skill_index],
-			casttimemax: global.skill_casttime_max[skill_index],
+			code: global.skill_code_COMMON[skill_index],
+			object: global.skill_object_SERVER[skill_index],
+			casttimemax: global.skill_casttime_max_COMMON[skill_index],
 			casttime: undefined,
-			mana: global.skill_mana[skill_index],
-			energy: global.skill_energy[skill_index]
+			mana: global.skill_mana_COMMON[skill_index],
+			energy: global.skill_energy_COMMON[skill_index]
 		})
 		
 		skill_index = SKILL_2
 		ds_map_add(skills, 2,
 		{
 			index: skill_index,
-			cooldownmax: global.skill_cooldown_max[skill_index],
+			cooldownmax: global.skill_cooldown_max_COMMON[skill_index],
 			cooldown: 0,
-			code: global.skill_code[skill_index],
-			object: global.skill_object[skill_index],
-			casttimemax: global.skill_casttime_max[skill_index],
+			code: global.skill_code_COMMON[skill_index],
+			object: global.skill_object_SERVER[skill_index],
+			casttimemax: global.skill_casttime_max_COMMON[skill_index],
 			casttime: undefined,
-			mana: global.skill_mana[skill_index],
-			energy: global.skill_energy[skill_index]
+			mana: global.skill_mana_COMMON[skill_index],
+			energy: global.skill_energy_COMMON[skill_index]
 		})
 		
 		skill_index = SKILL_3
 		ds_map_add(skills, 3,
 		{
 			index: skill_index,
-			cooldownmax: global.skill_cooldown_max[skill_index],
+			cooldownmax: global.skill_cooldown_max_COMMON[skill_index],
 			cooldown: 0,
-			code: global.skill_code[skill_index],
-			object: global.skill_object[skill_index],
-			casttimemax: global.skill_casttime_max[skill_index],
+			code: global.skill_code_COMMON[skill_index],
+			object: global.skill_object_SERVER[skill_index],
+			casttimemax: global.skill_casttime_max_COMMON[skill_index],
 			casttime: undefined,
-			mana: global.skill_mana[skill_index],
-			energy: global.skill_energy[skill_index]
-		})
+			mana: global.skill_mana_COMMON[skill_index],
+			energy: global.skill_energy_COMMON[skill_index]
+		})*/
 		
 		hp = maxHp
 		energy = maxEnergy
@@ -89,7 +92,8 @@ function spawn_player(socketID) {
 	newPlayer.playerRow[? PLAYERS_DEATHTIMER_SERVER] = 0
 	
 	net_server_send(SOCKET_ID_ALL, CODE_SPAWN_PLAYER, string(socketID)+"|"+string(newPlayer.x)+"|"+string(newPlayer.y)+"|"+string(newPlayer.maxHp)+"|"+string(newPlayer.maxEnergy)
-					+"|"+string(newPlayer.mana)+"|"+string(newPlayer.class), BUFFER_TYPE_STRING)
+					+"|"+string(newPlayer.mana)+"|"+string(newPlayer.class)+"|"+string(newPlayer.movementSpeed)+"|"+string(newPlayer.physicalPower)
+					+"|"+string(newPlayer.magicalPower)+"|"+string(newPlayer.attackSpeed)+"|"+string(newPlayer.level), BUFFER_TYPE_STRING)
 					
 	send_appearence_to_all_SERVER(socketID, SOCKET_ID_ALL)
 	

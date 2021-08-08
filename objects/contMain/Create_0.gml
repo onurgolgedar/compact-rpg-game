@@ -24,9 +24,12 @@ global.creatureInstances = ds_map_create()
 
 global.period = 0
 global.gameTime = 0
-global.skill_sprite[SKILL_0] = sprSkill0_symbol
-global.skill_sprite[SKILL_1] = sprSkill1_symbol
-global.skill_sprite[SKILL_2] = sprSkill2_symbol
-global.skill_sprite[SKILL_3] = sprSkill3_symbol
+
+for (var i = 0; i < 5; i++)
+	global.skill_sprite[i] = sprNothingness
 
 global.boxes = undefined
+global.boxes_skill = undefined
+
+global.level = 1
+global.skillPoints = 0

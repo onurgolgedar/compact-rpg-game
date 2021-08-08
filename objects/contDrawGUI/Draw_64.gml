@@ -65,7 +65,7 @@ if (is_alive()) {
 		if (mouseOnSkillBox == undefined and point_distance(global.dmx, global.dmy, xx, yy) < 30)
 			mouseOnSkillBox = i
 		
-		if (skill.index != undefined) {			
+		if (skill.index != undefined and global.held_box != skill) {			
 			if (objPlayer.mana < skill.mana)
 				draw_sprite_ext(sprSkillColor, 2, xx, yy, 1, 1, 0, c_white, 1)
 			else if (objPlayer.energy < skill.energy)
@@ -73,7 +73,7 @@ if (is_alive()) {
 			else
 				draw_sprite_ext(sprSkillColor, skill.cooldown == 0, xx, yy, 1, 1, 0, c_white, 1)
 		
-			draw_sprite(global.skill_sprite[skill.index], -1, xx, yy)
+			draw_sprite(skill.sprite, -1, xx, yy)
 		
 			if (objPlayer.stunned)
 				draw_sprite_ext(sprSkillColor, 4, xx, yy, 1, 1, 0, c_black, 0.7)
@@ -99,6 +99,26 @@ if (is_alive()) {
 	}
 		
 	draw_sprite(sprBorderSkills, -1, guiWidth/2, guiHeight)
+	
+	for (var i = 0; i < 5; i++) {
+		var xx = -69+guiWidth/2-50+i*59
+		var yy = -7+guiHeight
+	
+		draw_set_alpha(0.5)
+			//draw_roundrect(xx-24, yy-5, xx+24, yy+3, 0)
+	
+			draw_set_color(c_white) draw_set_center() draw_set_font(fontGUI_small) draw_set_alpha(0.9)
+				if (i < 2)
+					draw_text_outlined(xx, yy, string(i+1), 3, c_black, 12, 1.05, 1.05, 0)
+				else if (i == 2)
+					draw_text_outlined(xx, yy, "Space", 3, c_black, 12, 1.05, 1.05, 0)
+				else if (i == 3)
+					draw_text_outlined(xx, yy, "Shift", 3, c_black, 12, 1.05, 1.05, 0)
+				else if (i == 4)
+					draw_text_outlined(xx, yy, "Ctrl", 3, c_black, 12, 1.05, 1.05, 0)
+			draw_set_color(c_black)
+		draw_set_alpha(1) draw_set_default()
+	}
 }
 else
 	draw_rectangle(-1, -1, guiWidth+1, guiHeight+1, 0)
@@ -148,4 +168,4 @@ draw_set_alpha(0.5) draw_set_color(c_white)
 	draw_text_transformed(76, display_get_gui_height()-28, "FPS: "+string(fps)+"/"+string(room_speed), 0.7, 0.7, 0)
 	draw_text_transformed(76, display_get_gui_height()-48, "Ping: "+string(global.ping_udp), 0.7, 0.7, 0)
 	draw_text_transformed(76, display_get_gui_height()-68, "Receive Errors: "+string(global.networkErrors_count), 0.7, 0.7, 0)
-draw_set_alpha(1) draw_set_color(c_black)
+draw_set_alpha(1) draw_set_default()

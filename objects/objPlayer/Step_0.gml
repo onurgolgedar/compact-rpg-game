@@ -1,5 +1,6 @@
 event_inherited()
 
+// Skills Prediction
 for (var i = 0; i < 5; i++) {
 	var skill = skills[i]
 	

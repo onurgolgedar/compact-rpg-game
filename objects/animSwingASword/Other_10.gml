@@ -1,2 +1,3 @@
-owner.animationController = id
+event_inherited()
+
 animation_000()

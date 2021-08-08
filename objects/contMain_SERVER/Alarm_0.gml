@@ -3,10 +3,10 @@ for (var i = 0; i < ds_size; i++) {
 	var _row = db_get_row_by_index(global.DB_SRV_TABLE_players, i)
 		
 	if (_row[? PLAYERS_DEATHTIMER_SERVER] > 0) {
-		_row[? PLAYERS_DEATHTIMER_SERVER] -= 1/30
+		_row[? PLAYERS_DEATHTIMER_SERVER] -= 1/20
 		
 		if (_row[? PLAYERS_DEATHTIMER_SERVER] == 0)
-			spawn_player(_row[? PLAYERS_SOCKETID_SERVER])
+			spawn_player_SERVER(_row[? PLAYERS_SOCKETID_SERVER])
 	}
 }
 
@@ -17,7 +17,11 @@ with (objPlayer_SERVER) {
 	for (var j = 0; j < ds_size; j++) {
 		var skill = _skills[j]
 		var key = _skills_keys[j]
-		net_server_send(socketID, CODE_SKILL_INFO, string(skill.index)+"|"+string(key)+"|"+string(skill.cooldownmax)+"|"+string(skill.energy)+"|"+string(skill.mana)+"|"+string(skill.code), BUFFER_TYPE_STRING, true)
+		if (skill != undefined)
+			net_server_send(socketID, CODE_SKILL_INFO, string(skill.index)+"|"+string(key)+"|"+string(skill.cooldownmax)+"|"+string(skill.energy)+"|"+
+													   string(skill.mana)+"|"+string(skill.code)+"|"+string(skill.cooldown), BUFFER_TYPE_STRING, true)
+		else 
+			net_server_send(socketID, CODE_SKILL_INFO, "undefined|"+string(key), BUFFER_TYPE_STRING, true)
 	}
 }
 

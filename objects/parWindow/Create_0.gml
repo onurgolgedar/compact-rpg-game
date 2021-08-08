@@ -1,5 +1,7 @@
 function refresh() {
+	isRefreshing = true
 	instance_destroy()
+	isRefreshing = false
 	
 	var _depth = depth
 	var _onFront = onFront
@@ -21,6 +23,7 @@ held_offset_x = undefined
 held_offset_y = undefined
 isOnExitButton = false
 
+isRefreshing = false
 onFront = false
 minDepth = 999
 owner = undefined

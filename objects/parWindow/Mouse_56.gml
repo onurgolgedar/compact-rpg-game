@@ -1,1 +1,4 @@
-isHeld = false
+if (isOnExitButton) {
+	instance_destroy()
+	exit
+}

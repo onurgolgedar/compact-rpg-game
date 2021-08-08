@@ -64,6 +64,8 @@ function change_active_box(type, box_i, box_j, box_confirmation_number) {
 	with (objInventory_window)
 		inventory_refresh()
 				
+	net_client_send(_CODE_GET_STATISTICS)
+				
 	return true
 }
 

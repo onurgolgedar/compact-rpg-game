@@ -142,28 +142,34 @@ for (var i = 0; i < ds_list_size(subtexts); i++) {
 text_width += PADDING.left
 text_height += PADDING.top
 
-surface = surface_create(text_width, text_height)
+gpu_set_colorwriteenable(1, 1, 1, 1)
+surface = surface_create(text_width+6, text_height+6)
 surface_set_target(surface)
-draw_clear_alpha(c_black, 0)
+	draw_clear_alpha(c_black, 0)
+surface_reset_target()
+
 for (var i = 0; i < ds_list_size(subtexts); i++) {
-	var subsurface = surface_create(text_width, text_height)
+	var subsurface = surface_create(text_width+6, text_height+6)
 	var _subtext = ds_list_find_value(subtexts, i)
 	
-	surface_reset_target() surface_set_target(subsurface) draw_clear_alpha(c_black, 0) gpu_set_tex_filter(true)
+	surface_set_target(subsurface) draw_clear_alpha(c_black, 0) gpu_set_tex_filter(false)
 		if (_subtext.image == undefined) {
 			var beforeColor = draw_get_color()
 			draw_set_font(_subtext.bold ? font_bold : font) draw_set_color(_subtext.color)
-				draw_text_outlined(_subtext.xx+PADDING.left, _subtext.yy+PADDING.top, _subtext.data, 2, c_black, 15, 1, 1, 0)
+				draw_text_outlined(_subtext.xx+PADDING.left+3, _subtext.yy+PADDING.top+3, _subtext.data, 2, c_black, 15, 1, 1, 0)
 			draw_set_color(beforeColor)
 		}
 		else
-			draw_sprite(_subtext.image, -1, _subtext.xx+PADDING.left, _subtext.yy+PADDING.top)
-		
-	surface_reset_target() surface_set_target(surface)
+			draw_sprite(_subtext.image, -1, _subtext.xx+PADDING.left+3, _subtext.yy+PADDING.top+3)
+	surface_reset_target()
+	
+	 surface_set_target(surface) 
 		draw_surface(subsurface, 0, 0)
+	surface_reset_target() 
+	
 	surface_free(subsurface)
 }
-surface_reset_target()
+gpu_set_colorwriteenable(1, 1, 1, 1)
 
 draw_set_font(font_before)
 draw_set_color(color_before)

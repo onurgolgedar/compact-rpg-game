@@ -22,7 +22,7 @@ if (is_mouse_on() and !is_click_blocked()) {
 		
 	if (mouseOnButton == 100) {
 		if (!instance_exists(objEquipments_window))
-			instance_create_layer(x+width+boxWidth, y, "Windows", objEquipments_window)
+			instance_create_layer(x+width+boxWidth/2, y+height-boxHeight, "Windows", objEquipments_window)
 		else
 			instance_destroy(objEquipments_window)
 	}

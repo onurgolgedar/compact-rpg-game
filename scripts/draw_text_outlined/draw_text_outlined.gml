@@ -8,7 +8,6 @@
 /// @param yscale
 /// @param angle
 function draw_text_outlined() {
-
 	var dto_dcol = draw_get_color()
 	var dto_dalpha = draw_get_alpha()
 	

@@ -24,8 +24,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "2- Objects",
-    "path": "folders/2- Objects.yy",
+    "name": "Environment",
+    "path": "folders/2- Objects/Environment.yy",
   },
   "resourceVersion": "1.0",
   "name": "objLake2",

@@ -1,7 +1,7 @@
 event_inherited()
 
 function inventory_refresh() {
-	var eq_x = undefined
+	/*var eq_x = undefined
 	var eq_y = undefined
 	var _equipmentDepth = undefined
 	var _equipmentOnFront = undefined
@@ -10,7 +10,7 @@ function inventory_refresh() {
 		_equipmentOnFront = onFront
 		eq_x = x
 		eq_y = y
-	}
+	}*/
 	
 	var _depth = depth
 	var _onFront = onFront
@@ -20,12 +20,12 @@ function inventory_refresh() {
 	window.depth = _depth
 	window.onFront = _onFront
 	
-	if (eq_x != undefined) {
+	/*if (eq_x != undefined) {
 		var equipmentWindow = instance_create_layer(eq_x, eq_y, "Windows", objEquipments_window)
 		equipmentWindow.alarm[11] = -1
 		equipmentWindow.depth = _equipmentDepth
 		equipmentWindow.onFront = _equipmentOnFront
-	}
+	}*/
 		
 	return window
 }
@@ -60,7 +60,7 @@ function main_loop() {
 				boxes_alpha[i][j] += 0.25
 			
 			var box = ds_grid_get(boxes, i, j)
-			if (box.item != undefined and is_mouse_on_box(i, j)) {
+			if (box.item != undefined and global.held_box == undefined and is_mouse_on_box(i, j)) {
 				found = true
 				
 				if (boxFocused != box) {

@@ -14,17 +14,26 @@ camera_set_view_speed(global.camera, 7, 7)
 
 var quality = 1.4
 surface_resize(application_surface, cameraWidth*quality/scale, cameraHeight*quality/scale)
-display_set_gui_size(cameraWidth/scale, cameraHeight/scale)
+display_set_gui_size(cameraWidth/scale*1.3, cameraHeight/scale*1.3)
 window_set_size(cameraWidth/scale, cameraHeight/scale)
 
 if (room == roomMenu)
 	camera_set_view_pos(global.camera, room_width/2-cameraWidth/2, room_height/2-cameraHeight/2)
 #endregion
 
-if (global.boxes == undefined) {
-	global.gold = 0
-	global.boxes = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
-	for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++)
-		for (var j = 0; j < global.bc_ver_COMMON+2; j++)
-			ds_grid_set(global.boxes, i, j, global.boxEmpty_COMMON)
+if (room != roomMenu) {
+	if (global.boxes == undefined) {
+		global.gold = 0
+		global.boxes = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
+		for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++)
+			for (var j = 0; j < global.bc_ver_COMMON+2; j++)
+				ds_grid_set(global.boxes, i, j, global.boxEmpty_COMMON)
+	}
+	
+	if (global.boxes_skill == undefined) {
+		global.boxes_skill = ds_grid_create(global.sc_hor_COMMON*global.pageCount_skill_COMMON, global.sc_ver_COMMON)
+		for (var i = 0; i < global.sc_hor_COMMON*global.pageCount_skill_COMMON; i++)
+			for (var j = 0; j < global.sc_ver_COMMON; j++)
+				ds_grid_set(global.boxes_skill, i, j, global.boxEmpty_skill_COMMON)
+	}
 }

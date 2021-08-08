@@ -1,1 +1,4 @@
-instance_create_layer(50, 50, "Windows", objExampleWindow)
+if (!instance_exists(objCharacter_window))
+	instance_create_layer(415, 140, "Windows", objCharacter_window)
+else
+	instance_destroy(objCharacter_window)

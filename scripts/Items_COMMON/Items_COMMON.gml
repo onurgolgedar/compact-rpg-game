@@ -1,21 +1,3 @@
-function Items_COMMON() {
-	#macro ITEMTYPE_NECKLACE 0
-	#macro ITEMTYPE_SWORD 1
-	#macro ITEMTYPE_CLOTHES 2
-	#macro ITEMTYPE_SHIELD 3
-	#macro ITEMTYPE_MATTER 4
-	
-	#macro SWORD_000 0
-	#macro SWORD_001 1
-	#macro SWORD_002 2
-	#macro SWORD_003 3
-
-	#macro CLOTHES_000 500
-	#macro CLOTHES_001 501
-	#macro CLOTHES_002 502
-	#macro CLOTHES_003 503
-}
-
 function get_item_COMMON(_code) {
 	switch (_code) {
 		case SWORD_000:
@@ -55,17 +37,38 @@ function get_item_confirmation_number_COMMON(item) {
 }
 
 function setup_item_COMMON(item) {
-	if (item.type == ITEMTYPE_SWORD) {
-		item.physicalPower = item.physicalPower_base
-		item.magicalPower = item.magicalPower_base
-		item.attackSpeed = item.attackSpeed_base
-		item.criticalChance = item.criticalChance_base
-		item.worth = item.worth_base
+	switch (item.type) {
+		case ITEMTYPE_SWORD:
+			item.physicalPower = item.physicalPower_base
+			item.magicalPower = item.magicalPower_base
+			item.attackSpeed = item.attackSpeed_base
+			item.criticalChance = item.criticalChance_base
+			item.worth = item.worth_base
+			break
+		
+		case ITEMTYPE_CLOTHES:
+			item.maxHp = item.maxHp_base
+			item.maxMana = item.maxMana_base
+			item.slowRate = item.slowRate_base
+			item.worth = item.worth_base
+			break
 	}
-	else if (item.type == ITEMTYPE_CLOTHES) {
-		item.maxHp = item.maxHp_base
-		item.maxMana = item.maxMana_base
-		item.slowRate = item.slowRate_base
-		item.worth = item.worth_base
-	}
+}
+
+function Items_COMMON() {
+	#macro ITEMTYPE_NECKLACE 0
+	#macro ITEMTYPE_SWORD 1
+	#macro ITEMTYPE_CLOTHES 2
+	#macro ITEMTYPE_SHIELD 3
+	#macro ITEMTYPE_MATTER 4
+	
+	#macro SWORD_000 0
+	#macro SWORD_001 1
+	#macro SWORD_002 2
+	#macro SWORD_003 3
+
+	#macro CLOTHES_000 500
+	#macro CLOTHES_001 501
+	#macro CLOTHES_002 502
+	#macro CLOTHES_003 503
 }

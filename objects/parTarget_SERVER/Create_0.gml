@@ -6,6 +6,7 @@ function main_loop_t() {
 function_call(main_loop_t, 1/5, true)
 
 targetID = undefined
+level = 1
 
 attackTimer = 0
 attackSpeed_rem = attackSpeed

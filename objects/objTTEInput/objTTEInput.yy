@@ -45,8 +45,8 @@
   ],
   "overriddenProperties": [],
   "parent": {
-    "name": "2- Objects",
-    "path": "folders/2- Objects.yy",
+    "name": "GUI Elements",
+    "path": "folders/2- Objects/GUI Elements.yy",
   },
   "resourceVersion": "1.0",
   "name": "objTTEInput",

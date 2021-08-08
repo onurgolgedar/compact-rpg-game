@@ -14,4 +14,7 @@ padding_x = 10
 padding_y = 10
 line_spacing = 2
 
+offset_x = undefined
+offset_y = undefined
+
 alarm[0] = 1

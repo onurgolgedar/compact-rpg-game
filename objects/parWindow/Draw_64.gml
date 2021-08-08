@@ -5,7 +5,7 @@ var xx = x+width-25
 var yy = y+3
 var buttonLength = 20
 
-draw_set_alpha(1)
+// Button
 isOnExitButton = false
 if (point_distance(xx+buttonLength/2, yy+buttonLength/2, global.dmx, global.dmy) < buttonLength/2)
 	isOnExitButton = true

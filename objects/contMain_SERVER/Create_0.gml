@@ -1,15 +1,27 @@
-global.selectedPlayer = undefined
-global.playerControlMode = false
-
 global.lastPositions_sent = ds_map_create()
 
-global.playerBoxes = ds_map_create()
-global.boxEmpty_COMMON = {item: undefined, tag: {isActive: false, isForQuest: false}, count: 0}
+// Non-table Data
+global.playerBoxes = ds_map_create() // Items
+global.playerQuests = ds_map_create() // Quests
+global.playerSkills = ds_map_create() // Skill Tree
+
+// Inventory Data
 global.bc_hor_COMMON = 5
 global.bc_ver_COMMON = 5
 global.pageCount_COMMON = 3
+global.boxEmpty_COMMON = {item: undefined, tag: {isActive: false, isForQuest: false}, count: 0}
 
-define_skills_SERVER()
+// Skill Tree Data
+global.sc_hor_COMMON = 4
+global.sc_ver_COMMON = 4
+global.pageCount_skill_COMMON = 3
+global.boxEmpty_skill_COMMON = {skill: undefined}
+
+// Server Control Mode
+global.selectedPlayer = undefined
+global.playerControlMode = false
+
+define_skills_base_COMMON()
 
 alarm[0] = room_speed/30
 
