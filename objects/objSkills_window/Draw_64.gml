@@ -78,10 +78,20 @@ draw_set_color(c_white) draw_set_alpha(0.9)
 				var skill_xx = (box_positions.xx_start+box_positions.xx_end)/2
 				var skill_yy = (box_positions.yy_start+box_positions.yy_end)/2
 				
+				draw_set_color(c_black) draw_set_alpha(1)
+					draw_roundrect(box_positions.xx_start, box_positions.yy_start-8,
+					box_positions.xx_end+90, box_positions.yy_end+8, 0)
+				draw_set_color(c_fuchsia) draw_set_alpha(0.17)
+					draw_roundrect(box_positions.xx_start+2, box_positions.yy_start-6,
+					box_positions.xx_end-2+90, box_positions.yy_end+6, 0)
+				draw_set_color(c_yellow) draw_set_alpha(0.25)
+					draw_roundrect(box_positions.xx_start+4, box_positions.yy_start-4,
+					box_positions.xx_end-4+90, box_positions.yy_end+4, 0)
+				draw_set_color(c_black) draw_set_alpha(1)
+				
 				draw_sprite_ext(box.skill.sprite, -1, skill_xx, skill_yy, 0.9, 0.9, 0, c_black, 0.7)
-				if (i != global.held_box_i or j != global.held_box_j or global.held_from != object_get_name(object_index))  {
+				if (i != global.held_box_i or j != global.held_box_j or global.held_from != object_get_name(object_index)) 
 					draw_sprite_ext(box.skill.sprite, -1, skill_xx, skill_yy, 0.8, 0.8, 0, c_white, 1)
-				}
 				
 				// Button
 				var button_x = skill_xx+30

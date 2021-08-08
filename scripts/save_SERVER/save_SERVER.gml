@@ -9,10 +9,10 @@ function save_SERVER() {
 	
 		// Save - Inventory
 		var boxes_SERVER = global.playerBoxes[? accountID]
-		var _grid = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
+		var _grid_items = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
 		for (var k = 0; k < global.bc_hor_COMMON*global.pageCount_COMMON; k++) {
 			for (var d = 0; d < global.bc_ver_COMMON+2; d++) {
-				ds_grid_set(_grid, k, d, json_stringify(ds_grid_get(boxes_SERVER, k, d)))
+				ds_grid_set(_grid_items, k, d, json_stringify(ds_grid_get(boxes_SERVER, k, d)))
 			}
 		}
 	
@@ -36,7 +36,7 @@ function save_SERVER() {
 	
 		// Write
 		ini_open("Boxes.dbfile")
-			ini_write_string("Items", accountID, ds_grid_write(_grid))
+			ini_write_string("Items", accountID, ds_grid_write(_grid_items))
 			ini_write_string("Skills", accountID, ds_grid_write(_grid_skills))
 		ini_close()
 	
@@ -45,7 +45,7 @@ function save_SERVER() {
 		ini_close()
 	
 		// Clear
-		ds_grid_destroy(_grid)
+		ds_grid_destroy(_grid_items)
 		ds_grid_destroy(_grid_skills)
 		ds_map_destroy(_map_quests)
 	}

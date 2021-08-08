@@ -260,7 +260,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE_TEXT:
+			case CODE_SLIDING_TEXT:
 				var target = global.playerInstances[? real(data[0])]
 				if (target == undefined)
 					target = global.creatureInstances[? real(data[0])]
@@ -478,17 +478,28 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				if (global.serverIP == "127.0.0.1")
 					net_client_send(_CODE_LOGIN, global.clientID+"|"+global.clientPassword+"|"+global.clientName+"|"+global.clientClass, BUFFER_TYPE_STRING)
 				else {
-					ini_open("boxes.dbfile")
-						var _str = ini_read_string("Items", global.clientID, "")
-						if (_str == "")
-							_str = "undefined"
+					// Upload The Account To Remote Server
+					ini_open("Boxes.dbfile")
+						var _str_items = ini_read_string("Items", global.clientID, "")
+						if (_str_items == "")
+							_str_items = "undefined"
+							
+						var _str_skills = ini_read_string("Skills", global.clientID, "")
+						if (_str_skills == "")
+							_str_skills = "undefined"
+					ini_close()
+					
+					ini_open("Quests.dbfile")
+						var _str_quests = ini_read_string("Quests", global.clientID, "")
+						if (_str_quests == "")
+							_str_quests = "undefined"
 					ini_close()
 						
 					var account = db_get_row(global.DB_SRV_TABLE_accounts, global.clientID)
 					if (account != undefined)
-						net_client_send(_CODE_UPLOAD, global.clientID+"|"+global.clientPassword+"|"+account[? ACCOUNTS_NICKNAME_SERVER]+"|"+account[? ACCOUNTS_CLASS_SERVER]+"|"+_str+"|"+string(global.gold)+"|"+string(global.level), BUFFER_TYPE_STRING)
+						net_client_send(_CODE_UPLOAD, global.clientID+"|"+global.clientPassword+"|"+account[? ACCOUNTS_NICKNAME_SERVER]+"|"+account[? ACCOUNTS_CLASS_SERVER]+"|"+_str_items+"|"+_str_skills+"|"+_str_quests+"|"+string(global.gold)+"|"+string(global.level), BUFFER_TYPE_STRING)
 					else
-						net_client_send(_CODE_UPLOAD, global.clientID+"|"+global.clientPassword+"|"+global.clientName+"|"+global.clientClass+"|"+_str+"|"+string(global.gold)+"|"+string(global.level), BUFFER_TYPE_STRING)
+						net_client_send(_CODE_UPLOAD, global.clientID+"|"+global.clientPassword+"|"+global.clientName+"|"+global.clientClass+"|"+_str_items+"|"+_str_skills+"|"+_str_quests+"|"+string(global.gold)+"|"+string(global.level), BUFFER_TYPE_STRING)
 				}
 				break
 		
@@ -555,45 +566,202 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			--------------------------------------------------------------------------
 			// // // // // // // // // // // // // // // // // // // // // // // // */
 			
-			case _CODE_MOUSE_POSITION:
-				var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
-				if (instance == undefined or !instance_exists(instance))
+			case _CODE_LOGIN:
+				var onlineAccount = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_SOCKETID_SERVER, ONLINEACCOUNTS_ACCID_SERVER, data[0])
+				if (onlineAccount != undefined) {
+					net_server_send(socketID_sender, CODE_LOGIN_FAIL)
 					break
-			
-				with (instance) {
-					var dir = point_direction(x, y, data[0], data[1])
-					image_angle = dir
 				}
-				break
-			
-			// // // // // // // // // // // // // // // // // // // // // // // //
-			// // // // // // // // // // // // // // // // // // // // // // // //
-			// // // // // // // // // // // // // // // // // // // // // // // //
-			
-			case _CODE_KEYPRESS:
-				var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
-				if (instance == undefined or !instance_exists(instance))
-					break
-			
-				with (instance) {
-					switch (data[0]) {
-						case 1:
-							key_w = true
-							break
+
+				var account = db_get_row(global.DB_SRV_TABLE_accounts, data[0])
+				if (account != undefined and account[? ACCOUNTS_PASSWORD_SERVER] == data[1] and data[2] == "" or account == undefined and data[1] != "" and data[2] != "") {
+					if (account == undefined or account[? ACCOUNTS_PASSWORD_SERVER] == data[1]) {
+						if (account == undefined) {
+							account = db_create_row(data[0])
+							account[? ACCOUNTS_PASSWORD_SERVER] = data[1]
+							account[? ACCOUNTS_NICKNAME_SERVER] = data[2]
 						
-						case 2:
-							key_a = true
-							break
+							if (data[3] == CLASS_WARRIOR or data[3] == CLASS_ASSASSIN or data[3] == CLASS_MAGE)
+								account[? ACCOUNTS_CLASS_SERVER] = data[3]
+							else
+								account[? ACCOUNTS_CLASS_SERVER] = CLASS_WARRIOR
 						
-						case 3:
-							key_s = true
-							break
-						
-						case 4:
-							key_d = true
-							break
+							db_add_row(global.DB_SRV_TABLE_accounts, account)
+							db_save_table(global.DB_SRV_TABLE_accounts)
+						}
+					
+						onlineAccount = db_create_row(socketID_sender)
+						onlineAccount[? ONLINEACCOUNTS_ACCID_SERVER] = data[0]
+						db_add_row(global.DB_SRV_TABLE_onlineAccounts, onlineAccount)
 					}
+					else {
+						net_server_send(socketID_sender, CODE_LOGIN_FAIL)
+						break
+					}
+				
+					var row = db_create_row(socketID_sender)
+					db_add_row(global.DB_SRV_TABLE_players, row)
+					
+					var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, onlineAccount[? ONLINEACCOUNTS_ACCID_SERVER])
+					if (accountInfoRow == undefined) {
+						accountInfoRow = db_create_row(data[0])
+						accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = 0
+						accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = 1
+						db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
+					}
+				
+					var accountName = data[0]			
+					ini_open("Boxes.dbfile")
+						var _str_items = ini_read_string("Items", accountName, "")
+						var _str_skills = ini_read_string("Skills", accountName, "")
+					ini_close()
+					
+					ini_open("Quests.dbfile")
+						var _str_quests = ini_read_string("Quests", accountName, "")
+					ini_close()
+					
+					// Load Items
+					if (global.playerBoxes[? accountName] == undefined) {
+						if (_str_items != "") {
+							var value = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
+							ds_grid_read(value, _str_items)
+						
+							for (var k = 0; k < global.bc_hor_COMMON*global.pageCount_COMMON; k++)
+								for (var z = 0; z < global.bc_ver_COMMON+2; z++) {
+									var box = json_parse(ds_grid_get(value, k, z))
+									ds_grid_set(value, k, z, box)
+									if (box.item == pointer_null)
+										box.item = undefined
+									else
+										box.item = get_item_COMMON(box.item.code)
+								}
+							
+							ds_map_add(global.playerBoxes, accountName, value)
+						}
+						else {
+							// Init Items
+							var boxes_SERVER = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
+							for (var t = 0; t < global.bc_hor_COMMON*global.pageCount_COMMON; t++)
+								for (var z = 0; z < global.bc_ver_COMMON+2; z++)
+									ds_grid_set(boxes_SERVER, t, z, global.boxEmpty_COMMON)
+	
+							ds_grid_set(boxes_SERVER, 0, 0, {item: get_item_COMMON(SWORD_000), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 1, 0, {item: get_item_COMMON(SWORD_001), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 2, 0, {item: get_item_COMMON(SWORD_002), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 0, 1, {item: get_item_COMMON(SWORD_003), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 1, 1, {item: get_item_COMMON(CLOTHES_000), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 2, 1, {item: get_item_COMMON(CLOTHES_001), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 0, 2, {item: get_item_COMMON(CLOTHES_002), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 1, 2, {item: get_item_COMMON(CLOTHES_003), tag: {isActive: false, isForQuest: false}, count: 1})
+						
+							ds_map_add(global.playerBoxes, accountName, boxes_SERVER)
+						}
+					}
+					
+					// Load Quests
+					if (global.playerQuests[? accountName] == undefined) {
+						if (_str_quests != "") {
+							var value = ds_map_create()
+							ds_map_read(value, _str_quests)
+						
+							var ds_size = ds_map_size(value)
+							for (var k = 0; k < ds_size ; k++)
+								value[? k] = json_parse(value[? k])
+							
+							global.playerQuests[? accountName] = value
+						}
+						else {
+							// Init Quests
+							global.playerQuests[? accountName] = ds_map_create()
+						
+							var _code = 0
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 1", code: _code, type: undefined, description: "...", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined,
+																					isDeletable: false, isRepeatable: false, requirements: undefined })
+						
+							_code = 1
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 2", code: _code, type: undefined, description: "...", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined,
+																					isDeletable: false, isRepeatable: false, requirements: [[3]] })
+						}
+					}
+					
+					// Load Skill Tree
+					if (global.playerSkills[? accountName] == undefined) {
+						if (_str_skills != "") {
+							var value = ds_grid_create(global.sc_hor_COMMON*global.pageCount_skill_COMMON, global.sc_ver_COMMON)
+							ds_grid_read(value, _str_skills)
+						
+							for (var k = 0; k < global.sc_hor_COMMON*global.pageCount_skill_COMMON; k++)
+								for (var z = 0; z < global.sc_ver_COMMON; z++) {
+									var box = json_parse(ds_grid_get(value, k, z))
+									ds_grid_set(value, k, z, box)
+									if (box.skill == pointer_null)
+										box.skill = undefined
+									else
+										box.skill = get_skill_COMMON(box.skill.index, box.skill.upgrade)
+								}
+							
+							ds_map_add(global.playerSkills, accountName, value)
+						}
+						else {
+							// Init Skill Tree
+							var boxes_skill_SERVER = ds_grid_create(global.sc_hor_COMMON*global.pageCount_skill_COMMON, global.sc_ver_COMMON)
+							for (var t = 0; t < global.sc_hor_COMMON*global.pageCount_skill_COMMON; t++)
+								for (var z = 0; z < global.sc_ver_COMMON; z++)
+									ds_grid_set(boxes_skill_SERVER, t, z, global.boxEmpty_skill_COMMON)
+	
+							ds_grid_set(boxes_skill_SERVER, 0, 0, {skill: get_skill_COMMON(SKILL_0, 0)})
+							ds_grid_set(boxes_skill_SERVER, 4, 0, {skill: get_skill_COMMON(SKILL_1, 0)})
+							ds_grid_set(boxes_skill_SERVER, 0, 1, {skill: get_skill_COMMON(SKILL_2, 0)})
+							ds_grid_set(boxes_skill_SERVER, 4, 1, {skill: get_skill_COMMON(SKILL_3, 0)})
+						
+							ds_map_add(global.playerSkills, accountName, boxes_skill_SERVER)
+						}
+					}
+				
+					// Map Creation
+					with (objRock_SERVER)
+						net_server_send(socketID_sender, CODE_PLACE_OBSTACLES, string(round(x))+"|"+string(round(y))+"|"+string(image_xscale)+"|"+string(image_yscale)+"|"+string(round(image_angle)), BUFFER_TYPE_STRING)
+			
+					with (objLight_SERVER)
+						net_server_send(socketID_sender, CODE_PLACE_LIGHTS, string(round(x))+"|"+string(round(y))+"|"+string(Light_Range)+"|"+string(Light_Intensity)+"|"+string(Light_Color)+"|"+string(Light_Shadow_Length), BUFFER_TYPE_STRING)
+				
+					with (objTree_SERVER)
+						net_server_send(socketID_sender, CODE_PLACE_TREES, string(type)+"|"+string(round(x))+"|"+string(round(y))+"|"+string(image_angle)+"|"+string(image_xscale)+"|"+string(image_yscale), BUFFER_TYPE_STRING)
+				
+					with (objLake_SERVER)
+						net_server_send(socketID_sender, CODE_PLACE_LAKES, "1|"+string(round(x))+"|"+string(round(y))+"|"+string(image_angle)+"|"+string(image_xscale)+"|"+string(image_yscale), BUFFER_TYPE_STRING)
+				
+					with (objLake2_SERVER)
+						net_server_send(socketID_sender, CODE_PLACE_LAKES, "2|"+string(round(x))+"|"+string(round(y))+"|"+string(image_angle)+"|"+string(image_xscale)+"|"+string(image_yscale), BUFFER_TYPE_STRING)
+				
+					with (objPlayer_SERVER)
+						if (id.socketID != socketID_sender) {
+							net_server_send(socketID_sender, CODE_SPAWN_PLAYER, string(id.socketID)+"|"+string(x)+"|"+string(y)+"|"+string(maxHp)+"|"+string(maxEnergy)+"|"+string(maxMana)+"|"+string(class)+
+																				"|"+string(movementSpeed)+"|"+string(physicalPower)+"|"+string(magicalPower)+"|"+string(attackSpeed)+"|"+string(level), BUFFER_TYPE_STRING)
+							send_appearence_to_all_SERVER(id.socketID, socketID_sender)
+						}
+				
+					with (objCreature1)
+						net_server_send(socketID_sender, CODE_SPAWN_CREATURE, string(targetID)+"|"+string(x)+"|"+string(y)+"|"+string(maxHp)+"|"+string(maxEnergy)+"|"+string(maxMana)+"|"+string(name), BUFFER_TYPE_STRING)
+	
+					
+					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, account[? ACCOUNTS_CLASS_SERVER], BUFFER_TYPE_STRING)
+					
+					// Spawn Player
+					var instance = spawn_player_SERVER(socketID_sender)
+					
+					// Send Private Data
+					net_server_send(socketID_sender, CODE_GET_BOXES, get_boxes_grid_SERVER(socketID_sender), BUFFER_TYPE_STRING)
+					net_server_send(socketID_sender, CODE_GET_ACCOUNTINFO, accountInfoRow[? ACCOUNTINFO_GOLD_SERVER], BUFFER_TYPE_INT32)
+				
+					// Send Shared Data
+					tell_all_names()
+					tell_all_positions_SERVER(true)
 				}
+				else
+					net_server_send(socketID_sender, CODE_LOGIN_FAIL)
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -700,8 +868,8 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				}
 				
 				var accountInfoRow = db_create_row(data[0])
-				accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = real(data[5])
-				accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = real(data[6])
+				accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = real(data[7])
+				accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = real(data[8])
 				db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
 				db_save_table(global.DB_SRV_TABLE_accountInfo)
 				
@@ -915,193 +1083,6 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					net_server_send(SOCKET_ID_ALL, CODE_SKILL3, socketID_sender, BUFFER_TYPE_INT16)
 				break
 				
-case _CODE_LOGIN:
-				var onlineAccount = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_SOCKETID_SERVER, ONLINEACCOUNTS_ACCID_SERVER, data[0])
-				if (onlineAccount != undefined) {
-					net_server_send(socketID_sender, CODE_LOGIN_FAIL)
-					break
-				}
-
-				var account = db_get_row(global.DB_SRV_TABLE_accounts, data[0])
-				if (account != undefined and account[? ACCOUNTS_PASSWORD_SERVER] == data[1] and data[2] == "" or account == undefined and data[1] != "" and data[2] != "") {
-					if (account == undefined or account[? ACCOUNTS_PASSWORD_SERVER] == data[1]) {
-						if (account == undefined) {
-							account = db_create_row(data[0])
-							account[? ACCOUNTS_PASSWORD_SERVER] = data[1]
-							account[? ACCOUNTS_NICKNAME_SERVER] = data[2]
-						
-							if (data[3] == CLASS_WARRIOR or data[3] == CLASS_ASSASSIN or data[3] == CLASS_MAGE)
-								account[? ACCOUNTS_CLASS_SERVER] = data[3]
-							else
-								account[? ACCOUNTS_CLASS_SERVER] = CLASS_WARRIOR
-						
-							db_add_row(global.DB_SRV_TABLE_accounts, account)
-							db_save_table(global.DB_SRV_TABLE_accounts)
-						}
-					
-						onlineAccount = db_create_row(socketID_sender)
-						onlineAccount[? ONLINEACCOUNTS_ACCID_SERVER] = data[0]
-						db_add_row(global.DB_SRV_TABLE_onlineAccounts, onlineAccount)
-					}
-					else {
-						net_server_send(socketID_sender, CODE_LOGIN_FAIL)
-						break
-					}
-				
-					var row = db_create_row(socketID_sender)
-					db_add_row(global.DB_SRV_TABLE_players, row)
-					
-					var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, onlineAccount[? ONLINEACCOUNTS_ACCID_SERVER])
-					if (accountInfoRow == undefined) {
-						accountInfoRow = db_create_row(data[0])
-						accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = 0
-						accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = 1
-						db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
-					}
-				
-					var accountName = data[0]			
-					ini_open("boxes.dbfile")
-						var _str = ini_read_string("Items", accountName, "")
-						var _str_skills = ini_read_string("Skills", accountName, "")
-					ini_close()
-					
-					ini_open("quests.dbfile")
-						var _str_quests = ini_read_string("Quests", accountName, "")
-					ini_close()
-					
-					if (global.playerBoxes[? accountName] == undefined) {
-						if (_str != "") {
-							var value = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
-							ds_grid_read(value, _str)
-						
-							for (var k = 0; k < global.bc_hor_COMMON*global.pageCount_COMMON; k++)
-								for (var z = 0; z < global.bc_ver_COMMON+2; z++) {
-									var box = json_parse(ds_grid_get(value, k, z))
-									ds_grid_set(value, k, z, box)
-									if (box.item == pointer_null)
-										box.item = undefined
-									else
-										box.item = get_item_COMMON(box.item.code)
-								}
-							
-							ds_map_add(global.playerBoxes, accountName, value)
-						}
-						else {
-							var boxes_SERVER = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
-							for (var t = 0; t < global.bc_hor_COMMON*global.pageCount_COMMON; t++)
-								for (var z = 0; z < global.bc_ver_COMMON+2; z++)
-									ds_grid_set(boxes_SERVER, t, z, global.boxEmpty_COMMON)
-	
-							ds_grid_set(boxes_SERVER, 0, 0, {item: get_item_COMMON(SWORD_000), tag: {isActive: false, isForQuest: false}, count: 1})
-							ds_grid_set(boxes_SERVER, 1, 0, {item: get_item_COMMON(SWORD_001), tag: {isActive: false, isForQuest: false}, count: 1})
-							ds_grid_set(boxes_SERVER, 2, 0, {item: get_item_COMMON(SWORD_002), tag: {isActive: false, isForQuest: false}, count: 1})
-							ds_grid_set(boxes_SERVER, 0, 1, {item: get_item_COMMON(SWORD_003), tag: {isActive: false, isForQuest: false}, count: 1})
-							ds_grid_set(boxes_SERVER, 1, 1, {item: get_item_COMMON(CLOTHES_000), tag: {isActive: false, isForQuest: false}, count: 1})
-							ds_grid_set(boxes_SERVER, 2, 1, {item: get_item_COMMON(CLOTHES_001), tag: {isActive: false, isForQuest: false}, count: 1})
-							ds_grid_set(boxes_SERVER, 0, 2, {item: get_item_COMMON(CLOTHES_002), tag: {isActive: false, isForQuest: false}, count: 1})
-							ds_grid_set(boxes_SERVER, 1, 2, {item: get_item_COMMON(CLOTHES_003), tag: {isActive: false, isForQuest: false}, count: 1})
-						
-							ds_map_add(global.playerBoxes, accountName, boxes_SERVER)
-						}
-					}
-					
-					if (global.playerQuests[? accountName] == undefined) {
-						if (_str_quests != "") {
-							var value = ds_map_create()
-							ds_map_read(value, _str_quests)
-						
-							var ds_size = ds_map_size(value)
-							for (var k = 0; k < ds_size ; k++)
-								value[? k] = json_parse(value[? k])
-							
-							global.playerQuests[? accountName] = value
-						}
-						else {
-							global.playerQuests[? accountName] = ds_map_create()
-						
-							var _code = 0
-							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 1", code: _code, type: undefined, description: "...", isCompleted: false,
-																					receivedFrom: undefined, targets: undefined, targetCounts: undefined,
-																					isDeletable: false, isRepeatable: false, requirements: undefined })
-						
-							_code = 1
-							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 2", code: _code, type: undefined, description: "...", isCompleted: false,
-																					receivedFrom: undefined, targets: undefined, targetCounts: undefined,
-																					isDeletable: false, isRepeatable: false, requirements: [[3]] })
-						}
-					}
-					
-					if (global.playerSkills[? accountName] == undefined) {
-						if (_str_skills != "") {
-							var value = ds_grid_create(global.sc_hor_COMMON*global.pageCount_skill_COMMON, global.sc_ver_COMMON)
-							ds_grid_read(value, _str_skills)
-						
-							for (var k = 0; k < global.sc_hor_COMMON*global.pageCount_skill_COMMON; k++)
-								for (var z = 0; z < global.sc_ver_COMMON; z++) {
-									var box = json_parse(ds_grid_get(value, k, z))
-									ds_grid_set(value, k, z, box)
-									if (box.skill == pointer_null)
-										box.skill = undefined
-									else
-										box.skill = get_skill_COMMON(box.skill.index, box.skill.upgrade)
-								}
-							
-							ds_map_add(global.playerSkills, accountName, value)
-						}
-						else {
-							var boxes_skill_SERVER = ds_grid_create(global.sc_hor_COMMON*global.pageCount_skill_COMMON, global.sc_ver_COMMON)
-							for (var t = 0; t < global.sc_hor_COMMON*global.pageCount_skill_COMMON; t++)
-								for (var z = 0; z < global.sc_ver_COMMON; z++)
-									ds_grid_set(boxes_skill_SERVER, t, z, global.boxEmpty_skill_COMMON)
-	
-							ds_grid_set(boxes_skill_SERVER, 0, 0, {skill: get_skill_COMMON(SKILL_0, 0)})
-							ds_grid_set(boxes_skill_SERVER, 4, 0, {skill: get_skill_COMMON(SKILL_1, 0)})
-							ds_grid_set(boxes_skill_SERVER, 0, 1, {skill: get_skill_COMMON(SKILL_2, 0)})
-							ds_grid_set(boxes_skill_SERVER, 4, 1, {skill: get_skill_COMMON(SKILL_3, 0)})
-						
-							ds_map_add(global.playerSkills, accountName, boxes_skill_SERVER)
-						}
-					}
-				
-					with (objRock_SERVER)
-						net_server_send(socketID_sender, CODE_OBSTACLES, string(round(x))+"|"+string(round(y))+"|"+string(image_xscale)+"|"+string(image_yscale)+"|"+string(round(image_angle)), BUFFER_TYPE_STRING)
-			
-					with (objLight_SERVER)
-						net_server_send(socketID_sender, CODE_LIGHTS, string(round(x))+"|"+string(round(y))+"|"+string(Light_Range)+"|"+string(Light_Intensity)+"|"+string(Light_Color)+"|"+string(Light_Shadow_Length), BUFFER_TYPE_STRING)
-				
-					with (objTree_SERVER)
-						net_server_send(socketID_sender, CODE_TREES, string(type)+"|"+string(round(x))+"|"+string(round(y))+"|"+string(image_angle)+"|"+string(image_xscale)+"|"+string(image_yscale), BUFFER_TYPE_STRING)
-				
-					with (objLake_SERVER)
-						net_server_send(socketID_sender, CODE_LAKES, "1|"+string(round(x))+"|"+string(round(y))+"|"+string(image_angle)+"|"+string(image_xscale)+"|"+string(image_yscale), BUFFER_TYPE_STRING)
-				
-					with (objLake2_SERVER)
-						net_server_send(socketID_sender, CODE_LAKES, "2|"+string(round(x))+"|"+string(round(y))+"|"+string(image_angle)+"|"+string(image_xscale)+"|"+string(image_yscale), BUFFER_TYPE_STRING)
-				
-					with (objPlayer_SERVER)
-						if (id.socketID != socketID_sender) {
-							net_server_send(socketID_sender, CODE_SPAWN_PLAYER, string(id.socketID)+"|"+string(x)+"|"+string(y)+"|"+string(maxHp)+"|"+string(maxEnergy)+"|"+string(maxMana)+"|"+string(class)+
-																				"|"+string(movementSpeed)+"|"+string(physicalPower)+"|"+string(magicalPower)+"|"+string(attackSpeed)+"|"+string(level), BUFFER_TYPE_STRING)
-							send_appearence_to_all_SERVER(id.socketID, socketID_sender)
-						}
-				
-					with (objCreature1)
-						net_server_send(socketID_sender, CODE_SPAWN_CREATURE, string(targetID)+"|"+string(x)+"|"+string(y)+"|"+string(maxHp)+"|"+string(maxEnergy)+"|"+string(maxMana)+"|"+string(name), BUFFER_TYPE_STRING)
-	
-					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, account[? ACCOUNTS_CLASS_SERVER], BUFFER_TYPE_STRING)
-					
-					net_server_send(socketID_sender, CODE_GET_BOXES, get_boxes_grid_SERVER(socketID_sender), BUFFER_TYPE_STRING)
-					
-					net_server_send(socketID_sender, CODE_GET_ACCOUNTINFO, accountInfoRow[? ACCOUNTINFO_GOLD_SERVER], BUFFER_TYPE_INT32) // ?
-	
-					var instance = spawn_player_SERVER(socketID_sender)
-				
-					tell_all_names()
-					tell_all_positions_SERVER(true)
-				}
-				else
-					net_server_send(socketID_sender, CODE_LOGIN_FAIL)
-				break
 				
 			/* // // // // // // // // // // // // // // // // // // // // // // // //
 			--------------------------------------------------------------------------
@@ -1112,6 +1093,51 @@ case _CODE_LOGIN:
 			--------------------------------------------------------------------------
 			--------------------------------------------------------------------------
 			// // // // // // // // // // // // // // // // // // // // // // // // */
+			
+			case _CODE_MOUSE_POSITION:
+				var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
+				if (instance == undefined or !instance_exists(instance))
+					break
+			
+				with (instance) {
+					var dir = point_direction(x, y, data[0], data[1])
+					image_angle = dir
+				}
+				break
+			
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			
+			case _CODE_KEYPRESS:
+				var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
+				if (instance == undefined or !instance_exists(instance))
+					break
+			
+				with (instance) {
+					switch (data[0]) {
+						case 1:
+							key_w = true
+							break
+						
+						case 2:
+							key_a = true
+							break
+						
+						case 3:
+							key_s = true
+							break
+						
+						case 4:
+							key_d = true
+							break
+					}
+				}
+				break
+				
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_PLAYER_POSITION:
 				var _socketID = real(data[0])
@@ -1285,7 +1311,7 @@ case _CODE_LOGIN:
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE_OBSTACLES:
+			case CODE_PLACE_OBSTACLES:
 				var obstacleCreator = instance_create(real(data[0]), real(data[1]), objObstacleCreator)
 				with (obstacleCreator) {
 					obstacleSprite = sprRockGrid
@@ -1302,7 +1328,7 @@ case _CODE_LOGIN:
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE_LIGHTS:
+			case CODE_PLACE_LIGHTS:
 				var light = instance_create(real(data[0]), real(data[1]), objLight)
 				with (light) {
 					Light_Range = real(data[2])
@@ -1320,7 +1346,7 @@ case _CODE_LOGIN:
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE_TREES:
+			case CODE_PLACE_TREES:
 				var tree
 			
 				if (data[0] == 1)
@@ -1341,7 +1367,7 @@ case _CODE_LOGIN:
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE_LAKES:
+			case CODE_PLACE_LAKES:
 				var lake
 			
 				if (data[0] == 1)
