@@ -77,7 +77,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					for (var j = 0; j < global.sc_ver_COMMON; j++) {
 						var _data = ds_grid_get(boxes_skill_SERVER, i, j)
 						
-						var _box = json_parse(_data)
+						var _box = json_parse(_data) 
 						if (_box.skill == pointer_null)
 							_box.skill = undefined
 							
@@ -470,14 +470,21 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
+			case CODE_GET_ACTIVE_QUESTS:
+				break
+			
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			
 			case CODE_CONNECT:
 				var _socketID = real(data[0])
 				if (global.socketID_player == undefined)
 					global.socketID_player = _socketID
 				
-				if (global.serverIP == "127.0.0.1")
+				/*if (global.serverIP == "127.0.0.1")
 					net_client_send(_CODE_LOGIN, global.clientID+"|"+global.clientPassword+"|"+global.clientName+"|"+global.clientClass, BUFFER_TYPE_STRING)
-				else {
+				else {*/
 					// Upload The Account To Remote Server
 					ini_open("Boxes.dbfile")
 						var _str_items = ini_read_string("Items", global.clientID, "")
@@ -500,7 +507,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						net_client_send(_CODE_UPLOAD, global.clientID+"|"+global.clientPassword+"|"+account[? ACCOUNTS_NICKNAME_SERVER]+"|"+account[? ACCOUNTS_CLASS_SERVER]+"|"+_str_items+"|"+_str_skills+"|"+_str_quests+"|"+string(global.gold)+"|"+string(global.level), BUFFER_TYPE_STRING)
 					else
 						net_client_send(_CODE_UPLOAD, global.clientID+"|"+global.clientPassword+"|"+global.clientName+"|"+global.clientClass+"|"+_str_items+"|"+_str_skills+"|"+_str_quests+"|"+string(global.gold)+"|"+string(global.level), BUFFER_TYPE_STRING)
-				}
+				//}
 				break
 		
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -547,14 +554,6 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
-			
-			case CODE_UPLOAD_SUCCESS:
-				if (global.serverIP == data[0] and global.clientID == data[1] and global.clientName == data[2] and global.clientPassword == data[3] and global.clientClass == data[4])
-					with (contClient) {
-						alarm[0] = SEC
-						alarm[1] = SEC*2
-					}
-				break
 				
 			/* // // // // // // // // // // // // // // // // // // // // // // // //
 			--------------------------------------------------------------------------
@@ -664,9 +663,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							var value = ds_map_create()
 							ds_map_read(value, _str_quests)
 						
-							var ds_size = ds_map_size(value)
-							for (var k = 0; k < ds_size ; k++)
-								value[? k] = json_parse(value[? k])
+							var keys = ds_map_keys_to_array(value)
+							var ds_size = array_length(keys)
+							for (var k = 0; k < ds_size; k++)
+								value[? keys[k]] = json_parse(value[? keys[k]])
 							
 							global.playerQuests[? accountName] = value
 						}
@@ -675,14 +675,16 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							global.playerQuests[? accountName] = ds_map_create()
 						
 							var _code = 0
-							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 1", code: _code, type: undefined, description: "...", isCompleted: false,
-																					receivedFrom: undefined, targets: undefined, targetCounts: undefined,
-																					isDeletable: false, isRepeatable: false, requirements: undefined })
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 1", isActive: false, isAvailable: false, code: _code, type: undefined, description: "...", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, isAuto: true,
+																					isDeletable: false, isRepeatable: false, requiredQuests: undefined, requiredLevel: 1 })
 						
 							_code = 1
-							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 2", code: _code, type: undefined, description: "...", isCompleted: false,
-																					receivedFrom: undefined, targets: undefined, targetCounts: undefined,
-																					isDeletable: false, isRepeatable: false, requirements: [[3]] })
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 2", isActive: false, isAvailable: false, code: _code, type: undefined, description: "...", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, isAuto: true,
+																					isDeletable: false, isRepeatable: false, requiredQuests: [[3]], requiredLevel: undefined })
+																					
+							quests_set(accountName)
 						}
 					}
 					
@@ -841,6 +843,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				if (global.playerBoxes[? socketID_sender] != undefined)
 					ds_grid_destroy(global.playerBoxes[? socketID_sender])
 				
+				// Uploaded Items
 				if (data[4] != "undefined") {
 					var boxes_TAKEN = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
 					ds_grid_read(boxes_TAKEN, data[4])
@@ -865,6 +868,58 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						}
 					}
 					ds_grid_destroy(boxes_TAKEN)
+				}
+				
+				// Uploaded Skill Tree
+				if (data[5] != "undefined") {
+					var boxes_TAKEN = ds_grid_create(global.sc_hor_COMMON*global.pageCount_COMMON, global.sc_ver_COMMON)
+					ds_grid_read(boxes_TAKEN, data[5])
+					for (var i = 0; i < global.sc_hor_COMMON*global.pageCount_COMMON; i++) {
+						for (var j = 0; j < global.sc_ver_COMMON; j++) {
+							var _data = ds_grid_get(boxes_TAKEN, i, j)
+						
+							var _box = json_parse(_data)
+							if (_box.skill == pointer_null)
+								_box.skill = undefined
+							
+							ds_grid_set(boxes_TAKEN, i, j, _box)
+						}
+					}
+				
+					global.playerSkills[? data[0]] = ds_grid_create(global.sc_hor_COMMON*global.pageCount_COMMON, global.sc_ver_COMMON)
+					for (var i = 0; i < global.sc_hor_COMMON*global.pageCount_COMMON; i++) {
+						for (var j = 0; j < global.sc_ver_COMMON; j++) {
+							var box = ds_grid_get(boxes_TAKEN, i, j)
+		
+							ds_grid_set(global.playerSkills[? data[0]], i, j, box)
+						}
+					}
+					ds_grid_destroy(boxes_TAKEN)
+				}
+				
+				// Uploaded Quests
+				if (data[6] != "undefined") {
+					var quests_TAKEN = ds_map_create()
+					ds_map_read(quests_TAKEN, data[6])
+					
+					var _quests_keys = ds_map_keys_to_array(quests_TAKEN)
+					var ds_size = array_length(_quests_keys)
+					for (var i = 0; i < ds_size; i++) {
+						var key = _quests_keys[i]
+						var _data = ds_map_find_value(quests_TAKEN, key)
+						
+						var _quest = json_parse(_data)
+						ds_map_add(quests_TAKEN, key, _quest)
+					}
+				
+					global.playerQuests[? data[0]] = ds_map_create()
+					for (var i = 0; i < ds_size; i++) {
+						var key = _quests_keys[i]
+						var quest = ds_map_find_value(quests_TAKEN, key)
+		
+						ds_map_add(global.playerQuests[? data[0]], key, quest)
+					}
+					ds_map_destroy(quests_TAKEN)
 				}
 				
 				var accountInfoRow = db_create_row(data[0])

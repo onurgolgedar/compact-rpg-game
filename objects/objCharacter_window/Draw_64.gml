@@ -3,8 +3,9 @@ var mouseOnBody = is_mouse_on()
 draw_set_color(c_white) draw_set_alpha(0.9)
 	draw_set_color(COLOR_WINDOW_BACK)
 		draw_roundrect_ext(x-offset, y-offset, x+width+offset, y+height+offset, 15, 15, 0)
-	draw_set_color(onFront ? COLOR_WINDOW : c_dkgray) draw_set_alpha(0.43)
+	draw_set_color(onFront ? COLOR_WINDOW : c_dkgray) draw_set_alpha(0.38)
 		draw_roundrect_ext(x, y+height_ext_top+offset, x+width, y+height, 15, 15, 0)
+		draw_roundrect_ext(x+offset, y+height_ext_top+offset+offset, x+width-offset, y+height-offset, 15, 15, 0)
 
 		draw_roundrect_ext(x, y, x+width, y+height_ext_top/2-offset/2, 15, 15, 0)
 draw_set_default() draw_set_alpha(1)
@@ -17,7 +18,7 @@ mouseOnButton = undefined
 
 // Page Buttons
 var pageButtonEdge = 22
-var pageButtonWidthFactor = 4
+var pageButtonWidthFactor = 3.15
 var pageButton_x, pageButton_y
 for (var i = 0; i < pageCount; i++) {
 	draw_set_alpha(1)
@@ -47,8 +48,10 @@ for (var i = 0; i < pageCount; i++) {
 		if (i == 0)
 			txt = "Info"
 		else if (i == 1)
-			txt = "Friends"
-		draw_text(pageButton_x[i]+pageButtonEdge*pageButtonWidthFactor/2, pageButton_y[i]+pageButtonEdge/2+2, txt)
+			txt = "Stats"
+		else if (i == 2)
+			txt = "Titles"
+		draw_text_transformed(pageButton_x[i]+pageButtonEdge*pageButtonWidthFactor/2, pageButton_y[i]+pageButtonEdge/2+2, txt, 0.7, 0.7, 0)
 	draw_set_default()
 }
 	

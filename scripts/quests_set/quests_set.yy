@@ -6,7 +6,7 @@
     "path": "folders/_SERVER/3- Scripts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "tell_all_angles_SERVER",
+  "name": "quests_set",
   "tags": [],
   "resourceType": "GMScript",
 }

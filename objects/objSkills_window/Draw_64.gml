@@ -3,7 +3,7 @@ var mouseOnBody = is_mouse_on()
 draw_set_color(c_white) draw_set_alpha(0.9)
 	draw_set_color(COLOR_WINDOW_BACK)
 		draw_roundrect_ext(x-offset, y-offset, x+width+offset, y+height+offset, 15, 15, 0)
-	draw_set_color(onFront ? COLOR_WINDOW : c_dkgray) draw_set_alpha(0.43)
+	draw_set_color(onFront ? COLOR_WINDOW : c_dkgray) draw_set_alpha(0.38)
 		draw_roundrect_ext(x, y+height_ext_top+offset, x+width, y+height, 15, 15, 0)
 		draw_roundrect_ext(x+offset, y+height_ext_top+offset+offset, x+width-offset, y+height-height_ext_bot-offset-height_ext_bot_more, 15, 15, 0)
 		
@@ -78,13 +78,13 @@ draw_set_color(c_white) draw_set_alpha(0.9)
 				var skill_xx = (box_positions.xx_start+box_positions.xx_end)/2
 				var skill_yy = (box_positions.yy_start+box_positions.yy_end)/2
 				
-				draw_set_color(c_black) draw_set_alpha(1)
+				/*draw_set_color(c_black) draw_set_alpha(1)
 					draw_roundrect(box_positions.xx_start, box_positions.yy_start-8,
-					box_positions.xx_end+90, box_positions.yy_end+8, 0)
-				draw_set_color(c_fuchsia) draw_set_alpha(0.17)
+					box_positions.xx_end+90, box_positions.yy_end+8, 0)*/
+				draw_set_color(c_gray) draw_set_alpha(0.4)
 					draw_roundrect(box_positions.xx_start+2, box_positions.yy_start-6,
 					box_positions.xx_end-2+90, box_positions.yy_end+6, 0)
-				draw_set_color(c_yellow) draw_set_alpha(0.25)
+				draw_set_color(make_color_rgb(140, 140, 140)) draw_set_alpha(0.5)
 					draw_roundrect(box_positions.xx_start+4, box_positions.yy_start-4,
 					box_positions.xx_end-4+90, box_positions.yy_end+4, 0)
 				draw_set_color(c_black) draw_set_alpha(1)
@@ -100,14 +100,14 @@ draw_set_color(c_white) draw_set_alpha(0.9)
 				var buttonHeight = 16
 				if (mouseOnBody and global.dmx > button_x and global.dmx < button_x+buttonWidth and
 					global.dmy > button_y and global.dmy < button_y+buttonHeight and !is_click_blocked()) {
-				    draw_set_color(global.skillPoints == 0 ? c_gray : make_color_rgb(0, 220, 0))
+				    draw_set_color(global.skillPoints == 0 ? c_gray : make_color_rgb(0, 200, 0))
 				    mouseOnButton = 100+i
 				}
 				else
-					draw_set_color(global.skillPoints == 0 ? c_dkgray : make_color_rgb(0, 140, 0))
+					draw_set_color(global.skillPoints == 0 ? c_dkgray : make_color_rgb(0, 110, 0))
      
 				var beforeColor = draw_get_color()
-				draw_set_color(c_black)
+				draw_set_color(make_color_rgb(50, 50, 50))
 					draw_roundrect(button_x-2, button_y-2,
 					button_x+buttonWidth+2, button_y+buttonHeight+2, 0)
 				draw_set_color(beforeColor)	
@@ -127,14 +127,14 @@ draw_set_color(c_white) draw_set_alpha(0.9)
 				var buttonHeight = 16
 				if (mouseOnBody and global.dmx > button_x and global.dmx < button_x+buttonWidth and
 					global.dmy > button_y and global.dmy < button_y+buttonHeight and !is_click_blocked()) {
-				    draw_set_color(global.skillPoints == 0 ? c_gray : make_color_rgb(220, 0, 0))
+				    draw_set_color(global.skillPoints == 0 ? c_gray : make_color_rgb(200, 0, 0))
 				    mouseOnButton = 200+i
 				}
 				else
-					draw_set_color(global.skillPoints == 0 ? c_dkgray : make_color_rgb(140, 0, 0))
+					draw_set_color(global.skillPoints == 0 ? c_dkgray : make_color_rgb(110, 0, 0))
      
 				var beforeColor = draw_get_color()
-				draw_set_color(c_black)
+				draw_set_color(make_color_rgb(50, 50, 50))
 					draw_roundrect(button_x-2, button_y-2,
 					button_x+buttonWidth+2, button_y+buttonHeight+2, 0)
 				draw_set_color(beforeColor)	

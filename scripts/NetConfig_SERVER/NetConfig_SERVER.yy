@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Net",
-    "path": "folders/SERVER/3- Scripts/Net.yy",
+    "path": "folders/_SERVER/3- Scripts/Net.yy",
   },
   "resourceVersion": "1.0",
   "name": "NetConfig_SERVER",

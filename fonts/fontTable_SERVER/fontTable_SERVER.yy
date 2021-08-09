@@ -150,7 +150,7 @@
   "maintainGms1Font": false,
   "parent": {
     "name": "Other Assets",
-    "path": "folders/SERVER/Other Assets.yy",
+    "path": "folders/_SERVER/Other Assets.yy",
   },
   "resourceVersion": "1.0",
   "name": "fontTable_SERVER",

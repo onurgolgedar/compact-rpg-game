@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "1- Sprites",
-    "path": "folders/SERVER/1- Sprites.yy",
+    "path": "folders/_SERVER/1- Sprites.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprTree_SERVER",

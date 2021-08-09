@@ -7,4 +7,4 @@ mouseOnQLogo = false
 guiWidth = undefined
 guiHeight = undefined
 
-draw_set_circle_precision(10)
+draw_set_circle_precision(18)

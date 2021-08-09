@@ -29,7 +29,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "2- Objects",
-    "path": "folders/SERVER/2- Objects.yy",
+    "path": "folders/_SERVER/2- Objects.yy",
   },
   "resourceVersion": "1.0",
   "name": "objSkill3_SERVER",

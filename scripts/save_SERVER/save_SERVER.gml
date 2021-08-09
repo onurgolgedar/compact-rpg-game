@@ -28,10 +28,12 @@ function save_SERVER() {
 		// Save - Quests
 		var quests_SERVER = global.playerQuests[? accountID]
 		var _map_quests = ds_map_create()
-		var ds_size2 = ds_map_size(quests_SERVER)
+		var _quests = ds_map_values_to_array(quests_SERVER)
+		var _quests_keys = ds_map_keys_to_array(quests_SERVER)
+		var ds_size2 = array_length(_quests)
 		for (var k = 0; k < ds_size2; k++) {
-			var key = ds_map_keys_to_array(quests_SERVER)[k]
-			ds_map_set(_map_quests, key, json_stringify(quests_SERVER[? key]))
+			var key = _quests_keys[k]
+			ds_map_add(_map_quests, key, json_stringify(quests_SERVER[? key]))
 		}
 	
 		// Write

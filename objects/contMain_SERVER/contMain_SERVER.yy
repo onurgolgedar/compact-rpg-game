@@ -35,7 +35,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Controls",
-    "path": "folders/SERVER/2- Objects/Controls.yy",
+    "path": "folders/_SERVER/2- Objects/Controls.yy",
   },
   "resourceVersion": "1.0",
   "name": "contMain_SERVER",
