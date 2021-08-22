@@ -427,7 +427,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						
 					case CLASS_ASSASSIN:
 						newPlayer.shoulders.sprite_index = sprClothes_000
-						newPlayer.hair = sprHair_001
+						newPlayer.hair = sprHair_004
 						break
 						
 					case CLASS_MAGE:
