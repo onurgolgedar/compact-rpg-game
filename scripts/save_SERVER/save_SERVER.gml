@@ -35,11 +35,23 @@ function save_SERVER() {
 			var key = _quests_keys[k]
 			ds_map_add(_map_quests, key, json_stringify(quests_SERVER[? key]))
 		}
+		
+		// Save - Skill Boxes
+		var skillBoxes_SERVER = global.playerSkillBoxes[? accountID]
+		var _map_skillBoxes = ds_map_create()
+		var _skillBoxes = ds_map_values_to_array(skillBoxes_SERVER)
+		var _skillBoxes_keys = ds_map_keys_to_array(skillBoxes_SERVER)
+		var ds_size2 = array_length(_skillBoxes)
+		for (var k = 0; k < ds_size2; k++) {
+			var key = _skillBoxes_keys[k]
+			ds_map_add(_map_skillBoxes, key, json_stringify(skillBoxes_SERVER[? key]))
+		}
 	
 		// Write
 		ini_open("Boxes.dbfile")
 			ini_write_string("Items", accountID, ds_grid_write(_grid_items))
 			ini_write_string("Skills", accountID, ds_grid_write(_grid_skills))
+			ini_write_string("SkillBoxes", accountID, ds_map_write(_map_skillBoxes))
 		ini_close()
 	
 		ini_open("Quests.dbfile")

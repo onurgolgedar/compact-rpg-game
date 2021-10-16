@@ -12,7 +12,8 @@ function spawn_player_SERVER(socketID) {
 	newPlayer.name = accountRow[? ACCOUNTS_NICKNAME_SERVER]
 	newPlayer.class = accountRow[? ACCOUNTS_CLASS_SERVER]
 	
-	var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID))
+	var accountID = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID)
+	var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, accountID)
 	newPlayer.level = accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER]
 	
 	with (newPlayer) {
@@ -20,62 +21,25 @@ function spawn_player_SERVER(socketID) {
 		
 		recalculate_character_statistics_SERVER()
 		
-		/*var skill_index
-		skill_index = SKILL_0
-		ds_map_add(skills, 0,
-		{
-			index: skill_index,
-			cooldownmax: global.skill_cooldown_max_COMMON[skill_index],
-			cooldown: 0,
-			code: global.skill_code_COMMON[skill_index],
-			object: global.skill_object_SERVER[skill_index],
-			casttimemax: global.skill_casttime_max_COMMON[skill_index],
-			casttime: undefined,
-			mana: global.skill_mana_COMMON[skill_index],
-			energy: global.skill_energy_COMMON[skill_index]
-		})
-		
-		skill_index = SKILL_1
-		ds_map_add(skills, 1,
-		{
-			index: skill_index,
-			cooldownmax: global.skill_cooldown_max_COMMON[skill_index],
-			cooldown: 0,
-			code: global.skill_code_COMMON[skill_index],
-			object: global.skill_object_SERVER[skill_index],
-			casttimemax: global.skill_casttime_max_COMMON[skill_index],
-			casttime: undefined,
-			mana: global.skill_mana_COMMON[skill_index],
-			energy: global.skill_energy_COMMON[skill_index]
-		})
-		
-		skill_index = SKILL_2
-		ds_map_add(skills, 2,
-		{
-			index: skill_index,
-			cooldownmax: global.skill_cooldown_max_COMMON[skill_index],
-			cooldown: 0,
-			code: global.skill_code_COMMON[skill_index],
-			object: global.skill_object_SERVER[skill_index],
-			casttimemax: global.skill_casttime_max_COMMON[skill_index],
-			casttime: undefined,
-			mana: global.skill_mana_COMMON[skill_index],
-			energy: global.skill_energy_COMMON[skill_index]
-		})
-		
-		skill_index = SKILL_3
-		ds_map_add(skills, 3,
-		{
-			index: skill_index,
-			cooldownmax: global.skill_cooldown_max_COMMON[skill_index],
-			cooldown: 0,
-			code: global.skill_code_COMMON[skill_index],
-			object: global.skill_object_SERVER[skill_index],
-			casttimemax: global.skill_casttime_max_COMMON[skill_index],
-			casttime: undefined,
-			mana: global.skill_mana_COMMON[skill_index],
-			energy: global.skill_energy_COMMON[skill_index]
-		})*/
+		var playerSkillBoxes = global.playerSkillBoxes[? accountID]
+		if (playerSkillBoxes != undefined) {
+			for (var i = 0; i < 5; i++) {
+				if (playerSkillBoxes[? i] != undefined) {
+					ds_map_set(skills, i,
+					{
+						index: playerSkillBoxes[? i].index,
+						cooldownmax: playerSkillBoxes[? i].cooldownmax,
+						cooldown: playerSkillBoxes[? i].cooldown,
+						code: playerSkillBoxes[? i].code,
+						object: playerSkillBoxes[? i].object,
+						casttimemax: playerSkillBoxes[? i].casttimemax,
+						casttime: playerSkillBoxes[? i].casttime,
+						mana: playerSkillBoxes[? i].mana,
+						energy: playerSkillBoxes[? i].energy
+					})
+				}
+			}
+		}
 		
 		hp = maxHp
 		energy = maxEnergy

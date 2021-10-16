@@ -482,9 +482,9 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				if (global.socketID_player == undefined)
 					global.socketID_player = _socketID
 				
-				/*if (global.serverIP == "127.0.0.1")
+				if (global.serverIP == "127.0.0.1")
 					net_client_send(_CODE_LOGIN, global.clientID+"|"+global.clientPassword+"|"+global.clientName+"|"+global.clientClass, BUFFER_TYPE_STRING)
-				else {*/
+				else {
 					// Upload The Account To Remote Server
 					ini_open("Boxes.dbfile")
 						var _str_items = ini_read_string("Items", global.clientID, "")
@@ -494,6 +494,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						var _str_skills = ini_read_string("Skills", global.clientID, "")
 						if (_str_skills == "")
 							_str_skills = "undefined"
+							
+						var _str_skillBoxes = ini_read_string("SkillBoxes", global.clientID, "")
+						if (_str_skillBoxes == "")
+							_str_skillBoxes = "undefined"
 					ini_close()
 					
 					ini_open("Quests.dbfile")
@@ -504,10 +508,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						
 					var account = db_get_row(global.DB_SRV_TABLE_accounts, global.clientID)
 					if (account != undefined)
-						net_client_send(_CODE_UPLOAD, global.clientID+"|"+global.clientPassword+"|"+account[? ACCOUNTS_NICKNAME_SERVER]+"|"+account[? ACCOUNTS_CLASS_SERVER]+"|"+_str_items+"|"+_str_skills+"|"+_str_quests+"|"+string(global.gold)+"|"+string(global.level), BUFFER_TYPE_STRING)
+						net_client_send(_CODE_UPLOAD, global.clientID+"|"+global.clientPassword+"|"+account[? ACCOUNTS_NICKNAME_SERVER]+"|"+account[? ACCOUNTS_CLASS_SERVER]+"|"+_str_items+"|"+_str_skills+"|"+_str_quests+"|"+string(global.gold)+"|"+string(global.level)+"|"+_str_skillBoxes, BUFFER_TYPE_STRING)
 					else
-						net_client_send(_CODE_UPLOAD, global.clientID+"|"+global.clientPassword+"|"+global.clientName+"|"+global.clientClass+"|"+_str_items+"|"+_str_skills+"|"+_str_quests+"|"+string(global.gold)+"|"+string(global.level), BUFFER_TYPE_STRING)
-				//}
+						net_client_send(_CODE_UPLOAD, global.clientID+"|"+global.clientPassword+"|"+global.clientName+"|"+global.clientClass+"|"+_str_items+"|"+_str_skills+"|"+_str_quests+"|"+string(global.gold)+"|"+string(global.level)+"|"+_str_skillBoxes, BUFFER_TYPE_STRING)
+				}
 				break
 		
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -613,6 +617,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					ini_open("Boxes.dbfile")
 						var _str_items = ini_read_string("Items", accountName, "")
 						var _str_skills = ini_read_string("Skills", accountName, "")
+						var _str_skillBoxes = ini_read_string("SkillBoxes", accountName, "")
 					ini_close()
 					
 					ini_open("Quests.dbfile")
@@ -665,8 +670,19 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						
 							var keys = ds_map_keys_to_array(value)
 							var ds_size = array_length(keys)
-							for (var k = 0; k < ds_size; k++)
+							for (var k = 0; k < ds_size; k++) {
 								value[? keys[k]] = json_parse(value[? keys[k]])
+							
+								var quest = value[? keys[k]]
+								if (quest.type == pointer_null)
+									quest.type = undefined
+								if (quest.targets == pointer_null)
+									quest.targets = undefined
+								if (quest.targetCounts == pointer_null)
+									quest.targetCounts = undefined
+								if (quest.requiredQuests == pointer_null)
+									quest.requiredQuests = undefined
+							}
 							
 							global.playerQuests[? accountName] = value
 						}
@@ -686,6 +702,30 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 																					
 							quests_set(accountName)
 						}
+					}
+					
+					// Load Skill Boxes
+					if (global.playerSkillBoxes[? accountName] == undefined) {
+						if (_str_skillBoxes != "") {
+							var value = ds_map_create()
+							ds_map_read(value, _str_skillBoxes)
+						
+							var keys = ds_map_keys_to_array(value)
+							var ds_size = array_length(keys)
+							for (var k = 0; k < ds_size; k++) {
+								value[? keys[k]] = json_parse(value[? keys[k]])
+								if (value[? keys[k]] == pointer_null)
+									value[? keys[k]] = undefined		
+								else {
+									if (value[? keys[k]].casttime == pointer_null)
+									value[? keys[k]].casttime = undefined		
+								}
+							}
+							
+							global.playerSkillBoxes[? accountName] = value
+						}
+						else
+							global.playerSkillBoxes[? accountName] = ds_map_create()
 					}
 					
 					// Load Skill Tree
@@ -774,6 +814,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
 				if (instance == undefined or !instance_exists(instance))
 					break
+					
+				var onlineAccount = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID_sender)
+				if (onlineAccount == undefined)
+					break
 			
 				with (instance) {
 					var skill_index = real(data[1])
@@ -798,9 +842,23 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 										mana: global.skill_mana_COMMON[other_skill_index],
 										energy: global.skill_energy_COMMON[other_skill_index]
 									})
+									ds_map_set(global.playerSkillBoxes[? onlineAccount], real(data[2]),
+									{
+										index: skills[? real(data[2])].index,
+										cooldownmax: skills[? real(data[2])].cooldownmax,
+										cooldown: skills[? real(data[2])].cooldown,
+										code: skills[? real(data[2])].code,
+										object: skills[? real(data[2])].object,
+										casttimemax: skills[? real(data[2])].casttimemax,
+										casttime: skills[? real(data[2])].casttime,
+										mana: skills[? real(data[2])].mana,
+										energy: skills[? real(data[2])].energy
+									})
 								}
-								else
+								else {
 									skills[? i] = undefined
+									ds_map_delete(global.playerSkillBoxes[? onlineAccount], i)
+								}
 							}
 							else
 								isCancelled = true
@@ -809,7 +867,8 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					if (isCancelled)
 						break
 					
-					if (data[0] != "undefined") {			
+					if (data[0] != "undefined") {
+						// Duplication
 						ds_map_set(skills, real(data[0]),
 						{
 							index: skill_index,
@@ -822,9 +881,23 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							mana: global.skill_mana_COMMON[skill_index],
 							energy: global.skill_energy_COMMON[skill_index]
 						})
+						ds_map_set(global.playerSkillBoxes[? onlineAccount], real(data[0]),
+						{
+							index: skills[? real(data[0])].index,
+							cooldownmax: skills[? real(data[0])].cooldownmax,
+							cooldown: skills[? real(data[0])].cooldown,
+							code: skills[? real(data[0])].code,
+							object: skills[? real(data[0])].object,
+							casttimemax: skills[? real(data[0])].casttimemax,
+							casttime: skills[? real(data[0])].casttime,
+							mana: skills[? real(data[0])].mana,
+							energy: skills[? real(data[0])].energy
+						})
 					}
-					else
+					else {
 						skills[? foundI] = undefined
+						ds_map_delete(global.playerSkillBoxes[? onlineAccount], foundI)
+					}
 				}
 				break
 				
@@ -842,11 +915,21 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					
 				if (global.playerBoxes[? socketID_sender] != undefined)
 					ds_grid_destroy(global.playerBoxes[? socketID_sender])
+					
+				if (global.playerSkills[? socketID_sender] != undefined)
+					ds_grid_destroy(global.playerSkills[? socketID_sender])
+					
+				if (global.playerQuests[? socketID_sender] != undefined)
+					ds_map_destroy(global.playerQuests[? socketID_sender])
+					
+				if (global.playerSkillBoxes[? socketID_sender] != undefined)
+					ds_map_destroy(global.playerSkillBoxes[? socketID_sender])
 				
 				// Uploaded Items
 				if (data[4] != "undefined") {
 					var boxes_TAKEN = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
 					ds_grid_read(boxes_TAKEN, data[4])
+					
 					for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++) {
 						for (var j = 0; j < global.bc_ver_COMMON+2; j++) {
 							var _data = ds_grid_get(boxes_TAKEN, i, j)
@@ -854,6 +937,8 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							var _box = json_parse(_data)
 							if (_box.item == pointer_null)
 								_box.item = undefined
+							else
+								_box.item = get_item_COMMON(_box.item.code)
 							
 							ds_grid_set(boxes_TAKEN, i, j, _box)
 						}
@@ -881,6 +966,8 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							var _box = json_parse(_data)
 							if (_box.skill == pointer_null)
 								_box.skill = undefined
+							else
+								_box.skill = get_skill_COMMON(_box.skill.index, _box.skill.upgrade)
 							
 							ds_grid_set(boxes_TAKEN, i, j, _box)
 						}
@@ -909,7 +996,16 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						var _data = ds_map_find_value(quests_TAKEN, key)
 						
 						var _quest = json_parse(_data)
-						ds_map_add(quests_TAKEN, key, _quest)
+						if (_quest.type == pointer_null)
+							_quest.type = undefined
+						if (_quest.targets == pointer_null)
+							_quest.targets = undefined
+						if (_quest.targetCounts == pointer_null)
+							_quest.targetCounts = undefined
+						if (_quest.requiredQuests == pointer_null)
+							_quest.requiredQuests = undefined
+						
+						ds_map_set(quests_TAKEN, key, _quest)
 					}
 				
 					global.playerQuests[? data[0]] = ds_map_create()
@@ -922,11 +1018,51 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					ds_map_destroy(quests_TAKEN)
 				}
 				
-				var accountInfoRow = db_create_row(data[0])
-				accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = real(data[7])
-				accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = real(data[8])
-				db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
-				db_save_table(global.DB_SRV_TABLE_accountInfo)
+				// Uploaded Skill Boxes
+				if (data[9] != "undefined") {
+					var skillBoxes_TAKEN = ds_map_create()
+					ds_map_read(skillBoxes_TAKEN, data[9])
+					
+					var _skillBoxes_keys = ds_map_keys_to_array(skillBoxes_TAKEN)
+					var ds_size = array_length(_skillBoxes_keys)
+					for (var i = 0; i < ds_size; i++) {
+						var key = _skillBoxes_keys[i]
+						var _data = ds_map_find_value(skillBoxes_TAKEN, key)
+						
+						var _skillBox = json_parse(_data)
+						if (_skillBox == pointer_null)
+							_skillBox = undefined	
+						else {
+							if (_skillBox.casttime == pointer_null)
+								_skillBox.casttime = undefined
+						}
+						ds_map_set(skillBoxes_TAKEN, key, _skillBox)
+					}
+				
+					global.playerSkillBoxes[? data[0]] = ds_map_create()
+					for (var i = 0; i < ds_size; i++) {
+						var key = _skillBoxes_keys[i]
+						var skillBox = ds_map_find_value(skillBoxes_TAKEN, key)
+		
+						ds_map_add(global.playerSkillBoxes[? data[0]], key, skillBox)
+					}
+					ds_map_destroy(skillBoxes_TAKEN)
+				}
+				
+				var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, data[0])
+				if (accountInfoRow == undefined) {
+					accountInfoRow = db_create_row(data[0])
+					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = real(data[7])
+					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = real(data[8])
+					db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
+					db_save_table(global.DB_SRV_TABLE_accountInfo)
+				}
+				else
+				{
+					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = real(data[7])
+					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = real(data[8])
+					db_save_table(global.DB_SRV_TABLE_accountInfo)
+				}
 				
 				_net_receive_packet(_CODE_LOGIN, data[0]+"|"+data[1]+"|"+(accountRow != undefined ? "" : data[2])+"|"+(accountRow != undefined ? "" : data[3]), socketID_sender)
 				break

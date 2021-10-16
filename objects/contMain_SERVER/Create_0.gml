@@ -4,6 +4,7 @@ global.lastPositions_sent = ds_map_create()
 global.playerBoxes = ds_map_create() // Items
 global.playerQuests = ds_map_create() // Quests
 global.playerSkills = ds_map_create() // Skill Tree
+global.playerSkillBoxes = ds_map_create() // Skill Boxes
 
 // Inventory Data
 global.bc_hor_COMMON = 5
