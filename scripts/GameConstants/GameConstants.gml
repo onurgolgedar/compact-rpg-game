@@ -17,4 +17,6 @@ function GameConstants() {
 	#macro CLASS_WARRIOR "Warrior"
 	#macro CLASS_ASSASSIN "Assassin"
 	#macro CLASS_MAGE "Mage"
+	
+	#macro LOCATION_THE_CASTLE 1
 }

@@ -30,7 +30,7 @@ function tte_ext_input_draw() {
 		        for(var l = 0; l < ds_list_size(lines); l++) {
 					var char = lines[| l]
 					
-		            if (selVisible) {						
+		            if (selVisible and focus) {						
 		                draw_set_color(sel)
 		                draw_set_alpha(sel_alpha)
 		                if (l >= selStartLine && l <= selEndLine) {
@@ -82,7 +82,7 @@ function tte_ext_input_draw() {
 
 		draw_set_color(bg)
 		draw_set_alpha(bg_alpha)
-		draw_rectangle(x, y, x+width-1, y+height-1, false)
+		draw_roundrect(x, y, x+width-1, y+height-1, false)
 	
 		draw_surface(tte_surface, x+padding_left, y+padding_top)
 		draw_set_color(c_black) draw_set_alpha(1)

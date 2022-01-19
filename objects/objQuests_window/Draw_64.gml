@@ -46,5 +46,37 @@ for (var i = 0; i < pageCount; i++) {
 		draw_text(pageButton_x[i]+pageButtonEdge*pageButtonWidthFactor/2, pageButton_y[i]+pageButtonEdge/2+2, string(i+1))
 	draw_set_default()
 }
+
+draw_set_color(c_white) draw_set_font(fontGUI_small)
+var ds_size = ds_map_size(global.activeQuests_player)
+var ds_keys = ds_map_keys_to_array(global.activeQuests_player)
+for (var i = (page-1)*6; i < ds_size and i < page*6; i++) {
+	var activeQuest = global.activeQuests_player[? ds_keys[i]]
+		
+	var offset_y = (i mod 6)*52
+	var xx = x+offset+6
+	var yy = y+height_ext_top+offset+offset+18+offset_y
+	var _width = width-xx*2+2*x
+	var _height = 35
+	
+	if (mouseOnBody and global.dmx > xx and global.dmx < xx+_width and
+		global.dmy > yy and global.dmy < yy+_height and !is_click_blocked()) {
+		draw_set_color(c_lime)
+		mouseOnButton = 100+i
+	}
+	else
+		draw_set_color(c_gray)
+	
+	draw_set_alpha(0.4)
+		draw_roundrect(xx-5, yy-5, xx+_width+5, yy+5+_height, 0)
+		draw_roundrect(xx-5+2, yy-5+2, xx+_width+5-2, yy+5+_height-2, 0)
+	draw_set_alpha(1) draw_set_color(c_white)
+	
+	draw_text_outlined(xx, yy, activeQuest.title, 1, c_black, 14, 1.2, 1.2, 0)
+	var shortDesc = activeQuests_shortDescriptions[? i]
+	if (shortDesc != undefined)
+		draw_text_outlined(xx, yy+20, shortDesc, 1, c_black, 14, 1, 1, 0)
+}
+draw_set_color(c_black) draw_set_font(fontMain)
 	
 event_inherited()

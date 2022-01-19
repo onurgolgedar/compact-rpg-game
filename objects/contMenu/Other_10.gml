@@ -3,19 +3,14 @@ with (tteIP)
 	
 with (tteID)
 	global.clientID = tte_ext_input_get_text()
-	
-with (tteName)
-	global.clientName = tte_ext_input_get_text()
 			
 with (ttePassword)
 	global.clientPassword = tte_ext_input_get_text()
 			
-with (tteClass)
-	global.clientClass = tte_ext_input_get_text()
-			
 if (string_count(".", global.serverIP) == 3 and string_length(global.clientPassword) > 0 and string_length(global.clientID) > 0) {
 	room_goto_next()
 	with (contClient) {
+		global.connectionGoal = 1
 		alarm[0] = SEC
 		alarm[1] = SEC*2
 	}

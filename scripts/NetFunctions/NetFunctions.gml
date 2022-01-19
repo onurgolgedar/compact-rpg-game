@@ -66,34 +66,52 @@ function net_client_send() {
 /// @param data* (req: bufferType)
 /// @param bufferType*
 /// @param isUDP*
+/// @param location*
 function net_server_send() {
 	var socketID = argument[0]
 	var code = argument[1]
 	var data = argument_count < 3 ? 0 : argument[2]
+	var location = argument_count < 6 ? 0 : argument[5]
+	var buffer = undefined
 	
 	if (socketID != global.socketID_player) {
 		var bufferType = argument_count < 4 ? BUFFER_TYPE_BOOL : argument[3]
 		var isUDP = argument_count < 5 ? false : argument[4]
 
-		var buffer = buffer_create(36, buffer_grow, 1)
-		buffer_seek(buffer, buffer_seek_start, 0)
-		buffer_write(buffer, buffer_u8, bufferType)
-		buffer_write(buffer, buffer_u16, code)
-		buffer_write(buffer, net_buffer_get_type(bufferType), data)
-
 		if (socketID == SOCKET_ID_ALL) {
 			var ds_size = db_get_table_size(global.DB_SRV_TABLE_clients)
 			for (var i = 0; i < ds_size; i++) {
 				var _playerRow = db_get_row_by_index(global.DB_SRV_TABLE_clients, i)
-				var _socketID = _playerRow[? CLIENTS_SOCKETID_SERVER]
+				var _accountInfoRow = undefined
+				
+				if (location != 0)
+					_accountInfoRow = db_get_row_by_index(global.DB_SRV_TABLE_accountInfo, i) // ?
+				
+				if (_accountInfoRow == undefined || _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER] == location) {
+					var _socketID = _playerRow[? CLIENTS_SOCKETID_SERVER]
 			
-				if (isUDP)
-					network_send_udp(_socketID, _playerRow[? CLIENTS_IP_SERVER], PORT_UDP, buffer, buffer_tell(buffer))
-				else
-					network_send_packet(_socketID, buffer, buffer_tell(buffer))
+					// ? Duplication
+					var buffer = buffer_create(36, buffer_grow, 1)
+					buffer_seek(buffer, buffer_seek_start, 0)
+					buffer_write(buffer, buffer_u8, bufferType)
+					buffer_write(buffer, buffer_u16, code)
+					buffer_write(buffer, net_buffer_get_type(bufferType), data)
+			
+					if (isUDP)
+						network_send_udp(_socketID, _playerRow[? CLIENTS_IP_SERVER], PORT_UDP, buffer, buffer_tell(buffer))
+					else
+						network_send_packet(_socketID, buffer, buffer_tell(buffer))
+				}
 			}
 		}
 		else {
+			// ? Duplication
+			var buffer = buffer_create(36, buffer_grow, 1)
+			buffer_seek(buffer, buffer_seek_start, 0)
+			buffer_write(buffer, buffer_u8, bufferType)
+			buffer_write(buffer, buffer_u16, code)
+			buffer_write(buffer, net_buffer_get_type(bufferType), data)
+			
 			if (isUDP) {
 				var _playerRow = db_get_row(global.DB_SRV_TABLE_clients, socketID)
 			
@@ -103,7 +121,8 @@ function net_server_send() {
 				network_send_packet(socketID, buffer, buffer_tell(buffer))
 		}
 
-		buffer_delete(buffer)
+		if (buffer != undefined)
+			buffer_delete(buffer)
 	}
 	else
 		_net_receive_packet(code, data, socketID)

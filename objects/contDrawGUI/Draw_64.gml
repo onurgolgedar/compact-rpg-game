@@ -167,5 +167,5 @@ draw_sprite_ext(sprQuestLogo, -1, logo_quest_x, logo_height, 1, 1, 0, c_white, 1
 draw_set_alpha(0.5) draw_set_color(c_white)
 	draw_text_transformed(76, display_get_gui_height()-28, "FPS: "+string(fps)+"/"+string(room_speed), 0.7, 0.7, 0)
 	draw_text_transformed(76, display_get_gui_height()-48, "Ping: "+string(global.ping_udp), 0.7, 0.7, 0)
-	draw_text_transformed(76, display_get_gui_height()-68, "Receive Errors: "+string(global.networkErrors_count), 0.7, 0.7, 0)
+	draw_text_transformed(76, display_get_gui_height()-68, "Received Errors: "+string(global.networkErrors_count), 0.7, 0.7, 0)
 draw_set_alpha(1) draw_set_default()

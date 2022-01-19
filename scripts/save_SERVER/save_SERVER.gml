@@ -28,9 +28,8 @@ function save_SERVER() {
 		// Save - Quests
 		var quests_SERVER = global.playerQuests[? accountID]
 		var _map_quests = ds_map_create()
-		var _quests = ds_map_values_to_array(quests_SERVER)
 		var _quests_keys = ds_map_keys_to_array(quests_SERVER)
-		var ds_size2 = array_length(_quests)
+		var ds_size2 = array_length(_quests_keys)
 		for (var k = 0; k < ds_size2; k++) {
 			var key = _quests_keys[k]
 			ds_map_add(_map_quests, key, json_stringify(quests_SERVER[? key]))
@@ -39,9 +38,8 @@ function save_SERVER() {
 		// Save - Skill Boxes
 		var skillBoxes_SERVER = global.playerSkillBoxes[? accountID]
 		var _map_skillBoxes = ds_map_create()
-		var _skillBoxes = ds_map_values_to_array(skillBoxes_SERVER)
 		var _skillBoxes_keys = ds_map_keys_to_array(skillBoxes_SERVER)
-		var ds_size2 = array_length(_skillBoxes)
+		var ds_size2 = array_length(_skillBoxes_keys)
 		for (var k = 0; k < ds_size2; k++) {
 			var key = _skillBoxes_keys[k]
 			ds_map_add(_map_skillBoxes, key, json_stringify(skillBoxes_SERVER[? key]))

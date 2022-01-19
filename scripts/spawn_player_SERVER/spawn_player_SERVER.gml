@@ -2,18 +2,23 @@ function spawn_player_SERVER(socketID) {
 	with (objPlayer)
 		if (id.socketID == socketID)
 			instance_destroy()
+			
+	var accountID = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID)
+	var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, accountID)
 	
-	var newPlayer = instance_create_depth(3960, 2162, 0, objPlayer_SERVER)
+	var location = ds_map_find_value(global.locations, accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
+	var xx = location.spawn_x
+	var yy = location.spawn_y
+	
+	var newPlayer = instance_create_depth(xx, yy, 0, objPlayer_SERVER)
 	newPlayer.socketID = socketID
 	newPlayer.playerRow = db_get_row(global.DB_SRV_TABLE_players, socketID)
-	newPlayer.accountID = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID)
+	newPlayer.accountID = accountID
 	
 	var accountRow = db_get_row(global.DB_SRV_TABLE_accounts, db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID))
 	newPlayer.name = accountRow[? ACCOUNTS_NICKNAME_SERVER]
 	newPlayer.class = accountRow[? ACCOUNTS_CLASS_SERVER]
 	
-	var accountID = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID)
-	var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, accountID)
 	newPlayer.level = accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER]
 	
 	with (newPlayer) {

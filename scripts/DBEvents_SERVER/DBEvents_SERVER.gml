@@ -27,11 +27,13 @@ function _db_event_table_column_names_SERVER() {
 	
 	db_set_column_name(global.DB_SRV_TABLE_accountInfo, ACCOUNTINFO_ACCID_SERVER, "AccountID")
 	db_set_column_name(global.DB_SRV_TABLE_accountInfo, ACCOUNTINFO_GOLD_SERVER, "Gold")
+	db_set_column_name(global.DB_SRV_TABLE_accountInfo, ACCOUNTINFO_LEVEL_SERVER, "Level")
+	db_set_column_name(global.DB_SRV_TABLE_accountInfo, ACCOUNTINFO_LOCATION_SERVER, "Location")
 }
 
 function _db_event_table_draw_SERVER() {
 	draw_set_font(fontTable_SERVER)
 		db_draw_table(16, 50, global.DB_SRV_TABLE_onlineAccounts, 2)
-		db_draw_table(16, 300, global.DB_SRV_TABLE_accountInfo, 2)
+		db_draw_table(16, 300, global.DB_SRV_TABLE_accountInfo, 4)
 	draw_set_font(fontMain)
 }

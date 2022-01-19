@@ -21,6 +21,7 @@ global.delta_COMMON = delta()
 global.playerNames = ds_map_create()
 global.playerInstances = ds_map_create()
 global.creatureInstances = ds_map_create()
+global.activeQuests_player = ds_map_create()
 
 global.period = 0
 global.gameTime = 0

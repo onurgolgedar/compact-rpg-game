@@ -33,7 +33,8 @@ function _tte_ext_input_handle_mouse() {
 	}
 	else {
 	    hover = false
-	    if(mouse_check_button_pressed(mb_left)) {
+	    if (mouse_check_button_pressed(mb_left)) {
+			selVisible = false
 	        focus = false
 	        caretVisible = false
 	        caretTimer += caretDelay

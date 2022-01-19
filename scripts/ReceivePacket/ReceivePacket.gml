@@ -392,6 +392,33 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
+			case _CODE_LOCATION:
+				var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
+				if (instance == undefined or !instance_exists(instance))
+					break
+				
+				var accountID = db_get_value_by_key(global.DB_SRV_TABLE_onlineAccounts, socketID_sender, ONLINEACCOUNTS_ACCID_SERVER)
+				var locationID =  db_get_value_by_key(global.DB_SRV_TABLE_accountInfo, accountID, ACCOUNTINFO_LOCATION_SERVER) + (data[0] == 1 ? 1 : -1)
+				
+				var location = ds_map_find_value(global.locations, locationID)
+				
+				if (location != undefined) {
+					var xx = location.spawn_x
+					var yy = location.spawn_y
+				
+					with (instance) {
+						x = xx
+						y = yy
+					}
+				
+					db_set_row_value(global.DB_SRV_TABLE_accountInfo, accountID, ACCOUNTINFO_LOCATION_SERVER, locationID)
+				}
+				break
+				
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			
 			case CODE_SPAWN_PLAYER:
 				var _socketID = real(data[0])
 		
@@ -471,6 +498,23 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_GET_ACTIVE_QUESTS:
+				ds_map_read(global.activeQuests_player, data[0])
+				
+				var keys = ds_map_keys_to_array(global.activeQuests_player)
+				var ds_size = array_length(keys)
+				for (var k = 0; k < ds_size; k++) {
+					global.activeQuests_player[? keys[k]] = json_parse(global.activeQuests_player[? keys[k]])
+							
+					var quest = global.activeQuests_player[? keys[k]]
+					if (quest.type == pointer_null)
+						quest.type = undefined
+					if (quest.targets == pointer_null)
+						quest.targets = undefined
+					if (quest.targetCounts == pointer_null)
+						quest.targetCounts = undefined
+					if (quest.requiredQuests == pointer_null)
+						quest.requiredQuests = undefined
+				}
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -481,36 +525,36 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				var _socketID = real(data[0])
 				if (global.socketID_player == undefined)
 					global.socketID_player = _socketID
-				
-				if (global.serverIP == "127.0.0.1")
-					net_client_send(_CODE_LOGIN, global.clientID+"|"+global.clientPassword+"|"+global.clientName+"|"+global.clientClass, BUFFER_TYPE_STRING)
-				else {
-					// Upload The Account To Remote Server
-					ini_open("Boxes.dbfile")
-						var _str_items = ini_read_string("Items", global.clientID, "")
-						if (_str_items == "")
-							_str_items = "undefined"
-							
-						var _str_skills = ini_read_string("Skills", global.clientID, "")
-						if (_str_skills == "")
-							_str_skills = "undefined"
-							
-						var _str_skillBoxes = ini_read_string("SkillBoxes", global.clientID, "")
-						if (_str_skillBoxes == "")
-							_str_skillBoxes = "undefined"
-					ini_close()
 					
-					ini_open("Quests.dbfile")
-						var _str_quests = ini_read_string("Quests", global.clientID, "")
-						if (_str_quests == "")
-							_str_quests = "undefined"
-					ini_close()
+				if (global.connectionGoal == 0)
+					net_client_send(_CODE_SIGNUP, global.clientID_signup+"|"+global.clientPassword_signup+"|"+global.clientName_signup+"|"+global.clientClass_signup, BUFFER_TYPE_STRING)
+				else {
+					if (global.serverIP == "127.0.0.1")
+						net_client_send(_CODE_LOGIN, global.clientID+"|"+global.clientPassword, BUFFER_TYPE_STRING)
+					else {
+						// Upload The Account To Remote Server
+						ini_open("Boxes.dbfile")
+							var _str_items = ini_read_string("Items", global.clientID, "")
+							if (_str_items == "")
+								_str_items = "undefined"
+							
+							var _str_skills = ini_read_string("Skills", global.clientID, "")
+							if (_str_skills == "")
+								_str_skills = "undefined"
+							
+							var _str_skillBoxes = ini_read_string("SkillBoxes", global.clientID, "")
+							if (_str_skillBoxes == "")
+								_str_skillBoxes = "undefined"
+						ini_close()
+					
+						ini_open("Quests.dbfile")
+							var _str_quests = ini_read_string("Quests", global.clientID, "")
+							if (_str_quests == "")
+								_str_quests = "undefined"
+						ini_close()
 						
-					var account = db_get_row(global.DB_SRV_TABLE_accounts, global.clientID)
-					if (account != undefined)
-						net_client_send(_CODE_UPLOAD, global.clientID+"|"+global.clientPassword+"|"+account[? ACCOUNTS_NICKNAME_SERVER]+"|"+account[? ACCOUNTS_CLASS_SERVER]+"|"+_str_items+"|"+_str_skills+"|"+_str_quests+"|"+string(global.gold)+"|"+string(global.level)+"|"+_str_skillBoxes, BUFFER_TYPE_STRING)
-					else
-						net_client_send(_CODE_UPLOAD, global.clientID+"|"+global.clientPassword+"|"+global.clientName+"|"+global.clientClass+"|"+_str_items+"|"+_str_skills+"|"+_str_quests+"|"+string(global.gold)+"|"+string(global.level)+"|"+_str_skillBoxes, BUFFER_TYPE_STRING)
+						net_client_send(_CODE_UPLOAD, global.clientID+"|"+global.clientPassword+"|"+_str_items+"|"+_str_skills+"|"+_str_quests+"|"+string(global.gold)+"|"+string(global.level)+"|"+_str_skillBoxes, BUFFER_TYPE_STRING)
+					}
 				}
 				break
 		
@@ -569,6 +613,29 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			--------------------------------------------------------------------------
 			// // // // // // // // // // // // // // // // // // // // // // // // */
 			
+			case _CODE_SIGNUP:
+				var onlineAccount = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_SOCKETID_SERVER, ONLINEACCOUNTS_ACCID_SERVER, data[0])
+				if (onlineAccount != undefined) {
+					net_server_send(socketID_sender, CODE_LOGIN_FAIL)
+					break
+				}
+				
+				var account = db_get_row(global.DB_SRV_TABLE_accounts, data[0])
+				if (account == undefined and data[1] != "" and data[2] != "") {
+					account = db_create_row(data[0])
+					account[? ACCOUNTS_PASSWORD_SERVER] = data[1]
+					account[? ACCOUNTS_NICKNAME_SERVER] = data[2]
+						
+					if (data[3] == CLASS_WARRIOR or data[3] == CLASS_ASSASSIN or data[3] == CLASS_MAGE)
+						account[? ACCOUNTS_CLASS_SERVER] = data[3]
+					else
+						account[? ACCOUNTS_CLASS_SERVER] = CLASS_WARRIOR
+						
+					db_add_row(global.DB_SRV_TABLE_accounts, account)
+					db_save_table(global.DB_SRV_TABLE_accounts)
+				}
+				break
+			
 			case _CODE_LOGIN:
 				var onlineAccount = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_SOCKETID_SERVER, ONLINEACCOUNTS_ACCID_SERVER, data[0])
 				if (onlineAccount != undefined) {
@@ -577,21 +644,8 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				}
 
 				var account = db_get_row(global.DB_SRV_TABLE_accounts, data[0])
-				if (account != undefined and account[? ACCOUNTS_PASSWORD_SERVER] == data[1] and data[2] == "" or account == undefined and data[1] != "" and data[2] != "") {
-					if (account == undefined or account[? ACCOUNTS_PASSWORD_SERVER] == data[1]) {
-						if (account == undefined) {
-							account = db_create_row(data[0])
-							account[? ACCOUNTS_PASSWORD_SERVER] = data[1]
-							account[? ACCOUNTS_NICKNAME_SERVER] = data[2]
-						
-							if (data[3] == CLASS_WARRIOR or data[3] == CLASS_ASSASSIN or data[3] == CLASS_MAGE)
-								account[? ACCOUNTS_CLASS_SERVER] = data[3]
-							else
-								account[? ACCOUNTS_CLASS_SERVER] = CLASS_WARRIOR
-						
-							db_add_row(global.DB_SRV_TABLE_accounts, account)
-							db_save_table(global.DB_SRV_TABLE_accounts)
-						}
+				if (account != undefined and account[? ACCOUNTS_PASSWORD_SERVER] == data[1]) {
+					if (account[? ACCOUNTS_PASSWORD_SERVER] == data[1]) {
 					
 						onlineAccount = db_create_row(socketID_sender)
 						onlineAccount[? ONLINEACCOUNTS_ACCID_SERVER] = data[0]
@@ -610,6 +664,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						accountInfoRow = db_create_row(data[0])
 						accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = 0
 						accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = 1
+						accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER] = LOCATION_THE_CASTLE
 						db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
 					}
 				
@@ -685,20 +740,67 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							}
 							
 							global.playerQuests[? accountName] = value
+							
+							quests_set(accountName)
 						}
 						else {
 							// Init Quests
 							global.playerQuests[? accountName] = ds_map_create()
 						
 							var _code = 0
-							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 1", isActive: false, isAvailable: false, code: _code, type: undefined, description: "...", isCompleted: false,
-																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, isAuto: true,
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 1", isActive: false, isAvailable: false, code: _code, type: undefined, description: "That's an example quest. You can test it.\nBy the way, this is a new line.", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, targetCounts_completed: undefined, isAuto: true,
 																					isDeletable: false, isRepeatable: false, requiredQuests: undefined, requiredLevel: 1 })
 						
 							_code = 1
-							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 2", isActive: false, isAvailable: false, code: _code, type: undefined, description: "...", isCompleted: false,
-																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, isAuto: true,
-																					isDeletable: false, isRepeatable: false, requiredQuests: [[3]], requiredLevel: undefined })
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 2", isActive: false, isAvailable: false, code: _code, type: undefined, description: "That's an example quest. You can test it.\nBy the way, this is a new line.", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, targetCounts_completed: undefined, isAuto: true,
+																					isDeletable: true, isRepeatable: false, requiredQuests: undefined, requiredLevel: undefined })
+																					
+							_code = 2
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 3", isActive: false, isAvailable: false, code: _code, type: undefined, description: "That's an example quest. You can test it.\nBy the way, this is a new line.", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, targetCounts_completed: undefined, isAuto: true,
+																					isDeletable: true, isRepeatable: false, requiredQuests: undefined, requiredLevel: undefined })
+																					
+							_code = 3
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 4", isActive: false, isAvailable: false, code: _code, type: undefined, description: "That's an example quest. You can test it.\nBy the way, this is a new line.", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, targetCounts_completed: undefined, isAuto: true,
+																					isDeletable: true, isRepeatable: false, requiredQuests: undefined, requiredLevel: undefined })
+																					
+							_code = 4
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 5", isActive: false, isAvailable: false, code: _code, type: undefined, description: "That's an example quest. You can test it.\nBy the way, this is a new line.", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, targetCounts_completed: undefined, isAuto: true,
+																					isDeletable: true, isRepeatable: false, requiredQuests: undefined, requiredLevel: undefined })
+																					
+							_code = 5
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 6", isActive: false, isAvailable: false, code: _code, type: undefined, description: "That's an example quest. You can test it.\nBy the way, this is a new line.", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, targetCounts_completed: undefined, isAuto: true,
+																					isDeletable: true, isRepeatable: false, requiredQuests: undefined, requiredLevel: undefined })
+																					
+							_code = 6
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 7", isActive: false, isAvailable: false, code: _code, type: undefined, description: "That's an example quest. You can test it.\nBy the way, this is a new line.", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, targetCounts_completed: undefined, isAuto: true,
+																					isDeletable: true, isRepeatable: false, requiredQuests: undefined, requiredLevel: undefined })
+																					
+							_code = 7
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 8", isActive: false, isAvailable: false, code: _code, type: undefined, description: "That's an example quest. You can test it.\nBy the way, this is a new line.", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, targetCounts_completed: undefined, isAuto: true,
+																					isDeletable: true, isRepeatable: false, requiredQuests: undefined, requiredLevel: undefined })
+																					
+							_code = 8
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 9", isActive: false, isAvailable: false, code: _code, type: undefined, description: "That's an example quest. You can test it.\nBy the way, this is a new line.", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, targetCounts_completed: undefined, isAuto: true,
+																					isDeletable: true, isRepeatable: false, requiredQuests: undefined, requiredLevel: undefined })
+																					
+							_code = 9
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 10", isActive: false, isAvailable: false, code: _code, type: undefined, description: "That's an example quest. You can test it.\nBy the way, this is a new line.", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, targetCounts_completed: undefined, isAuto: true,
+																					isDeletable: true, isRepeatable: false, requiredQuests: undefined, requiredLevel: undefined })
+																					
+							_code = 10
+							ds_map_add(global.playerQuests[? accountName], _code, { title: "Quest 11", isActive: false, isAvailable: false, code: _code, type: undefined, description: "That's an example quest. You can test it.\nBy the way, this is a new line.", isCompleted: false,
+																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, targetCounts_completed: undefined, isAuto: true,
+																					isDeletable: true, isRepeatable: false, requiredQuests: [[3]], requiredLevel: undefined })
 																					
 							quests_set(accountName)
 						}
@@ -868,7 +970,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						break
 					
 					if (data[0] != "undefined") {
-						// Duplication
+						// ? Duplication
 						ds_map_set(skills, real(data[0]),
 						{
 							index: skill_index,
@@ -926,9 +1028,9 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					ds_map_destroy(global.playerSkillBoxes[? socketID_sender])
 				
 				// Uploaded Items
-				if (data[4] != "undefined") {
+				if (data[2] != "undefined") {
 					var boxes_TAKEN = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
-					ds_grid_read(boxes_TAKEN, data[4])
+					ds_grid_read(boxes_TAKEN, data[2])
 					
 					for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++) {
 						for (var j = 0; j < global.bc_ver_COMMON+2; j++) {
@@ -956,9 +1058,9 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				}
 				
 				// Uploaded Skill Tree
-				if (data[5] != "undefined") {
+				if (data[3] != "undefined") {
 					var boxes_TAKEN = ds_grid_create(global.sc_hor_COMMON*global.pageCount_COMMON, global.sc_ver_COMMON)
-					ds_grid_read(boxes_TAKEN, data[5])
+					ds_grid_read(boxes_TAKEN, data[3])
 					for (var i = 0; i < global.sc_hor_COMMON*global.pageCount_COMMON; i++) {
 						for (var j = 0; j < global.sc_ver_COMMON; j++) {
 							var _data = ds_grid_get(boxes_TAKEN, i, j)
@@ -985,9 +1087,9 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				}
 				
 				// Uploaded Quests
-				if (data[6] != "undefined") {
+				if (data[4] != "undefined") {
 					var quests_TAKEN = ds_map_create()
-					ds_map_read(quests_TAKEN, data[6])
+					ds_map_read(quests_TAKEN, data[4])
 					
 					var _quests_keys = ds_map_keys_to_array(quests_TAKEN)
 					var ds_size = array_length(_quests_keys)
@@ -1019,9 +1121,9 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				}
 				
 				// Uploaded Skill Boxes
-				if (data[9] != "undefined") {
+				if (data[7] != "undefined") {
 					var skillBoxes_TAKEN = ds_map_create()
-					ds_map_read(skillBoxes_TAKEN, data[9])
+					ds_map_read(skillBoxes_TAKEN, data[7])
 					
 					var _skillBoxes_keys = ds_map_keys_to_array(skillBoxes_TAKEN)
 					var ds_size = array_length(_skillBoxes_keys)
@@ -1052,19 +1154,19 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, data[0])
 				if (accountInfoRow == undefined) {
 					accountInfoRow = db_create_row(data[0])
-					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = real(data[7])
-					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = real(data[8])
+					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = real(data[5])
+					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = real(data[6])
 					db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
 					db_save_table(global.DB_SRV_TABLE_accountInfo)
 				}
 				else
 				{
-					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = real(data[7])
-					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = real(data[8])
+					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = real(data[5])
+					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = real(data[6])
 					db_save_table(global.DB_SRV_TABLE_accountInfo)
 				}
 				
-				_net_receive_packet(_CODE_LOGIN, data[0]+"|"+data[1]+"|"+(accountRow != undefined ? "" : data[2])+"|"+(accountRow != undefined ? "" : data[3]), socketID_sender)
+				_net_receive_packet(_CODE_LOGIN, data[0]+"|"+data[1], socketID_sender)
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1259,6 +1361,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					}
 				}
 				break
+				
+			case _CODE_GET_ACTIVE_QUESTS:
+				send_active_quests(socketID_sender)
+				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1274,16 +1380,9 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					net_server_send(SOCKET_ID_ALL, CODE_SKILL3, socketID_sender, BUFFER_TYPE_INT16)
 				break
 				
-				
-			/* // // // // // // // // // // // // // // // // // // // // // // // //
-			--------------------------------------------------------------------------
-			--------------------------------------------------------------------------
-			--------------------------------------------------------------------------
-			--------------------------------------------------------------------------
-			--------------------------------------------------------------------------
-			--------------------------------------------------------------------------
-			--------------------------------------------------------------------------
-			// // // // // // // // // // // // // // // // // // // // // // // // */
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case _CODE_MOUSE_POSITION:
 				var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
@@ -1294,6 +1393,18 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					var dir = point_direction(x, y, data[0], data[1])
 					image_angle = dir
 				}
+				break
+				
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+				
+			case _CODE_DELETE_QUEST:
+				var accountID = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID_sender)
+				if (accountID == undefined)
+					break
+					
+				ds_map_delete(global.playerQuests[? accountID], data[0])	
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1325,10 +1436,16 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					}
 				}
 				break
-				
-			// // // // // // // // // // // // // // // // // // // // // // // //
-			// // // // // // // // // // // // // // // // // // // // // // // //
-			// // // // // // // // // // // // // // // // // // // // // // // //
+			
+			/* // // // // // // // // // // // // // // // // // // // // // // // //
+			--------------------------------------------------------------------------
+			--------------------------------------------------------------------------
+			--------------------------------------------------------------------------
+			--------------------------------------------------------------------------
+			--------------------------------------------------------------------------
+			--------------------------------------------------------------------------
+			--------------------------------------------------------------------------
+			// // // // // // // // // // // // // // // // // // // // // // // // */
 			
 			case CODE_TELL_PLAYER_POSITION:
 				var _socketID = real(data[0])
