@@ -1,6 +1,8 @@
 if (is_mouse_on() and !is_click_blocked()) {	
-	if (mouseOnButton < pageCount)
+	if (mouseOnButton < pageCount) {
 		page = mouseOnButton+1
+		prepDone = false
+	}
 	else if (mouseOnButton >= 100) {
 	}
 }

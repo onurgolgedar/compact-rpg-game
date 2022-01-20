@@ -1,16 +1,16 @@
 var mouseOnBody = is_mouse_on()
 
-draw_set_color(c_white) draw_set_alpha(0.9)
+draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 	draw_set_color(COLOR_WINDOW_BACK)
 		draw_roundrect_ext(x-offset, y-offset, x+width+offset, y+height+offset, 15, 15, 0)
-	draw_set_color(onFront ? COLOR_WINDOW : c_dkgray) draw_set_alpha(0.38)
+	draw_set_color(onFront ? COLOR_WINDOW : c_dkgray) draw_set_alpha(0.38*image_alpha)
 		draw_roundrect_ext(x, y+height_ext_top+offset, x+width, y+height, 15, 15, 0)
 		draw_roundrect_ext(x+offset, y+height_ext_top+offset+offset, x+width-offset, y+height-offset, 15, 15, 0)
 
 		draw_roundrect_ext(x, y, x+width, y+height_ext_top/2-offset/2, 15, 15, 0)
-draw_set_default() draw_set_alpha(1)
+draw_set_default() draw_set_alpha(1*image_alpha)
 
-draw_set_color(c_white) draw_set_alpha(1) draw_set_font(fontWindowTitle) draw_set_center()
+draw_set_color(c_white) draw_set_alpha(1*image_alpha) draw_set_font(fontWindowTitle) draw_set_center()
 	draw_text_outlined(x+width/2, y+(height_ext_top/2-offset/2)/2+2, title, 2, c_black, 10, 0.7, 0.7, 0)
 draw_set_default()
 
@@ -21,7 +21,7 @@ var pageButtonEdge = 22
 var pageButtonWidthFactor = 3.15
 var pageButton_x, pageButton_y
 for (var i = 0; i < pageCount; i++) {
-	draw_set_alpha(1)
+	draw_set_alpha(1*image_alpha)
 	pageButton_x[i] = x+offset+i*(offset*2+pageButtonEdge*pageButtonWidthFactor)
 	pageButton_y[i] = y+(height_ext_top/2-offset/2)/2+pageButtonEdge/2+offset*2
     
@@ -41,7 +41,7 @@ for (var i = 0; i < pageCount; i++) {
 		draw_roundrect(pageButton_x[i], pageButton_y[i],
 		pageButton_x[i]+pageButtonEdge*pageButtonWidthFactor, pageButton_y[i]+pageButtonEdge, 0)
 	draw_set_color(c_black)
-	draw_set_alpha(1)
+	draw_set_alpha(1*image_alpha)
     
 	draw_set_center() draw_set_font(fontMain)
 		var txt = ""
@@ -85,5 +85,7 @@ if (page == 1) {
 		draw_text_outlined(x+width-offset-10, y+height-18, global.gold, 1, c_black, 10, 0.8, 0.8, 0)
 	draw_set_default()
 }
+
+draw_set_alpha(1)
 
 event_inherited()

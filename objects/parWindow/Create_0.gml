@@ -17,6 +17,15 @@ function is_mouse_on() {
 	return global.dmx > x and global.dmx < x+width and global.dmy > y and global.dmy < y+height
 }
 
+function alpha_loop() {
+	if (_alpha_factor < 1)
+		_alpha_factor += 0.3
+	image_alpha = _alpha_factor*_alpha_factor
+		
+	function_call(alpha_loop, 1/30, true)
+}
+function_call(alpha_loop, 1/30, true)
+
 mouseOnButton = undefined
 isHeld = false
 held_offset_x = undefined
@@ -31,5 +40,7 @@ owner = undefined
 width = undefined
 height = undefined
 
+image_alpha = 0
+_alpha_factor = 0
 depth -= instance_number(parWindow)*2
 alarm[11] = 1
