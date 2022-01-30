@@ -1,31 +1,12 @@
 event_inherited()
 
 function inventory_refresh() {
-	/*var eq_x = undefined
-	var eq_y = undefined
-	var _equipmentDepth = undefined
-	var _equipmentOnFront = undefined
-	with (objEquipments_window) {
-		_equipmentDepth = depth
-		_equipmentOnFront = onFront
-		eq_x = x
-		eq_y = y
-	}*/
-	
 	var _depth = depth
 	var _onFront = onFront
 	var window = refresh()
 	window.page = page
-	window.alarm[11] = -1
-	window.depth = _depth
-	window.onFront = _onFront
-	
-	/*if (eq_x != undefined) {
-		var equipmentWindow = instance_create_layer(eq_x, eq_y, "Windows", objEquipments_window)
-		equipmentWindow.alarm[11] = -1
-		equipmentWindow.depth = _equipmentDepth
-		equipmentWindow.onFront = _equipmentOnFront
-	}*/
+	window.image_alpha = image_alpha
+	window._alpha_factor = _alpha_factor
 		
 	return window
 }
@@ -60,7 +41,7 @@ function main_loop() {
 				boxes_alpha[i][j] += 0.25
 			
 			var box = ds_grid_get(boxes, i, j)
-			if (box.item != undefined and global.held_box == undefined and is_mouse_on_box(i, j)) {
+			if (box.item != undefined and global.held_box == undefined and is_mouse_on() and !is_click_blocked() and is_mouse_on_box(i, j)) {
 				found = true
 				
 				if (boxFocused != box) {
@@ -71,7 +52,7 @@ function main_loop() {
 					if (boxFocused_textbox != undefined)
 						instance_destroy(boxFocused_textbox)
 					
-					boxFocused_textbox = create_textbox(0, 0, get_item_text(boxFocused.item), contCursor.id)
+					boxFocused_textbox = create_textbox(get_item_text(boxFocused.item), contCursor.id)
 				}
 				
 				break

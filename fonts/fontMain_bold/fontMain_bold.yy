@@ -6,7 +6,7 @@
   "applyKerning": 0,
   "fontName": "Arial",
   "styleName": "Bold",
-  "size": 18.0,
+  "size": 17.0,
   "bold": true,
   "italic": false,
   "charset": 0,

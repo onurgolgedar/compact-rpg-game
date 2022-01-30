@@ -353,6 +353,7 @@
     {"id":{"name":"sprSword_008","path":"sprites/sprSword_008/sprSword_008.yy",},"order":7,},
     {"id":{"name":"sprCharInfoLogo","path":"sprites/sprCharInfoLogo/sprCharInfoLogo.yy",},"order":9,},
     {"id":{"name":"sprNeck_011","path":"sprites/sprNeck_011/sprNeck_011.yy",},"order":27,},
+    {"id":{"name":"objMessageBox_window","path":"objects/objMessageBox_window/objMessageBox_window.yy",},"order":7,},
     {"id":{"name":"bgMenu","path":"sprites/bgMenu/bgMenu.yy",},"order":7,},
     {"id":{"name":"objTTEInput","path":"objects/objTTEInput/objTTEInput.yy",},"order":0,},
     {"id":{"name":"sprCG1FrontArm","path":"sprites/sprCG1FrontArm/sprCG1FrontArm.yy",},"order":1,},
@@ -792,7 +793,6 @@
   ],
   "isDnDProject": false,
   "isEcma": false,
-  "tutorialPath": "",
   "configs": {
     "name": "Default",
     "children": [],
@@ -954,7 +954,7 @@
   ],
   "IncludedFiles": [],
   "MetaData": {
-    "IDEVersion": "2.3.7.606",
+    "IDEVersion": "2022.1.0.609",
   },
   "resourceVersion": "1.4",
   "name": "Compact RPG Game",

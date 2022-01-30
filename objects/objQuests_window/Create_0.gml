@@ -12,5 +12,5 @@ pageCount = 7
 page = 1
 
 net_client_send(_CODE_GET_ACTIVE_QUESTS)
-alarm[10] = SEC/4
+alarm[0] = SEC/8
 prepDone = false

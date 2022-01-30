@@ -15,7 +15,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 		draw_roundrect_ext(x+offset, y+height-height_ext_bot-height_ext_bot_more, x+width-offset, y+height-offset-height_ext_bot_more, 15, 15, 0)
 	
 	draw_set_color(c_white) draw_set_alpha(1*image_alpha) draw_set_font(fontWindowTitle) draw_set_center()
-		draw_text_outlined(x+width/2, y+(height_ext_top/2-offset/2)/2+2, title, 2, c_black, 10, 0.7, 0.7, 0)
+		draw_text_outlined(x+width/2, y+(height_ext_top/2-offset/2)/2+2, title, 2, c_black, 10, 1, 1, 0)
 	draw_set_default()
 		
 	draw_set_valign(fa_center) draw_set_color(c_white)
@@ -89,7 +89,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 					box_positions.xx_end-4+90, box_positions.yy_end+4, 0)
 				draw_set_color(c_black) draw_set_alpha(1*image_alpha)
 				
-				draw_sprite_ext(box.skill.sprite, -1, skill_xx, skill_yy, 0.9, 0.9, 0, c_black, 0.7*image_alpha)
+				//draw_sprite_ext(box.skill.sprite, -1, skill_xx, skill_yy, 0.9, 0.9, 0, c_black, 0.7*image_alpha)
 				if (i != global.held_box_i or j != global.held_box_j or global.held_from != object_get_name(object_index)) 
 					draw_sprite_ext(box.skill.sprite, -1, skill_xx, skill_yy, 0.8, 0.8, 0, c_white, 1*image_alpha)
 				

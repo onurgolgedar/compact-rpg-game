@@ -14,7 +14,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 		draw_roundrect_ext(x+offset, y+height-offset-height_ext_bot_more+offset, x+width-offset, y+height-offset, 15, 15, 0)*/
 	
 	draw_set_color(c_white) draw_set_alpha(1*image_alpha) draw_set_font(fontWindowTitle) draw_set_center()
-		draw_text_outlined(x+width/2-10, y+height_ext_top/2+2, title, 2, c_black, 10, 0.7, 0.7, 0)
+		draw_text_outlined(x+width/2-10, y+height_ext_top/2+2, title, 2, c_black, 10, 1, 1, 0)
 		
 	for (var i = 0; i < global.bc_hor_COMMON; i++) {
 		for (var j = global.bc_ver_COMMON; j < global.bc_ver_COMMON+1; j++) {

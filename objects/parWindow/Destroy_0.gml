@@ -16,6 +16,6 @@ if (!isRefreshing) {
 
 	with (parWindow) {
 	    if (depth == other.minDepth)
-	        alarm[0] = 1
+	        function_call(bring_forward, 1, false)
 	}
 }

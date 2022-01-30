@@ -11,7 +11,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 draw_set_default() draw_set_alpha(1*image_alpha)
 
 draw_set_color(c_white) draw_set_alpha(1*image_alpha) draw_set_font(fontWindowTitle) draw_set_center()
-	draw_text_outlined(x+width/2, y+(height_ext_top/2-offset/2)/2+2, title, 2, c_black, 10, 0.7, 0.7, 0)
+	draw_text_outlined(x+width/2, y+(height_ext_top/2-offset/2)/2+2, title, 2, c_black, 10, 1, 1, 0)
 draw_set_default()
 
 mouseOnButton = undefined

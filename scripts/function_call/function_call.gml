@@ -4,6 +4,8 @@ function function_call(_method, time, useDelta) {
 	}
 	else {
 		var data = {func: method(id, _method)}
-		ds_map_add(useDelta ? global.functionsTimed_delta : global.functionsTimed, data, time)
+		var ds = useDelta ? global.functionsTimed_delta : global.functionsTimed
+		if (ds_exists(ds, ds_type_map))
+			ds_map_add(ds, data, time)
 	}
 }

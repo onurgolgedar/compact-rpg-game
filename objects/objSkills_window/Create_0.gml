@@ -30,7 +30,7 @@ function main_loop() {
 				boxes_alpha[i][j] += 0.25
 			
 			var box = ds_grid_get(boxes, i, j)
-			if (box.skill != undefined and is_mouse_on_box(i, j) and global.held_box == undefined) {
+			if (box.skill != undefined and is_mouse_on() and !is_click_blocked() and is_mouse_on_box(i, j) and global.held_box == undefined) {
 				found = true
 				
 				if (boxFocused != box) {
@@ -41,7 +41,7 @@ function main_loop() {
 					if (boxFocused_textbox != undefined)
 						instance_destroy(boxFocused_textbox)
 					
-					boxFocused_textbox = create_textbox(0, 0, get_skill_description_COMMON(box.skill), contCursor.id)
+					boxFocused_textbox = create_textbox(get_skill_description_COMMON(box.skill), contCursor.id)
 				}
 				
 				break

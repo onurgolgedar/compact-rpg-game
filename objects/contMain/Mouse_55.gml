@@ -6,3 +6,7 @@ if (!global.drawServer) {
 
 	lighting_set_dirty(true)
 }
+
+var messageBox = instance_create_layer(250, 250, "Windows", objMessageBox_window)
+with (messageBox)
+	event_perform(ev_other, ev_user1)

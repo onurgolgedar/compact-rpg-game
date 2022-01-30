@@ -6,7 +6,7 @@ function refresh() {
 	var _depth = depth
 	var _onFront = onFront
 	var window = instance_create_layer(x, y, "Windows", object_index)
-	window.alarm[11] = -1
+	window.isRefreshing = true
 	window.depth = _depth
 	window.onFront = _onFront
 	
@@ -26,6 +26,16 @@ function alpha_loop() {
 }
 function_call(alpha_loop, 1/30, true)
 
+
+function after_creation() {
+	event_user(0)
+}
+function_call(after_creation, 1, false)
+
+function bring_forward() {
+	onFront = true
+}
+
 mouseOnButton = undefined
 isHeld = false
 held_offset_x = undefined
@@ -43,4 +53,3 @@ height = undefined
 image_alpha = 0
 _alpha_factor = 0
 depth -= instance_number(parWindow)*2
-alarm[11] = 1

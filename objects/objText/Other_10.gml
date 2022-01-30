@@ -8,6 +8,7 @@ var subtexts = ds_list_create()
 var PADDING = {left: 0, top: 0}
 var OFFSET = 0
 draw_set_font(font_bold)
+draw_set_color(font_color)
 
 var _subtext = ""
 var _subcolor = c_white
@@ -156,7 +157,7 @@ for (var i = 0; i < ds_list_size(subtexts); i++) {
 		if (_subtext.image == undefined) {
 			var beforeColor = draw_get_color()
 			draw_set_font(_subtext.bold ? font_bold : font) draw_set_color(_subtext.color)
-				draw_text_outlined(_subtext.xx+PADDING.left+3, _subtext.yy+PADDING.top+3, _subtext.data, 2, c_black, 15, 1, 1, 0)
+				draw_text_outlined(_subtext.xx+PADDING.left+3, _subtext.yy+PADDING.top+3, _subtext.data, outlineWidth, c_black, outlineFidelity, 1, 1, 0)
 			draw_set_color(beforeColor)
 		}
 		else
@@ -174,3 +175,6 @@ gpu_set_colorwriteenable(1, 1, 1, 1)
 draw_set_font(font_before)
 draw_set_color(color_before)
 ds_list_destroy(subtexts)
+
+width = text_width+padding_x*2+2
+height = -padding_y*2-text_height

@@ -5,5 +5,5 @@ for (var i = (page-1)*6; i < ds_size and i < page*6; i++) {
 	activeQuest.shortDescription = text_shorten_oneline(activeQuest.description, width-33, fontGUI_small)
 }
 
-alarm[10] = SEC/4
+alarm[0] = SEC/4
 prepDone = true

@@ -26,7 +26,7 @@ function quests_set(accountName) {
 			if (quest.isAvailable) {
 				var requiredQuests_met = true
 				if (quest.requiredQuests != undefined and array_length(quest.requiredQuests) > 0) {
-					requiredQuests_met = false
+					requiredQuests_met = falsesa
 				
 					var array_size = array_length(quest.requiredQuests)
 					var _break_main = false
@@ -48,12 +48,13 @@ function quests_set(accountName) {
 						}
 					}
 				}
-			}
-			
-			if (requiredQuests_met == false)
-				quest.isAvailable = false
 				
-			if (quest.isAvailable && quest.isAuto)
+				if (requiredQuests_met == false)
+					quest.isAvailable = false
+			}
+	
+				
+			if (quest.isAvailable and quest.isAuto)
 				quest.isActive = true
 		}
 		else
