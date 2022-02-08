@@ -1,0 +1,1 @@
+show_messagebox(250, 250, "Message", "You have purchased a cup of coffee.\nYou can inspect the details of this trade.\n\n100 [img=sprCoin2]", 1)

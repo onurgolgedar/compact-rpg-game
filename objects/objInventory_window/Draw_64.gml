@@ -1,9 +1,9 @@
 var mouseOnBody = is_mouse_on()
 
 draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
-	draw_set_color(COLOR_WINDOW_BACK)
+	draw_set_color(c_windowback)
 		draw_roundrect_ext(x-offset, y-offset, x+width+offset, y+height+offset, 15, 15, 0)
-	draw_set_color(onFront ? COLOR_WINDOW : c_dkgray) draw_set_alpha(0.38*image_alpha)
+	draw_set_color(onFront ? c_window : c_dkgray) draw_set_alpha(0.38*image_alpha)
 		draw_roundrect_ext(x, y+height_ext_top+offset, x+width, y+height, 15, 15, 0)
 		draw_roundrect_ext(x+offset, y+height_ext_top+offset+offset, x+width-offset, y+height-height_ext_bot-offset-height_ext_bot_more, 15, 15, 0)
 		

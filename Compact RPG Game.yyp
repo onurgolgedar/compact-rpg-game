@@ -251,6 +251,7 @@
     {"id":{"name":"sprCA1FrontArm","path":"sprites/sprCA1FrontArm/sprCA1FrontArm.yy",},"order":2,},
     {"id":{"name":"spr_pt_shape_disk","path":"sprites/spr_pt_shape_disk/spr_pt_shape_disk.yy",},"order":2,},
     {"id":{"name":"parRigidbody","path":"objects/parRigidbody/parRigidbody.yy",},"order":2,},
+    {"id":{"name":"show_messagebox","path":"scripts/show_messagebox/show_messagebox.yy",},"order":16,},
     {"id":{"name":"sprLake2","path":"sprites/sprLake2/sprLake2.yy",},"order":4,},
     {"id":{"name":"sprAim_wide","path":"sprites/sprAim_wide/sprAim_wide.yy",},"order":2,},
     {"id":{"name":"sprSword_013","path":"sprites/sprSword_013/sprSword_013.yy",},"order":21,},
@@ -954,7 +955,7 @@
   ],
   "IncludedFiles": [],
   "MetaData": {
-    "IDEVersion": "2022.1.0.609",
+    "IDEVersion": "2022.1.1.610",
   },
   "resourceVersion": "1.4",
   "name": "Compact RPG Game",

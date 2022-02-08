@@ -26,7 +26,7 @@ function quests_set(accountName) {
 			if (quest.isAvailable) {
 				var requiredQuests_met = true
 				if (quest.requiredQuests != undefined and array_length(quest.requiredQuests) > 0) {
-					requiredQuests_met = falsesa
+					requiredQuests_met = false
 				
 					var array_size = array_length(quest.requiredQuests)
 					var _break_main = false
