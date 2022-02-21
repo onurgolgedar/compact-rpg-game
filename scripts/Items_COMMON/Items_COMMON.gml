@@ -1,4 +1,4 @@
-function get_item_COMMON(_code) {
+function item_get_COMMON(_code) {
 	switch (_code) {
 		case SWORD_000:
 			return {name: "Sword 1", code: SWORD_000, type: ITEMTYPE_SWORD, isCollectable: false, physicalPower_base: 7, magicalPower_base: 17, criticalChance_base: 0, attackSpeed_base: 1.2, worth_base: 200, sprite: sprSword_045, physicalPower: undefined, magicalPower: undefined, criticalChance: undefined, attackSpeed: undefined, worth: undefined, upgrade: 0, marketPrice: undefined}
@@ -10,13 +10,13 @@ function get_item_COMMON(_code) {
 			return {name: "Sword 4", code: SWORD_003, type: ITEMTYPE_SWORD, isCollectable: false, physicalPower_base: 21, magicalPower_base: 0, criticalChance_base: 0, attackSpeed_base: 1.4, worth_base: 200, sprite: sprSword_046, physicalPower: undefined, magicalPower: undefined, criticalChance: undefined, attackSpeed: undefined, worth: undefined, upgrade: 0, marketPrice: undefined}
 
 		case CLOTHES_000:
-			return {name: "Clothes 1", code: CLOTHES_000, type: ITEMTYPE_CLOTHES, isCollectable: false, maxHp_base: 0, maxMana_base: 40, slowRate_base: 0, worth_base: 400, sprite: sprClothes_010, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0, marketPrice: 0}
+			return {name: "Clothes 1", code: CLOTHES_000, type: ITEMTYPE_CLOTHES, isCollectable: false, maxHp_base: 0, maxMana_base: 40, slowRate_base: 0, worth_base: 400, sprite: sprClothes_010, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0, marketPrice: undefined}
 		case CLOTHES_001:
-			return {name: "Clothes 2", code: CLOTHES_001, type: ITEMTYPE_CLOTHES, isCollectable: false, maxHp_base: 30, maxMana_base: 15, slowRate_base: 0, worth_base: 400, sprite: sprClothes_009, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0, marketPrice: 0}
+			return {name: "Clothes 2", code: CLOTHES_001, type: ITEMTYPE_CLOTHES, isCollectable: false, maxHp_base: 30, maxMana_base: 15, slowRate_base: 0, worth_base: 400, sprite: sprClothes_009, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0, marketPrice: undefined}
 		case CLOTHES_002:
-			return {name: "Clothes 3", code: CLOTHES_002, type: ITEMTYPE_CLOTHES, isCollectable: false, maxHp_base: 60, maxMana_base: 0, slowRate_base: 10, worth_base: 400, sprite: sprClothes_020, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0, marketPrice: 0}
+			return {name: "Clothes 3", code: CLOTHES_002, type: ITEMTYPE_CLOTHES, isCollectable: false, maxHp_base: 60, maxMana_base: 0, slowRate_base: 10, worth_base: 400, sprite: sprClothes_020, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0, marketPrice: undefined}
 		case CLOTHES_003:
-			return {name: "Clothes 4", code: CLOTHES_003, type: ITEMTYPE_CLOTHES, isCollectable: false, maxHp_base: 90, maxMana_base: 0, slowRate_base: 20, worth_base: 400, sprite: sprClothes_007, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0, marketPrice: 0}
+			return {name: "Clothes 4", code: CLOTHES_003, type: ITEMTYPE_CLOTHES, isCollectable: false, maxHp_base: 90, maxMana_base: 0, slowRate_base: 20, worth_base: 400, sprite: sprClothes_007, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: 0, marketPrice: undefined}
 	}
 }
 
@@ -37,14 +37,14 @@ function box_create_COMMON(item = undefined, isForQuest = false, count = 1) {
 		return {item: item_copy_COMMON(item), tag: {isActive: false, isForQuest: isForQuest}, count: count}
 }
 
-function get_box_confirmation_number_COMMON(box) {
+function box_get_confirmation_number_COMMON(box) {
 	if (box == undefined)
 		return "--"
 	else
-		return string(box.tag.isActive)+string(box.tag.isForQuest)+string(box.count)+string(get_item_confirmation_number_COMMON(box.item))
+		return string(box.tag.isActive)+string(box.tag.isForQuest)+string(box.count)+string(item_get_confirmation_number_COMMON(box.item))
 }
 
-function get_item_confirmation_number_COMMON(item) {
+function item_get_confirmation_number_COMMON(item) {
 	if (item == undefined)
 		return "-"
 	else if (item.type == ITEMTYPE_SWORD)

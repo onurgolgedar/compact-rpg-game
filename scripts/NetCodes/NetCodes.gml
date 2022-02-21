@@ -63,6 +63,7 @@ function codes() {
 	#macro CODE_GET_ACTIVE_QUESTS 7006
 	#macro CODE_DELETE_QUEST 7007
 	#macro CODE_BUY 7008
+	#macro CODE_SELL 7009
 	
 	#macro CODE_DROP_COIN 7500
 	#macro CODE_COLLECT_COIN 7501

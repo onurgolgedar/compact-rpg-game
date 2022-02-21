@@ -23,5 +23,5 @@ if (is_mouse_on() and !is_click_blocked()) {
 	if (!onBox)
 		exit
 		
-	net_client_send(_CODE_CHANGE_ACTIVE_BOX, string(onBox_box.item.type)+"|"+string(onBox_i)+"|"+string(onBox_j)+"|"+get_box_confirmation_number_COMMON(onBox_box), BUFFER_TYPE_STRING)
+	net_client_send(_CODE_CHANGE_ACTIVE_BOX, string(onBox_box.item.type)+"|"+string(onBox_i)+"|"+string(onBox_j)+"|"+box_get_confirmation_number_COMMON(onBox_box), BUFFER_TYPE_STRING)
 }

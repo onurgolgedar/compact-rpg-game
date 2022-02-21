@@ -41,7 +41,7 @@ function change_active_box(type, box_i, box_j, box_confirmation_number) {
 			return false
 		
 		item_setup_COMMON(box.item)
-		if (get_box_confirmation_number_COMMON(box) != box_confirmation_number)
+		if (box_get_confirmation_number_COMMON(box) != box_confirmation_number)
 			return false
 	}
 	

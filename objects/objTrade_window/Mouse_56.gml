@@ -16,8 +16,8 @@ if (!is_click_blocked() and global.held_box != undefined) {
 		}
 		
 		if (mouseOn_box != undefined) {
-			/*if (global.held_from_assetName == object_get_name(objInventory_window))
-				net_client_send(_CODE_CHANGE_ACTIVE_BOX, string(global.held_box.item.type)+"|"+string(mouseOn_box_i)+"|"+string(mouseOn_box_j)+"|"+get_box_confirmation_number_COMMON(mouseOn_box), BUFFER_TYPE_STRING)*/
+			if (global.held_from_assetName == object_get_name(objInventory_window))
+				net_client_send(_CODE_SELL, string(global.held_box.item.type)+"|"+string(global.held_box_i)+"|"+string(global.held_box_j)+"|"+box_get_confirmation_number_COMMON(global.held_box), BUFFER_TYPE_STRING)
 		}
 	}
 }

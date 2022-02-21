@@ -17,7 +17,7 @@ function change_active_box_SERVER(socketID, type, box_i, box_j, box_confirmation
 			return -1
 		
 		item_setup_COMMON(box.item)
-		if (get_box_confirmation_number_COMMON(box) != box_confirmation_number)
+		if (box_get_confirmation_number_COMMON(box) != box_confirmation_number)
 			return -1
 	}
 	

@@ -46,6 +46,8 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						var _box = json_parse(_data)
 						if (_box.item == pointer_null)
 							_box.item = undefined
+						else if (_box.item.marketPrice == pointer_null)
+							_box.item.marketPrice = undefined
 							
 						ds_grid_set(boxes_SERVER, i, j, _box)
 					}
@@ -137,6 +139,8 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						var _box = json_parse(_data)
 						if (_box.item == pointer_null)
 							_box.item = undefined
+						else if (_box.item.marketPrice == pointer_null)
+							_box.item.marketPrice = undefined
 							
 						ds_grid_set(boxes, i, j, _box)
 					}
@@ -778,7 +782,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 									if (box.item == pointer_null)
 										box.item = undefined
 									else
-										box.item = get_item_COMMON(box.item.code)
+										box.item = item_get_COMMON(box.item.code)
 								}
 							
 							ds_map_add(global.playerBoxes, accountName, value)
@@ -790,14 +794,14 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 								for (var z = 0; z < global.bc_ver_COMMON+2; z++)
 									ds_grid_set(boxes_SERVER, t, z, box_create_COMMON())
 	
-							ds_grid_set(boxes_SERVER, 0, 0, {item: get_item_COMMON(SWORD_000), tag: {isActive: false, isForQuest: false}, count: 1})
-							ds_grid_set(boxes_SERVER, 1, 0, {item: get_item_COMMON(SWORD_001), tag: {isActive: false, isForQuest: false}, count: 1})
-							ds_grid_set(boxes_SERVER, 2, 0, {item: get_item_COMMON(SWORD_002), tag: {isActive: false, isForQuest: false}, count: 1})
-							ds_grid_set(boxes_SERVER, 0, 1, {item: get_item_COMMON(SWORD_003), tag: {isActive: false, isForQuest: false}, count: 1})
-							ds_grid_set(boxes_SERVER, 1, 1, {item: get_item_COMMON(CLOTHES_000), tag: {isActive: false, isForQuest: false}, count: 1})
-							ds_grid_set(boxes_SERVER, 2, 1, {item: get_item_COMMON(CLOTHES_001), tag: {isActive: false, isForQuest: false}, count: 1})
-							ds_grid_set(boxes_SERVER, 0, 2, {item: get_item_COMMON(CLOTHES_002), tag: {isActive: false, isForQuest: false}, count: 1})
-							ds_grid_set(boxes_SERVER, 1, 2, {item: get_item_COMMON(CLOTHES_003), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 0, 0, {item: item_get_COMMON(SWORD_000), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 1, 0, {item: item_get_COMMON(SWORD_001), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 2, 0, {item: item_get_COMMON(SWORD_002), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 0, 1, {item: item_get_COMMON(SWORD_003), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 1, 1, {item: item_get_COMMON(CLOTHES_000), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 2, 1, {item: item_get_COMMON(CLOTHES_001), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 0, 2, {item: item_get_COMMON(CLOTHES_002), tag: {isActive: false, isForQuest: false}, count: 1})
+							ds_grid_set(boxes_SERVER, 1, 2, {item: item_get_COMMON(CLOTHES_003), tag: {isActive: false, isForQuest: false}, count: 1})
 						
 							ds_map_add(global.playerBoxes, accountName, boxes_SERVER)
 						}
@@ -1127,8 +1131,11 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							var _box = json_parse(_data)
 							if (_box.item == pointer_null)
 								_box.item = undefined
-							else
-								_box.item = get_item_COMMON(_box.item.code)
+							else {
+								if (_box.item.marketPrice == pointer_null)
+									_box.item.marketPrice = undefined
+								_box.item = item_get_COMMON(_box.item.code)
+							}
 							
 							ds_grid_set(boxes_TAKEN, i, j, _box)
 						}
@@ -1369,11 +1376,11 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						
 						if (box.item != undefined and box.item.type == real(data[0])) {
 							item_setup_COMMON(box.item)
-							if (get_box_confirmation_number_COMMON(box) == data[3]) {
+							if (box_get_confirmation_number_COMMON(box) == data[3]) {
 								var price = 1//box.item.worth/10
 								if (instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] >= price) {
-									if (data[5] == "undefined" and add_item_SERVER(box.item, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER])
-										or data[5] != "undefined" and add_item_SERVER(box.item, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER], real(data[5]), real(data[6]))) {
+									if (data[5] == "undefined" and item_add_SERVER(box.item, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER])
+										or data[5] != "undefined" and item_add_SERVER(box.item, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER], real(data[5]), real(data[6]))) {
 										instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] -= price
 									
 										net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: get_boxes_grid_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
@@ -1384,6 +1391,31 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						}
 						
 						break
+					}
+				}
+				break
+				
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			
+			case _CODE_SELL:
+				var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
+				if (instance == undefined or !instance_exists(instance))
+					break
+			
+				var box = ds_grid_get(global.playerBoxes[? instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER]], real(data[1]), real(data[2]))
+						
+				if (box.item != undefined and box.item.type == real(data[0])) {
+					item_setup_COMMON(box.item)
+					if (box_get_confirmation_number_COMMON(box) == data[3]) {
+						var price = box.item.worth/2
+							if (item_delete_SERVER(box.item, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER])) {
+								instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] += price
+									
+								net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: get_boxes_grid_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
+								net_server_send(socketID_sender, CODE_DIALOGUE, "Sold: "+box.item.name+"|You have earned "+string(price)+" [img=sprCoin2].|undefined|undefined|undefined|1", BUFFER_TYPE_STRING)
+							}
 					}
 				}
 				break
