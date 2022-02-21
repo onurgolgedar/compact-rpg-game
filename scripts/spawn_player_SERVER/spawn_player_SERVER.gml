@@ -12,8 +12,9 @@ function spawn_player_SERVER(socketID) {
 	
 	var newPlayer = instance_create_depth(xx, yy, 0, objPlayer_SERVER)
 	newPlayer.socketID = socketID
-	newPlayer.playerRow = db_get_row(global.DB_SRV_TABLE_players, socketID)
 	newPlayer.accountID = accountID
+	newPlayer.playerRow = db_get_row(global.DB_SRV_TABLE_players, socketID)
+	newPlayer.accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, accountID)
 	
 	var accountRow = db_get_row(global.DB_SRV_TABLE_accounts, db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID))
 	newPlayer.name = accountRow[? ACCOUNTS_NICKNAME_SERVER]

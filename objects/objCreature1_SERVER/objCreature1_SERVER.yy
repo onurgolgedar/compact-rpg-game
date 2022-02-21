@@ -8,8 +8,8 @@
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
-    "name": "parCreature_SERVER",
-    "path": "objects/parCreature_SERVER/parCreature_SERVER.yy",
+    "name": "parNPC_SERVER",
+    "path": "objects/parNPC_SERVER/parNPC_SERVER.yy",
   },
   "physicsObject": false,
   "physicsSensor": false,
@@ -27,7 +27,9 @@
     {"x":27.0,"y":27.0,},
   ],
   "eventList": [],
-  "properties": [],
+  "properties": [
+    {"varType":5,"value":"objCreature1","rangeEnabled":false,"rangeMin":0.0,"rangeMax":10.0,"listItems":[],"multiselect":false,"filters":[],"resourceVersion":"1.0","name":"clientObject","tags":[],"resourceType":"GMObjectProperty",},
+  ],
   "overriddenProperties": [],
   "parent": {
     "name": "2- Objects",

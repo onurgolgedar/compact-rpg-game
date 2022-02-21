@@ -27,7 +27,7 @@ if (room != roomMenu) {
 		global.boxes = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
 		for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++)
 			for (var j = 0; j < global.bc_ver_COMMON+2; j++)
-				ds_grid_set(global.boxes, i, j, global.boxEmpty_COMMON)
+				ds_grid_set(global.boxes, i, j, box_create_COMMON())
 	}
 	
 	if (global.boxes_skill == undefined) {

@@ -90,7 +90,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 				draw_set_color(c_black) draw_set_alpha(1*image_alpha)
 				
 				//draw_sprite_ext(box.skill.sprite, -1, skill_xx, skill_yy, 0.9, 0.9, 0, c_black, 0.7*image_alpha)
-				if (i != global.held_box_i or j != global.held_box_j or global.held_from != object_get_name(object_index)) 
+				if (i != global.held_box_i or j != global.held_box_j or global.held_from_assetName != object_get_name(object_index)) 
 					draw_sprite_ext(box.skill.sprite, -1, skill_xx, skill_yy, 0.8, 0.8, 0, c_white, 1*image_alpha)
 				
 				// Button

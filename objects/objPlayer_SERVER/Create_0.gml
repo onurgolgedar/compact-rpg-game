@@ -45,8 +45,9 @@ function change_mana(value) {
 event_inherited()
 
 socketID = undefined
-playerRow = undefined
 accountID = undefined
+playerRow = undefined
+accountInfoRow = undefined
 
 class = undefined
 skills = ds_map_create()

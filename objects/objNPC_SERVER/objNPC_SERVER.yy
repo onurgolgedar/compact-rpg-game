@@ -1,12 +1,15 @@
 {
-  "spriteId": null,
+  "spriteId": {
+    "name": "sprPlayer_SERVER",
+    "path": "sprites/sprPlayer_SERVER/sprPlayer_SERVER.yy",
+  },
   "solid": false,
   "visible": false,
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
-    "name": "parTarget_SERVER",
-    "path": "objects/parTarget_SERVER/parTarget_SERVER.yy",
+    "name": "parNPC_SERVER",
+    "path": "objects/parNPC_SERVER/parNPC_SERVER.yy",
   },
   "physicsObject": false,
   "physicsSensor": false,
@@ -25,16 +28,18 @@
   ],
   "eventList": [
     {"isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
-    {"isDnD":false,"eventNum":64,"eventType":8,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+    {"isDnD":false,"eventNum":0,"eventType":1,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
   ],
-  "properties": [],
+  "properties": [
+    {"varType":5,"value":"0","rangeEnabled":false,"rangeMin":0.0,"rangeMax":10.0,"listItems":[],"multiselect":false,"filters":[],"resourceVersion":"1.0","name":"clientObject","tags":[],"resourceType":"GMObjectProperty",},
+  ],
   "overriddenProperties": [],
   "parent": {
     "name": "2- Objects",
     "path": "folders/_SERVER/2- Objects.yy",
   },
   "resourceVersion": "1.0",
-  "name": "parCreature_SERVER",
+  "name": "objNPC_SERVER",
   "tags": [],
   "resourceType": "GMObject",
 }

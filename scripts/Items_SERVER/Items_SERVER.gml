@@ -10,13 +10,13 @@ function change_active_box_SERVER(socketID, type, box_i, box_j, box_confirmation
 	if (box_i != "undefined" and box_i != undefined)
 		box = ds_grid_get(boxes_SERVER, box_i, box_j)
 	else
-		box = global.boxEmpty_COMMON
+		box = box_create_COMMON()
 	
 	if (box.item != undefined) {
 		if (box.item.type != type)
 			return -1
 		
-		setup_item_COMMON(box.item)
+		item_setup_COMMON(box.item)
 		if (get_box_confirmation_number_COMMON(box) != box_confirmation_number)
 			return -1
 	}
@@ -28,7 +28,7 @@ function change_active_box_SERVER(socketID, type, box_i, box_j, box_confirmation
 	var result = -1
 	active_box_before.tag.isActive = false
 			
-	if (box != global.boxEmpty_COMMON) {
+	if (box.item != undefined) {
 		ds_grid_set(boxes_SERVER, type, global.bc_ver_COMMON, box)
 		box.tag.isActive = true
 	}

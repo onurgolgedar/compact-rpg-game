@@ -121,7 +121,7 @@
     "tracks": [
       {"name":"frames","spriteId":null,"keyframes":{"Keyframes":[
             {"id":"c6aa37af-7266-4fe1-8b97-d23f3f0264c9","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"e2a503f5-5c29-4ce0-aed8-821c9a948b09","path":"sprites/sprClothes3_npc/sprClothes3_npc.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
-          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"modifiers":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack",},
+          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack","modifiers":[],},
     ],
     "visibleRange": null,
     "lockOrigin": false,
@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Clothes",
-    "path": "folders/Lufulus' Creatures/Sprites/Clothes&Hair/Clothes.yy",
+    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Clothes&Hair/Clothes.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprClothes3_npc",

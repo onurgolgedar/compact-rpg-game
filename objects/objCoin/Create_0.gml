@@ -12,8 +12,8 @@ image_yscale *= image_xscale
 image_angle_speed = choose(3, -3)
 
 spds = ds_map_create()
-spd = {xx: 0, yy: 0}
-spd_res = {xx: 0, yy: 0}
+spd = { xx: 0, yy: 0 }
+spd_res = { xx: 0, yy: 0 }
 
 collector = undefined
 center = undefined

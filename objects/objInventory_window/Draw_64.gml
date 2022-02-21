@@ -12,8 +12,10 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 	//draw_roundrect(x-offset, y-offset, x+width+offset, y+height+offset, 1)
 		
 	draw_set_color(c_white) draw_set_alpha(0.4*image_alpha)
-		draw_roundrect_ext(x+offset, y+height-height_ext_bot-height_ext_bot_more, x+width-offset, y+height-offset-height_ext_bot_more, 15, 15, 0)
-		draw_roundrect_ext(x+offset, y+height-offset-height_ext_bot_more+offset, x+width-offset, y+height-offset, 15, 15, 0)
+		if (height_ext_bot != 0)
+			draw_roundrect_ext(x+offset, y+height-height_ext_bot-height_ext_bot_more, x+width-offset, y+height-offset-height_ext_bot_more, 15, 15, 0)
+		if (height_ext_bot_more != 0)
+			draw_roundrect_ext(x+offset, y+height-offset-height_ext_bot_more+offset, x+width-offset, y+height-offset, 15, 15, 0)
 	
 	draw_set_color(c_white) draw_set_alpha(1*image_alpha) draw_set_font(fontWindowTitle) draw_set_center()
 		draw_text_outlined(x+width/2, y+(height_ext_top/2-offset/2)/2+2, title, 2, c_black, 10, 1, 1, 0)
@@ -101,7 +103,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 				var item_xx = (box_positions.xx_start+box_positions.xx_end)/2
 				var item_yy = (box_positions.yy_start+box_positions.yy_end)/2
 				
-				if (i != global.held_box_i or j != global.held_box_j or global.held_from != object_get_name(object_index))  {
+				if (i != global.held_box_i or j != global.held_box_j or global.held_from_assetName != object_get_name(object_index))  {
 					draw_outline_origin(box.item.sprite, -1, item_xx, item_yy, 0.47, 0.47, 60, boxes_alpha[i][j]*image_alpha)
 					draw_sprite_origin_ext(box.item.sprite, -1, item_xx, item_yy, 0.47, 0.47, 60, c_white, boxes_alpha[i][j]*image_alpha)
 				}

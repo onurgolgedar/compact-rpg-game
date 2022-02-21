@@ -17,7 +17,7 @@ function recalculate_character_statistics_SERVER() {
 	
 	var weaponBox = get_active_box_SERVER(socketID, ITEMTYPE_SWORD)
 	if (weaponBox != undefined && weaponBox.item != undefined) {
-		setup_item_COMMON(weaponBox.item)
+		item_setup_COMMON(weaponBox.item)
 		
 		physicalPower += weaponBox.item.physicalPower
 		magicalPower += weaponBox.item.magicalPower
@@ -26,7 +26,7 @@ function recalculate_character_statistics_SERVER() {
 	
 	var clothesBox = get_active_box_SERVER(socketID, ITEMTYPE_CLOTHES)
 	if (clothesBox != undefined && clothesBox.item != undefined) {
-		setup_item_COMMON(clothesBox.item)
+		item_setup_COMMON(clothesBox.item)
 		
 		maxHp += clothesBox.item.maxHp
 		maxMana += clothesBox.item.maxMana

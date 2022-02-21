@@ -11,7 +11,7 @@ draw_set_font(font_bold)
 draw_set_color(font_color)
 
 var _subtext = ""
-var _subcolor = c_white
+var _subcolor = font_color
 var _xx = 0
 var _yy = 0
 var _bold = false
@@ -41,6 +41,7 @@ for (var i = 1, j = 1; i < string_length(text); i++) {
 		draw_set_font(_bold ? font_bold : font)
 		_xx += string_width(_subtext)
 		_subtext = ""
+		_subcolor = font_color
 
 		j = i+4
 		continue
@@ -71,26 +72,6 @@ for (var i = 1, j = 1; i < string_length(text); i++) {
 	}
 	
 		
-	if (string_copy(text, i, 3) == "[c=") {
-		_subtext += string_copy(text, j, i-j)
-		ds_list_add(subtexts, { data: _subtext, xx: _xx, yy: _yy, image: undefined, color: _subcolor, bold: _bold })
-		draw_set_font(_bold ? font_bold : font)
-		_xx += string_width(_subtext)
-		_subtext = ""
-			
-		var _subcolor = ""
-		var k = 1
-		while (string_char_at(text, i+2+k) != "]") {
-			_subcolor += string_char_at(text, i+2+k)
-			k++
-		}
-
-		_subcolor = real(_subcolor)
-
-		j = i+3+k
-		continue
-	}
-	
 	if (string_copy(text, i, 3) == "[c=") {
 		_subtext += string_copy(text, j, i-j)
 		ds_list_add(subtexts, { data: _subtext, xx: _xx, yy: _yy, image: undefined, color: _subcolor, bold: _bold })

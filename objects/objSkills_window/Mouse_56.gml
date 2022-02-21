@@ -16,7 +16,7 @@ if (!is_click_blocked() and global.held_box != undefined) {
 		}
 		
 		if (mouseOn_box != undefined) {
-			//if (global.held_from == object_get_name(objEquipments_window)) {}
+			//if (global.held_from_assetName == object_get_name(objEquipments_window)) {}
 		}
 	}
 }

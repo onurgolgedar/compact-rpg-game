@@ -7,7 +7,8 @@ if (is_mouse_on() and global.held_box == undefined) {
 				if (box.item != undefined) {
 					global.held_box_i = i
 					global.held_box_j = j
-					global.held_from = object_get_name(object_index)
+					global.held_from_assetName = object_get_name(object_index)
+					global.held_from = id
 					global.held_box = box
 				}
 			}

@@ -39,8 +39,11 @@ function choose_target() {
 
 event_inherited()
 
-creatureID = x*10000+y
-targetID = creatureID
+if (name == "" and clientObject != noone)
+	name = npc_get_name_COMMON(clientObject)
+
+npcID = x*10000+y
+targetID = npcID
 
 target = undefined
 function_call(choose_target, 1, true)

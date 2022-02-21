@@ -69,7 +69,7 @@ function main_loop() {
 					if (boxFocused_textbox != undefined)
 						instance_destroy(boxFocused_textbox)
 					
-					boxFocused_textbox = create_textbox(get_item_text(boxFocused.item), contCursor.id)
+					boxFocused_textbox = create_textbox(item_get_text(boxFocused.item), contCursor.id)
 				}
 				
 				break

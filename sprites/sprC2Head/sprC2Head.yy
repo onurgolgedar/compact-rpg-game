@@ -125,7 +125,7 @@
       {"name":"frames","spriteId":null,"keyframes":{"Keyframes":[
             {"id":"fdd7bb65-27c5-4fcc-8f95-0ccec3d517d2","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"d1ef6947-27b2-497e-a3c5-8076263cf018","path":"sprites/sprC2Head/sprC2Head.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"e6783218-09b9-4724-b8b8-23089dc7fb46","Key":1.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"44d0fa8b-7636-43d7-b2df-dcca668bcb6c","path":"sprites/sprC2Head/sprC2Head.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
-          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"modifiers":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack",},
+          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack","modifiers":[],},
     ],
     "visibleRange": null,
     "lockOrigin": false,
@@ -153,7 +153,7 @@
   "nineSlice": null,
   "parent": {
     "name": "C2",
-    "path": "folders/Lufulus' Creatures/Sprites/Creature/C2.yy",
+    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Creature/C2.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprC2Head",

@@ -1,7 +1,5 @@
 event_inherited()
 
-creatureID = undefined
-
 rigidbody_create(sprCreature1Shoulders,
 				 sprCreature1Arm, 14,
 				 sprCreature1FrontArm, 26,

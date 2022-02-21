@@ -32,11 +32,13 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 
 	try {
 		switch(code) {										
-			case CODE_GET_BOXES:
+			case CODE_GET_INVENTORY:
+				var loaded_data = json_parse(data[0])
+			
 				ds_grid_destroy(global.boxes)
 				
 				var boxes_SERVER = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
-				ds_grid_read(boxes_SERVER, data[0])
+				ds_grid_read(boxes_SERVER, loaded_data.boxes)
 				for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++) {
 					for (var j = 0; j < global.bc_ver_COMMON+2; j++) {
 						var _data = ds_grid_get(boxes_SERVER, i, j)
@@ -62,13 +64,14 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				with (objInventory_window)
 					inventory_refresh()
 					
+				global.gold = loaded_data.gold
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE_GET_BOXES_SKILL:
+			case CODE_GET_INVENTORY_SKILL:
 				ds_grid_destroy(global.boxes_skill)
 				
 				var boxes_skill_SERVER = ds_grid_create(global.sc_hor_COMMON*global.pageCount_skill_COMMON, global.sc_ver_COMMON)
@@ -115,6 +118,40 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					}
 				break
 			
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			
+			case CODE_WINDOW:
+				var loaded_data = json_parse(data[0])
+			
+				var trade_window = instance_create_layer(450, 140, "Windows", asset_get_index(loaded_data.window))
+				trade_window.owner = loaded_data.owner
+			
+				var boxes = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
+				ds_grid_read(boxes, loaded_data.data)
+				for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++) {
+					for (var j = 0; j < global.bc_ver_COMMON+2; j++) {
+						var _data = ds_grid_get(boxes, i, j)
+						
+						var _box = json_parse(_data)
+						if (_box.item == pointer_null)
+							_box.item = undefined
+							
+						ds_grid_set(boxes, i, j, _box)
+					}
+				}
+				
+				for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++) {
+					for (var j = 0; j < global.bc_ver_COMMON+2; j++) {
+						var box = ds_grid_get(boxes, i, j)
+		
+						ds_grid_set(trade_window.boxes, i, j, box)
+					}
+				}
+				ds_grid_destroy(boxes)
+				break
+				
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -270,6 +307,55 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						var _text = {xx: real(data[1]), yy: real(data[2]), text: data[3], life: real(data[4]), spd_x: real(data[5]), spd_y: real(data[6]), color: real(data[7]), size: real(data[8]), maxlife: real(data[4])}
 						ds_list_add(texts, _text)
 					}
+				break
+				
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+				
+			case CODE_DIALOGUE:
+				if (array_length(data) > 1) {
+					var buttonsArray = undefined
+					if (data[3] != "undefined") {
+						buttonsArray = json_parse(data[3])
+						for (var i = 0; i < array_length(buttonsArray); i++)
+							buttonsArray[i].image = asset_get_index(buttonsArray[i].image)
+					}
+				
+					if (data[4] == "undefined")
+						data[4] = undefined
+					if (data[2] == "undefined")
+						data[2] = undefined
+					if (data[5] == "undefined")
+						data[5] = undefined
+					
+					show_questionbox(450, 550, data[0], data[1], data[4] != undefined ? asset_get_index(data[4]) : data[4], data[2] != undefined ? real(data[2]) : data[2], buttonsArray, data[5] != undefined ? real(data[5]) : data[5])
+				}
+				else {
+					var messageBoxes = json_parse(data[0])
+						
+					for (var i = 0; i < 2; i++) {
+						var messageBox = messageBoxes[i]
+						
+						if (messageBox != pointer_null and messageBox != undefined) {
+							if (messageBox.isDialogueMessage) {
+								var dialogueBox = messageBox
+								var buttonsArray = dialogueBox.buttonsArray
+								for (var i = 0; i < array_length(buttonsArray); i++)
+									if (buttonsArray[i].image != pointer_null)
+										buttonsArray[i].image = asset_get_index(buttonsArray[i].image)
+									else
+										buttonsArray[i].image = undefined
+											
+								var dialogueBox_object = show_questionbox(dialogueBox.xx, dialogueBox.yy, dialogueBox.title, dialogueBox.text, dialogueBox.owner, dialogueBox.messageID, buttonsArray)
+								dialogueBox_object.dialogueNo = dialogueBox.dialogueNo
+								dialogueBox_object.dialogueSize = dialogueBox.dialogueSize
+							}
+							else
+								show_messagebox(messageBox.xx, messageBox.yy, messageBox.title, messageBox.text, messageBox.duration)
+						}
+					}
+				}
 				break
 	
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -475,11 +561,11 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE_SPAWN_CREATURE:
-				var _creatureID = real(data[0])
+			case CODE_SPAWN_NPC:
+				var _npcID = real(data[0])
 		
-				var creature = instance_create_layer(real(data[1]), real(data[2]), "Normal", objCreature1)
-				creature.creatureID = _creatureID
+				var creature = instance_create_layer(real(data[1]), real(data[2]), "Normal", asset_get_index(data[7]))
+				creature.npcID = _npcID
 				creature.maxHp = real(data[3])
 				creature.maxEnergy = real(data[4])
 				creature.maxMana = real(data[5])
@@ -490,7 +576,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				creature.rigidbody_set_definedstance(STANCE_NORMAL, 0.5)
 				creature.name = data[6]
 				
-				ds_map_set(global.creatureInstances, _creatureID, creature)
+				ds_map_set(global.creatureInstances, _npcID, creature)
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -662,7 +748,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, onlineAccount[? ONLINEACCOUNTS_ACCID_SERVER])
 					if (accountInfoRow == undefined) {
 						accountInfoRow = db_create_row(data[0])
-						accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = 0
+						accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = 500
 						accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = 1
 						accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER] = LOCATION_THE_CASTLE
 						db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
@@ -702,7 +788,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							var boxes_SERVER = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
 							for (var t = 0; t < global.bc_hor_COMMON*global.pageCount_COMMON; t++)
 								for (var z = 0; z < global.bc_ver_COMMON+2; z++)
-									ds_grid_set(boxes_SERVER, t, z, global.boxEmpty_COMMON)
+									ds_grid_set(boxes_SERVER, t, z, box_create_COMMON())
 	
 							ds_grid_set(boxes_SERVER, 0, 0, {item: get_item_COMMON(SWORD_000), tag: {isActive: false, isForQuest: false}, count: 1})
 							ds_grid_set(boxes_SERVER, 1, 0, {item: get_item_COMMON(SWORD_001), tag: {isActive: false, isForQuest: false}, count: 1})
@@ -887,17 +973,19 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							send_appearence_to_all_SERVER(id.socketID, socketID_sender)
 						}
 				
-					with (objCreature1)
-						net_server_send(socketID_sender, CODE_SPAWN_CREATURE, string(targetID)+"|"+string(x)+"|"+string(y)+"|"+string(maxHp)+"|"+string(maxEnergy)+"|"+string(maxMana)+"|"+string(name), BUFFER_TYPE_STRING)
+					with (objCreature1_SERVER)
+						net_server_send(socketID_sender, CODE_SPAWN_NPC, string(targetID)+"|"+string(x)+"|"+string(y)+"|"+string(maxHp)+"|"+string(maxEnergy)+"|"+string(maxMana)+"|"+string(name)+"|"+object_get_name(clientObject), BUFFER_TYPE_STRING)
+						
+					with (objNPC_SERVER)
+						net_server_send(socketID_sender, CODE_SPAWN_NPC, string(targetID)+"|"+string(x)+"|"+string(y)+"|"+string(maxHp)+"|"+string(maxEnergy)+"|"+string(maxMana)+"|"+string(name)+"|"+object_get_name(clientObject), BUFFER_TYPE_STRING)
 	
-					
 					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, account[? ACCOUNTS_CLASS_SERVER], BUFFER_TYPE_STRING)
 					
 					// Spawn Player
 					var instance = spawn_player_SERVER(socketID_sender)
 					
 					// Send Private Data
-					net_server_send(socketID_sender, CODE_GET_BOXES, get_boxes_grid_SERVER(socketID_sender), BUFFER_TYPE_STRING)
+					net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: get_boxes_grid_SERVER(socketID_sender), gold: accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
 					net_server_send(socketID_sender, CODE_GET_ACCOUNTINFO, accountInfoRow[? ACCOUNTINFO_GOLD_SERVER], BUFFER_TYPE_INT32)
 				
 					// Send Shared Data
@@ -1270,16 +1358,104 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case _CODE_GET_BOXES:
-				net_server_send(socketID_sender, CODE_GET_BOXES, get_boxes_grid_SERVER(socketID_sender), BUFFER_TYPE_STRING)
+			case _CODE_BUY:
+				var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
+				if (instance == undefined or !instance_exists(instance))
+					break
+			
+				with (parNPC_SERVER) {
+					if (id.npcID == real(data[4])) {
+						var box = ds_grid_get(id.boxes, real(data[1]), real(data[2]))
+						
+						if (box.item != undefined and box.item.type == real(data[0])) {
+							item_setup_COMMON(box.item)
+							if (get_box_confirmation_number_COMMON(box) == data[3]) {
+								var price = 1//box.item.worth/10
+								if (instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] >= price) {
+									if (data[5] == "undefined" and add_item_SERVER(box.item, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER])
+										or data[5] != "undefined" and add_item_SERVER(box.item, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER], real(data[5]), real(data[6]))) {
+										instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] -= price
+									
+										net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: get_boxes_grid_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
+										net_server_send(socketID_sender, CODE_DIALOGUE, "Purchased: "+box.item.name+"|You have paid "+string(price)+" [img=sprCoin2].|undefined|undefined|undefined|1", BUFFER_TYPE_STRING)
+									}
+								}
+							}
+						}
+						
+						break
+					}
+				}
+				break
+				
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+	
+			case _CODE_DIALOGUE:
+				var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
+				if (instance == undefined or !instance_exists(instance))
+					break
+			
+				var title = "undefined"
+				var text = "undefined"
+				var buttons = "undefined"
+			
+				switch (asset_get_index(data[0])) {
+					// contMain
+					case contMain:
+						switch (data[1]) {
+							// Message -1
+							case 1:
+								title = "Message"
+								text = "You are given a cup of coffee.\nHow much gold do you want to tip?"
+								buttons = json_stringify([ new dButton("10", sprite_get_name(sprCoin), false, 10), new dButton("20", sprite_get_name(sprCoin), false, 20),
+														   new dButton("30", sprite_get_name(sprCoin), false, 30), new dButton("40", sprite_get_name(sprCoin), false, 40),
+														   new dButton("50", sprite_get_name(sprCoin), false, 50), new dButton("60", sprite_get_name(sprCoin), false, 60),
+														   new dButton("70", sprite_get_name(sprCoin), false, 70), new dButton("80", sprite_get_name(sprCoin), false, 80),
+														   new dButton("90", sprite_get_name(sprCoin), false, 90), new dButton("100", sprite_get_name(sprCoin), false, 100) ])
+								break
+								
+							case 2:
+								title = "Message 2"
+								text = "You are given a cup of coffee.\nHow much gold do you want to tip?"
+								buttons = json_stringify([ new dButton("10", sprite_get_name(sprCoin), false, 10), new dButton("20", sprite_get_name(sprCoin), false, 20),
+														   new dButton("30", sprite_get_name(sprCoin), false, 30), new dButton("40", sprite_get_name(sprCoin), false, 40),
+														   new dButton("50", sprite_get_name(sprCoin), false, 50), new dButton("60", sprite_get_name(sprCoin), false, 60),
+														   new dButton("70", sprite_get_name(sprCoin), false, 70), new dButton("80", sprite_get_name(sprCoin), false, 80),
+														   new dButton("90", sprite_get_name(sprCoin), false, 90), new dButton("100", sprite_get_name(sprCoin), false, 100) ])
+								break
+						}
+						break
+				}
+				
+				if (title != "undefined")
+					net_server_send(socketID_sender, CODE_DIALOGUE, title+"|"+text+"|"+string(data[1])+"|"+buttons+"|"+data[0]+"|undefined", BUFFER_TYPE_STRING)
+				else {
+					var dialogueBox = dialogue_progress_SERVER(real(data[1]), real(data[2]), asset_get_index(data[0]), real(data[4]), real(data[3]), instance, socketID_sender)
+					if (dialogueBox != undefined)
+						net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify(dialogueBox), BUFFER_TYPE_STRING)
+				}
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case _CODE_GET_BOXES_SKILL:
-				net_server_send(socketID_sender, CODE_GET_BOXES_SKILL, get_boxes_skill_grid_SERVER(socketID_sender), BUFFER_TYPE_STRING)
+			case _CODE_GET_INVENTORY:
+				var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
+				if (instance == undefined or !instance_exists(instance))
+					break
+			
+				net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({boxes: get_boxes_grid_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER]}), BUFFER_TYPE_STRING)
+				break
+				
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			
+			case _CODE_GET_INVENTORY_SKILL:
+				net_server_send(socketID_sender, CODE_GET_INVENTORY_SKILL, get_boxes_skill_grid_SERVER(socketID_sender), BUFFER_TYPE_STRING)
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1461,10 +1637,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE_TELL_CREATURE_POSITION:
-				var creatureID = real(data[0])
+			case CODE_TELL_NPC_POSITION:
+				var npcID = real(data[0])
 		
-				var creature = global.creatureInstances[? creatureID]
+				var creature = global.creatureInstances[? npcID]
 				if (creature != undefined) {
 					creature.x = real(data[1])
 					creature.y = real(data[2])
@@ -1501,7 +1677,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE_TELL_CREATURE_HP:
+			case CODE_TELL_NPC_HP:
 				var creature = global.creatureInstances[? real(data[0])]
 			
 				if (creature != undefined)
@@ -1523,7 +1699,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE_TELL_CREATURE_MANA:
+			case CODE_TELL_NPC_MANA:
 				var creature = global.creatureInstances[? real(data[0])]
 			
 				if (creature != undefined)
@@ -1561,7 +1737,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE_TELL_CREATURE_ENERGY:
+			case CODE_TELL_NPC_ENERGY:
 				var creature = global.creatureInstances[? real(data[0])]
 			
 				if (creature != undefined)
@@ -1583,7 +1759,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE_TELL_CREATURE_ROTATION:
+			case CODE_TELL_NPC_ROTATION:
 				var creature = global.creatureInstances[? real(data[0])]
 			
 				if (creature != undefined)

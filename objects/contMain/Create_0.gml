@@ -8,6 +8,9 @@ function main_loop() {
 		global.period = 10-(_period mod 10)
 	
 	global.gameTime += 1/20
+	
+	with (parClickableNPC)
+		hover = is_mouse_on()
 
 	function_call(main_loop, 1/20, true)
 }

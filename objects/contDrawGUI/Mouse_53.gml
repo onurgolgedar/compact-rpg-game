@@ -13,7 +13,7 @@ with (contGameController) {
 			global.held_box_i = other.mouseOnSkillBox
 			global.held_box_j = 0
 			global.held_box = objPlayer.skills[other.mouseOnSkillBox]
-			global.held_from = object_get_name(other.object_index)
+			global.held_from_assetName = object_get_name(other.object_index)
 		}
 	}
 }

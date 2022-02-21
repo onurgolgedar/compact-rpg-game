@@ -30,13 +30,11 @@ if (is_alive()) {
 		
 			draw_set_font(fontName) draw_set_color(c_white)
 				draw_text_outlined(sx, sy-115, name, 2, c_black, 10, 1, 1, 0)
-			/*draw_set_color(c_navy)
-				draw_text_outlined(sx, sy-135, class, 2, c_black, 10, 0.8, 0.8, 0)*/
 			draw_set_default()
 		}
 	}
 	
-	with (parCreature) {
+	with (parNPC) {
 		if (barVisible) {
 			var size = 1
 		
@@ -51,7 +49,15 @@ if (is_alive()) {
 				
 			draw_set_halign(fa_center) draw_set_valign(fa_center) draw_set_font(fontBarText)
 				draw_text(sx, sy-56, string(ceil(hp)))
-			draw_set_default()
+			
+			if (name != undefined) {
+				draw_set_font(fontName) draw_set_color(c_ltgray)
+					draw_text_outlined(sx, sy-75, name, 2, c_black, 10, 0.8, 0.8, 0)
+				draw_set_default()
+			}
+			
+			if (hover)
+				draw_sprite_ext(sprMarkBubble, -1, sx, sy, 0.95, 0.95, 0, c_white, 1)
 		}
 	}
 

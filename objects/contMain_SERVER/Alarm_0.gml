@@ -31,12 +31,20 @@ tell_all_manas_SERVER()
 tell_all_energies_SERVER()
 tell_all_angles_SERVER()
 
-with(objCreature1_SERVER) {
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_CREATURE_POSITION, string(creatureID)+"|"+string(x)+"|"+string(y), BUFFER_TYPE_STRING, true)
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_CREATURE_HP, string(creatureID)+"|"+string(hp), BUFFER_TYPE_STRING, true)
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_CREATURE_MANA, string(creatureID)+"|"+string(mana), BUFFER_TYPE_STRING, true)
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_CREATURE_ENERGY, string(creatureID)+"|"+string(energy), BUFFER_TYPE_STRING, true)
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_CREATURE_ROTATION, string(creatureID)+"|"+string(image_angle), BUFFER_TYPE_STRING, true)
+with (objCreature1_SERVER) {
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_POSITION, string(npcID)+"|"+string(x)+"|"+string(y), BUFFER_TYPE_STRING, true)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_HP, string(npcID)+"|"+string(hp), BUFFER_TYPE_STRING, true)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_MANA, string(npcID)+"|"+string(mana), BUFFER_TYPE_STRING, true)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_ENERGY, string(npcID)+"|"+string(energy), BUFFER_TYPE_STRING, true)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_ROTATION, string(npcID)+"|"+string(image_angle), BUFFER_TYPE_STRING, true)
+}
+
+with (objNPC_SERVER) {
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_POSITION, string(npcID)+"|"+string(x)+"|"+string(y), BUFFER_TYPE_STRING, true)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_HP, string(npcID)+"|"+string(hp), BUFFER_TYPE_STRING, true)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_MANA, string(npcID)+"|"+string(mana), BUFFER_TYPE_STRING, true)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_ENERGY, string(npcID)+"|"+string(energy), BUFFER_TYPE_STRING, true)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_ROTATION, string(npcID)+"|"+string(image_angle), BUFFER_TYPE_STRING, true)
 }
 
 alarm[0] = room_speed/30

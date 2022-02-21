@@ -1,10 +1,10 @@
-function get_item_text(item) {
-	setup_item_COMMON(item)
+function item_get_text(item) {
+	item_setup_COMMON(item)
 	
 	if (item.type == ITEMTYPE_SWORD)
-		return "[b]"+item.name+" (+"+string(item.upgrade)+")"+"[/b]\nAttack (PHY): "+string(item.physicalPower)+"\nAttack (MAG): "+string(item.magicalPower)+"\nSpeed: "+string(item.attackSpeed)+"\n\n"+string(item.worth)+"[img=sprCoin2]"
+		return "[b]"+item.name+" (+"+string(item.upgrade)+")"+"[/b]\nAttack (PHY): "+string(item.physicalPower)+"\nAttack (MAG): "+string(item.magicalPower)+"\nSpeed: "+string(item.attackSpeed)+"\n\n"+string(item.worth)+"[img=sprCoin2]"+strret("\nPrice: "+string(item.marketPrice)+"[img=sprCoin2]", item.marketPrice != undefined)
 	else if (item.type == ITEMTYPE_CLOTHES)
-		return "[b]"+item.name+" (+"+string(item.upgrade)+")"+"[/b]\nHealth: "+string(item.maxHp)+"\nMana: "+string(item.maxMana)+"\nSlow Rate: "+string(item.slowRate)+"%\n\n"+string(item.worth)+"[img=sprCoin2]"
+		return "[b]"+item.name+" (+"+string(item.upgrade)+")"+"[/b]\nHealth: "+string(item.maxHp)+"\nMana: "+string(item.maxMana)+"\nSlow Rate: "+string(item.slowRate)+"%\n\n"+string(item.worth)+"[img=sprCoin2]"+strret("\nPrice: "+string(item.marketPrice)+"[img=sprCoin2]", item.marketPrice != undefined)
 	
 	return ""
 }
@@ -34,13 +34,13 @@ function change_active_box(type, box_i, box_j, box_confirmation_number) {
 	if (box_i != "undefined" and box_i != undefined)
 		box = ds_grid_get(global.boxes, box_i, box_j)
 	else
-		box = global.boxEmpty_COMMON
+		box = box_create_COMMON()
 		
 	if (box.item != undefined) {
 		if (box.item.type != type)
 			return false
 		
-		setup_item_COMMON(box.item)
+		item_setup_COMMON(box.item)
 		if (get_box_confirmation_number_COMMON(box) != box_confirmation_number)
 			return false
 	}
@@ -51,7 +51,7 @@ function change_active_box(type, box_i, box_j, box_confirmation_number) {
 	
 	active_box_before.tag.isActive = false
 			
-	if (box != global.boxEmpty_COMMON) {
+	if (box.item != undefined) {
 		ds_grid_set(global.boxes, type, global.bc_ver_COMMON, box)
 		box.tag.isActive = true
 	}
