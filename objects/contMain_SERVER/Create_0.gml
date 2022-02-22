@@ -7,8 +7,9 @@ global.playerSkills = ds_map_create() // Skill Tree
 global.playerSkillBoxes = ds_map_create() // Skill Boxes
 
 global.locations = ds_map_create() // Locations
-ds_map_add(global.locations, 1, {name: "Area 1", code: 1, spawn_x: 3590, spawn_y: 1524})
+ds_map_add(global.locations, 1, {name: "Area 1", code: 1, spawn_x: 1132, spawn_y: 1673})
 ds_map_add(global.locations, 2, {name: "Area 2", code: 2, spawn_x: 6612, spawn_y: 2444})
+ds_map_add(global.locations, 3, {name: "Area 3", code: 3, spawn_x: 10930, spawn_y: 1620})
 
 // Inventory Data
 global.bc_hor_COMMON = 5

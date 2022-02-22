@@ -2,8 +2,8 @@ event_inherited()
 
 title = "CHARACTER"
 
-offset = 4
-height_ext_top = 57
+offset = 3
+height_ext_top = 50
 
 width = 250
 height = 400

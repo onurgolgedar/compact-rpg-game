@@ -81,19 +81,19 @@ title = "INVENTORY"
 pageCount = global.pageCount_COMMON
 page = 1
 
-boxWidth = 50
-boxHeight = 50
-boxBetween = 6
+boxWidth = 48
+boxHeight = 48
+boxBetween = 5
 	
 boxFocused = undefined
 boxFocused_textbox = undefined
 boxFocused_i = undefined
 boxFocused_j = undefined
 
-offset = 4
+offset = 3
 height_ext_bot = 0
 height_ext_bot_more = 42
-height_ext_top = 57
+height_ext_top = 50
 
 width = global.bc_hor_COMMON*boxWidth+(global.bc_hor_COMMON-1)*boxBetween+offset*4
 height = global.bc_ver_COMMON*boxHeight+(global.bc_ver_COMMON-1)*boxBetween+offset*2+height_ext_bot+offset+height_ext_bot_more+offset+height_ext_top+offset

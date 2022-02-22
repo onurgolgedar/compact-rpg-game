@@ -1,19 +1,25 @@
 function item_get_text(item) {
 	item_setup_COMMON(item)
 	
-	if (item.type == ITEMTYPE_SWORD)
-		return "[b]"+item.name+" (+"+string(item.upgrade)+")"+"[/b]\nAttack (PHY): "+string(item.physicalPower)+"\nAttack (MAG): "+string(item.magicalPower)+"\nSpeed: "+string(item.attackSpeed)+"\n\n"+string(item.worth)+"[img=sprCoin2]"+strret("\nPrice: "+string(item.marketPrice)+"[img=sprCoin2]", item.marketPrice != undefined)
-	else if (item.type == ITEMTYPE_CLOTHES)
-		return "[b]"+item.name+" (+"+string(item.upgrade)+")"+"[/b]\nHealth: "+string(item.maxHp)+"\nMana: "+string(item.maxMana)+"\nSlow Rate: "+string(item.slowRate)+"%\n\n"+string(item.worth)+"[img=sprCoin2]"+strret("\nPrice: "+string(item.marketPrice)+"[img=sprCoin2]", item.marketPrice != undefined)
+	switch (item.type) {
+		case ITEMTYPE_SWORD:
+			return item_get_title_COMMON(item)+"\nAttack (PHY): "+string(item.physicalPower)+"\nAttack (MAG): "+string(item.magicalPower)+"\nSpeed: "+string(item.attackSpeed)+"\n\n"+string(item.worth)+"[img=sprCoin2]"+strret("\nPrice: "+string(item.marketPrice)+"[img=sprCoin2]", item.marketPrice != undefined)
+		
+		case ITEMTYPE_CLOTHES:
+			return item_get_title_COMMON(item)+"\nHealth: "+string(item.maxHp)+"\nMana: "+string(item.maxMana)+"\nSlow Rate: "+string(item.slowRate)+"%\n\n"+string(item.worth)+"[img=sprCoin2]"+strret("\nPrice: "+string(item.marketPrice)+"[img=sprCoin2]", item.marketPrice != undefined)
+		
+		case ITEMTYPE_PRECIOUS:
+			return item_get_title_COMMON(item)+"\n\n"+string(item.worth)+"[img=sprCoin2]"+strret("\nPrice: "+string(item.marketPrice)+"[img=sprCoin2]", item.marketPrice != undefined)
+	}
 	
 	return ""
 }
 
-function get_active_box(type) {
+function box_get_active(type) {
 	return ds_grid_get(global.boxes, type, global.bc_ver_COMMON)
 }
 
-function get_boxes_grid() {				
+function box_get_boxes_string() {				
 	var _grid = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
 	for (var k = 0; k < global.bc_hor_COMMON*global.pageCount_COMMON; k++) {
 		for (var z = 0; z < global.bc_ver_COMMON+2; z++) {
@@ -29,7 +35,7 @@ function get_boxes_grid() {
 	return grid_string
 }
 
-function change_active_box(type, box_i, box_j, box_confirmation_number) {
+function box_change_active(type, box_i, box_j, box_confirmation_number) {
 	var box
 	if (box_i != "undefined" and box_i != undefined)
 		box = ds_grid_get(global.boxes, box_i, box_j)
@@ -45,7 +51,7 @@ function change_active_box(type, box_i, box_j, box_confirmation_number) {
 			return false
 	}
 	
-	var active_box_before = get_active_box(type)
+	var active_box_before = box_get_active(type)
 	if (active_box_before == undefined and box == global.boxEmpty_COMMON)
 		return false
 	
@@ -69,7 +75,7 @@ function change_active_box(type, box_i, box_j, box_confirmation_number) {
 	return true
 }
 
-function change_box_position(box_i, box_j, target_box_i, target_box_j) {	
+function box_change_position(box_i, box_j, target_box_i, target_box_j) {	
 	var box = ds_grid_get(global.boxes, box_i, box_j)
 	var box_target = ds_grid_get(global.boxes, target_box_i, target_box_j)
 	
@@ -81,7 +87,7 @@ function change_box_position(box_i, box_j, target_box_i, target_box_j) {
 }
 
 function get_active_item(type) {
-	return get_active_box(type).item
+	return box_get_active(type).item
 }
 
 function unequip_item(item) {
@@ -90,7 +96,7 @@ function unequip_item(item) {
 			for (var i = global.bc_hor_COMMON*(page-1); i < global.bc_hor_COMMON*page; i++) {
 				var box = ds_grid_get(global.boxes, i, j)
 				if (box.item == undefined) {
-					change_box_position(item.type, global.bc_ver_COMMON, i, j)
+					box_change_position(item.type, global.bc_ver_COMMON, i, j)
 					break
 				}
 			}

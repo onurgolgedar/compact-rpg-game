@@ -69,8 +69,8 @@
   ],
   "nineSlice": null,
   "parent": {
-    "name": "Valuable",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Item/Valuable.yy",
+    "name": "Precious",
+    "path": "folders/COMMON/1- Sprites/Items/Precious.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprSilver",

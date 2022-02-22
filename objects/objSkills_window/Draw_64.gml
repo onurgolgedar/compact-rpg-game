@@ -27,7 +27,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 	mouseOnButton = undefined
 	
 	// Page Buttons
-	var pageButtonEdge = 22
+	var pageButtonEdge = 20
 	var pageButtonWidthFactor = 2
 	var pageButton_x, pageButton_y
 	for (var i = 0; i < pageCount; i++) {

@@ -17,7 +17,7 @@ if (global.held_box != undefined) {
 			}
 		
 			if (mouseOn_box != undefined)
-				net_client_send(_CODE_CHANGE_ACTIVE_BOX, string(mouseOn_box_i)+"|"+string(global.held_box_i)+"|"+string(global.held_box_j)+"|"+box_get_confirmation_number_COMMON(global.held_box), BUFFER_TYPE_STRING)
+				net_client_send(_CODE_box_change_active, string(mouseOn_box_i)+"|"+string(global.held_box_i)+"|"+string(global.held_box_j)+"|"+box_get_confirmation_number_COMMON(global.held_box), BUFFER_TYPE_STRING)
 		}
 	}
 }

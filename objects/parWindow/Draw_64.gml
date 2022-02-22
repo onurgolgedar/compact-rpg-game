@@ -3,7 +3,7 @@ draw_text(x, y+60, onFront)*/
 
 var xx = x+width-25
 var yy = y+3
-var buttonLength = 20
+var buttonLength = 18
 
 draw_set_alpha(image_alpha)
 
@@ -16,5 +16,5 @@ draw_roundrect(xx-2, yy-2, xx+buttonLength+2, yy+buttonLength+2, 0)
 draw_set_color(isOnExitButton ? c_red : c_dkgray)
 	draw_roundrect(xx, yy, xx+buttonLength, yy+buttonLength, 0)
 draw_set_color(c_black) draw_set_center() draw_set_alpha(1*image_alpha)
-	draw_text(x+width-14, y+13, "x")
+	draw_text(x+width-16, y+11, "x")
 draw_set_default() draw_set_alpha(1)

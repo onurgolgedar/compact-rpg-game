@@ -45,6 +45,9 @@ if (name == "" and clientObject != noone)
 npcID = x*10000+y
 targetID = npcID
 
+boxes = undefined
+lootBoxes = undefined
+
 target = undefined
 function_call(choose_target, 1, true)
 

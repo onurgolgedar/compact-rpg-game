@@ -28,6 +28,8 @@ function_call(alpha_loop, 1/30, true)
 
 
 function after_creation() {
+	if (owner != undefined)
+		ds_list_add(owner.windows, id)
 	event_user(0)
 }
 function_call(after_creation, 1, false)

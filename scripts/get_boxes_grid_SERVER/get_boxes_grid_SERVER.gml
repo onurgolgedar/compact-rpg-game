@@ -1,4 +1,4 @@
-function get_boxes_grid_SERVER(socketID, boxes = undefined) {
+function box_get_boxes_string_SERVER(socketID, boxes = undefined) {
 	if (boxes = undefined)
 		boxes = global.playerBoxes[? db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID)]
 				

@@ -20,13 +20,6 @@ if (is_mouse_on() and !is_click_blocked()) {
 		
 	if (mouseOnButton < pageCount)
 		page = mouseOnButton+1
-		
-	if (mouseOnButton == 100) {
-		if (!instance_exists(objEquipments_window))
-			instance_create_layer(x+width+20, y+height+30, "Windows", objEquipments_window)
-		else
-			instance_destroy(objEquipments_window)
-	}
 }
 
 event_inherited()

@@ -30,7 +30,7 @@ function dialogue_progress_SERVER(messageID, dialogueNo, owner_assetName, ownerI
 		}
 			
 		if (rewardText != "undefined") {
-			messageBoxes[1] = { xx: 500, yy: 250, title: title, text: rewardText, duration: 5, isDialogueMessage: false }
+			messageBoxes[1] = { xx: 500, yy: 250, title: title, text: rewardText, ownerID: undefined, owner: undefined, duration: 5, isDialogueMessage: false, ownerID: ownerID, owner: owner_assetName }
 			return messageBoxes
 		}
 		else if (rewardRedirect == -1 and text != "undefined") {
@@ -62,10 +62,10 @@ function dialogue_progress_SERVER(messageID, dialogueNo, owner_assetName, ownerI
 		var qKey = dialogue_get_qKey_COMMON(messageID, dialogueNo)
 		if (text != "") {
 			var buttonsArray = [ new dButton(ans[0]), new dButton(ans[1]),
-									new dButton(ans[2]), new dButton(ans[3]),
-									new dButton(ans[4]), new dButton(ans[5]),
-									new dButton(ans[6]), new dButton(ans[7]) ]
-			messageBoxes[1] = { xx: 250, yy: 250, title: title, text: text, owner: owner_assetName, qKey: qKey, buttonsArray: buttonsArray, messageID: messageID, dialogueNo: dialogueNo, dialogueSize: dialogueSize, isDialogueMessage: true }
+								 new dButton(ans[2]), new dButton(ans[3]),
+								 new dButton(ans[4]), new dButton(ans[5]),
+								 new dButton(ans[6]), new dButton(ans[7]) ]
+			messageBoxes[1] = { xx: 250, yy: 250, title: title, text: text, qKey: qKey, buttonsArray: buttonsArray, messageID: messageID, dialogueNo: dialogueNo, dialogueSize: dialogueSize, isDialogueMessage: true, ownerID: ownerID, owner: owner_assetName }
 		}
 	}
 		
@@ -75,15 +75,15 @@ function dialogue_progress_SERVER(messageID, dialogueNo, owner_assetName, ownerI
 function reward_give_SERVER(rewardCode, messageBoxes, ownerID, playerInstance, socketID_sender, owner_assetName) {
 	switch (rewardCode) {
 		case "{Rew1}":
-			return { xx: 700, yy: 250, title: "#Rew1", text: "{Rew1} has been earned.", duration: 1, isDialogueMessage: false }
+			return { xx: 700, yy: 250, title: "#Rew1", text: "{Rew1} has been earned.", duration: 1, isDialogueMessage: false, ownerID: undefined, owner: undefined, ownerID: ownerID, owner: owner_assetName }
 			
 		case "{Rew2}":
-			return { xx: 700, yy: 250, title: "#Rew2", text: "{Rew2} has been earned.", duration: 1, isDialogueMessage: false }
+			return { xx: 700, yy: 250, title: "#Rew2", text: "{Rew2} has been earned.", duration: 1, isDialogueMessage: false, ownerID: undefined, owner: undefined, ownerID: ownerID, owner: owner_assetName }
 			
 		case "{Trade-Weapon}":		
 			with (objNPC_SERVER)
-				if (objWeaponSeller == asset_get_index(owner_assetName)) {
-					net_server_send(socketID_sender, CODE_WINDOW, json_stringify({ data: get_boxes_grid_SERVER(socketID_sender, boxes), window: object_get_name(objTrade_window), owner: ownerID }), BUFFER_TYPE_STRING)
+				if (asset_get_index(owner_assetName) == objWeaponSeller) {
+					net_server_send(socketID_sender, CODE_WINDOW, json_stringify({ data: box_get_boxes_string_SERVER(socketID_sender, boxes), window: object_get_name(objTrade_window), owner: ownerID }), BUFFER_TYPE_STRING)
 					break
 				}
 			break

@@ -23,5 +23,5 @@ if (is_mouse_on() and global.held_box == undefined) {
 	if (!onBox)
 		exit
 		
-	net_client_send(_CODE_CHANGE_ACTIVE_BOX, string(onBox_box.item.type)+"|undefined|undefined|"+box_get_confirmation_number_COMMON(onBox_box), BUFFER_TYPE_STRING)
+	net_client_send(_CODE_box_change_active, string(onBox_box.item.type)+"|undefined|undefined|"+box_get_confirmation_number_COMMON(onBox_box), BUFFER_TYPE_STRING)
 }

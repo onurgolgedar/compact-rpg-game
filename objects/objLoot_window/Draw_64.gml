@@ -54,36 +54,6 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 		draw_set_default()
 	}
 	
-	var button_x = x+offset*2
-	var button_y = y+height-offset-height_ext_bot_more+offset*2+3
-	var button_width = 130
-	var button_height = 27
-	draw_set_alpha(1*image_alpha)
-	if (mouseOnBody and global.dmx > button_x and global.dmx < button_x+button_width and
-		global.dmy > button_y and global.dmy < button_y+button_height and !is_click_blocked()) {
-		draw_set_color(!instance_exists(objEquipments_window) ? c_lime : c_red)
-		mouseOnButton = 100
-	}
-	else
-		draw_set_color(c_dkgray)
-	beforeColor = draw_get_color()
-	draw_set_color(c_black)
-		draw_roundrect(button_x-2, button_y-2,
-		button_x+button_width+2, button_y+button_height+2, 0)
-	draw_set_color(beforeColor)	
-		draw_roundrect(button_x, button_y,
-		button_x+button_width, button_y+button_height, 0)
-	draw_set_color(c_black)
-	draw_set_alpha(1*image_alpha)
-
-	
-	draw_set_center() draw_set_font(fontMain)
-		draw_text(button_x+button_width/2, button_y+button_height/2+2, "Equipments")
-	
-		draw_sprite(sprCoin, -1, x+width-offset-100, button_y+button_height/2+2)
-	draw_set_default()
-	draw_text(x+width-offset-85, button_y+3, real(global.gold))
-	
 	for (var i = global.bc_hor_COMMON*(page-1); i < global.bc_hor_COMMON*page; i++) {
 		for (var j = 0; j < global.bc_ver_COMMON; j++) {
 			var box_positions = get_box_positions(i, j)
@@ -93,7 +63,6 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 		}
 	}
 		
-	draw_set_center() draw_set_color(c_white)
 	for (var i = global.bc_hor_COMMON*(page-1); i < global.bc_hor_COMMON*page; i++) {
 		for (var j = 0; j < global.bc_ver_COMMON; j++) {
 			var box_positions = get_box_positions(i, j)
@@ -107,15 +76,10 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 				if (i != global.held_box_i or j != global.held_box_j or global.held_from_assetName != object_get_name(object_index))  {
 					draw_outline_origin(box.item.sprite, -1, item_xx, item_yy, 0.47, 0.47, 60, boxes_alpha[i][j]*image_alpha)
 					draw_sprite_origin_ext(box.item.sprite, -1, item_xx, item_yy, 0.47, 0.47, 60, c_white, boxes_alpha[i][j]*image_alpha)
-					if (box.count > 1)
-						draw_text_outlined(item_xx+11, item_yy+14, box.count, 1, c_black, 10, 0.65, 0.65, 0)
-					if (box.tag.isForQuest)
-						draw_text_outlined(item_xx-17, item_yy+17, "*", 1, c_yellow, 4, 0.65, 0.65, 0)
 				}
 			}
 		}
 	}
-	draw_set_default()
 	
 draw_set_default() draw_set_alpha(1)
 

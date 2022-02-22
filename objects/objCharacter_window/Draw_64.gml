@@ -17,7 +17,7 @@ draw_set_default()
 mouseOnButton = undefined
 
 // Page Buttons
-var pageButtonEdge = 22
+var pageButtonEdge = 20
 var pageButtonWidthFactor = 3.15
 var pageButton_x, pageButton_y
 for (var i = 0; i < pageCount; i++) {

@@ -79,10 +79,10 @@ boxFocused_textbox = undefined
 boxFocused_i = undefined
 boxFocused_j = undefined
 
-offset = 4
+offset = 3
 height_ext_bot = 42
 height_ext_bot_more = 0
-height_ext_top = 57
+height_ext_top = 50
 
 width = 4*boxWidth+(global.sc_hor_COMMON-1)*boxBetween+offset*4
 height = 4*boxHeight+(global.sc_ver_COMMON-1)*boxBetween+offset*2+height_ext_bot+offset+height_ext_bot_more+offset+height_ext_top+offset

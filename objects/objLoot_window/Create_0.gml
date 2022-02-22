@@ -1,5 +1,16 @@
 event_inherited()
 
+function trade_refresh() {
+	var _depth = depth
+	var _onFront = onFront
+	var window = refresh()
+	window.page = page
+	window.image_alpha = image_alpha
+	window._alpha_factor = _alpha_factor
+		
+	return window
+}
+
 function is_mouse_on_box(i, j) {
 	var box_positions = get_box_positions(i, j)
 	var xx_start = box_positions.xx_start
@@ -11,54 +22,26 @@ function is_mouse_on_box(i, j) {
 }
 
 function get_box_positions(i, j) {
-	j -= global.bc_ver_COMMON
-	
-	// Necklace
-	if (i == 0 and j == 0) {
-		i += 1
-	}
-	
-	// Sword
-	else if (i == 1 and j == 0) {
-		i -= 1
-		j += 1
-	}
-	
-	// Clothes
-	else if (i == 2 and j == 0) {
-		i -= 1
-		j += 1
-	}
-	
-	// Shield
-	else if (i == 3 and j == 0) {
-		i -= 1
-		j += 1
-	}
-	
-	// Matter
-	else if (i == 4 and j == 0) {
-		i -= 3
-		j += 2
-	}
+	i = i mod global.bc_hor_COMMON
+	j = j mod global.bc_ver_COMMON
 	
 	var _xx_start = 2*offset+x+i*(boxWidth+boxBetween)
 	var _xx_end = 2*offset+x+(i+1)*boxWidth+i*boxBetween
 	var _yy_start = 3*offset+height_ext_top+y+j*(boxHeight+boxBetween)
 	var _yy_end = 3*offset+height_ext_top+y+(j+1)*boxHeight+j*boxBetween
 	
-	return {xx_start: _xx_start, yy_start: _yy_start, xx_end: _xx_end, yy_end: _yy_end, xx_center: (_xx_start+_xx_end)/2, yy_center: (_yy_start+_yy_end)/2}
+	return { xx_start: _xx_start, yy_start: _yy_start, xx_end: _xx_end, yy_end: _yy_end, xx_center: (_xx_start+_xx_end)/2, yy_center: (_yy_start+_yy_end)/2 }
 }
 
 function main_loop() {
 	var found = false
-	for (var i = 0; i < global.bc_hor_COMMON and !found; i++) {
-		for (var j = global.bc_ver_COMMON; j < global.bc_ver_COMMON+2; j++) {
+	for (var i = global.bc_hor_COMMON*(page-1); i < global.bc_hor_COMMON*page and !found; i++) {
+		for (var j = 0; j < global.bc_ver_COMMON; j++) {
 			if (boxes_alpha[i][j] < 1)
 				boxes_alpha[i][j] += 0.25
 			
 			var box = ds_grid_get(boxes, i, j)
-			if (box.item != undefined and is_mouse_on() and !is_click_blocked() and is_mouse_on_box(i, j)) {
+			if (box.item != undefined and global.held_box == undefined and is_mouse_on() and !is_click_blocked() and is_mouse_on_box(i, j)) {
 				found = true
 				
 				if (boxFocused != box) {
@@ -87,15 +70,20 @@ function main_loop() {
 		boxFocused_j = undefined
 	}
 	
+	if (global.held_box != undefined and mouseOnButton < pageCount)
+		page = mouseOnButton+1
+
 	function_call(main_loop, 1/20, true)
 }
 function_call(main_loop, 1/20, true)
 
-title = "EQUIPMENTS"
+title = "LOOT"
+pageCount = global.pageCount_COMMON
+page = 1
 
-boxWidth = 50
-boxHeight = 50
-boxBetween = 6
+boxWidth = 48
+boxHeight = 48
+boxBetween = 5
 	
 boxFocused = undefined
 boxFocused_textbox = undefined
@@ -105,10 +93,13 @@ boxFocused_j = undefined
 offset = 3
 height_ext_bot = 0
 height_ext_bot_more = 0
-height_ext_top = 28
+height_ext_top = 50
 
-width = 3*boxWidth+3*boxBetween+offset*2
-height = 3*boxHeight+2*boxBetween+offset*3+height_ext_bot+offset+height_ext_bot_more+offset+height_ext_top
+width = global.bc_hor_COMMON*boxWidth+(global.bc_hor_COMMON-1)*boxBetween+offset*4
+height = global.bc_ver_COMMON*boxHeight+(global.bc_ver_COMMON-1)*boxBetween+offset*2+height_ext_bot+offset+height_ext_bot_more+offset+height_ext_top+offset
 
-boxes = objInventory_window.boxes
-boxes_alpha = objInventory_window.boxes_alpha
+boxes = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
+boxes_alpha = undefined
+for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++)
+	for (var j = 0; j < global.bc_ver_COMMON+2; j++)
+		boxes_alpha[i][j] = 1

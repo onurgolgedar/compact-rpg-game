@@ -15,7 +15,7 @@ function recalculate_character_statistics_SERVER() {
 	attackSpeed += (class == CLASS_WARRIOR_SERVER)*0.25+(class == CLASS_ASSASSIN_SERVER)*0.5
 	magicalPower += (class == CLASS_MAGE_SERVER)*10
 	
-	var weaponBox = get_active_box_SERVER(socketID, ITEMTYPE_SWORD)
+	var weaponBox = box_get_active_SERVER(socketID, ITEMTYPE_SWORD)
 	if (weaponBox != undefined && weaponBox.item != undefined) {
 		item_setup_COMMON(weaponBox.item)
 		
@@ -24,7 +24,7 @@ function recalculate_character_statistics_SERVER() {
 		attackSpeed += weaponBox.item.attackSpeed
 	}
 	
-	var clothesBox = get_active_box_SERVER(socketID, ITEMTYPE_CLOTHES)
+	var clothesBox = box_get_active_SERVER(socketID, ITEMTYPE_CLOTHES)
 	if (clothesBox != undefined && clothesBox.item != undefined) {
 		item_setup_COMMON(clothesBox.item)
 		
