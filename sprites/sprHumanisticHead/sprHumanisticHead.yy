@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Humanistic",
-    "path": "folders/1- Sprites/Rigidbodies/Humanistic.yy",
+    "path": "folders/CLIENT/1- Sprites/Rigidbodies/Humanistic.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprHumanisticHead",

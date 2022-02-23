@@ -74,7 +74,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Menu",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/GUI/Menu.yy",
+    "path": "folders/./Sprites/GUI/Menu.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprMusic",

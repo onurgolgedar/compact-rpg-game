@@ -3,6 +3,7 @@
   "glyphOperations": 0,
   "interpreter": 0,
   "pointRounding": 0,
+  "applyKerning": 0,
   "fontName": "Maiandra GD",
   "styleName": "Regular",
   "size": 12.0,
@@ -348,7 +349,7 @@
   "maintainGms1Font": false,
   "parent": {
     "name": "Other Assets",
-    "path": "folders/Other Assets.yy",
+    "path": "folders/CLIENT/Other Assets.yy",
   },
   "resourceVersion": "1.0",
   "name": "fontBarText",

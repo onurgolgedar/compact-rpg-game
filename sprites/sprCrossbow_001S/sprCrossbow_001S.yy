@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "S",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Item/Crossbow/S.yy",
+    "path": "folders/./Sprites/Item/Crossbow/S.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprCrossbow_001S",

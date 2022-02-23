@@ -177,7 +177,7 @@
   },
   "parent": {
     "name": "Other",
-    "path": "folders/1- Sprites/Other.yy",
+    "path": "folders/CLIENT/1- Sprites/Other.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprCoin_floor",

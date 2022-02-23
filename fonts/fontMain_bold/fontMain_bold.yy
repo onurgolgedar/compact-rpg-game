@@ -243,7 +243,7 @@
   "maintainGms1Font": false,
   "parent": {
     "name": "Other Assets",
-    "path": "folders/Other Assets.yy",
+    "path": "folders/CLIENT/Other Assets.yy",
   },
   "resourceVersion": "1.0",
   "name": "fontMain_bold",

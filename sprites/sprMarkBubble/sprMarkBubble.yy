@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "GUI Elements",
-    "path": "folders/2- Objects/GUI Elements.yy",
+    "path": "folders/CLIENT/2- Objects/GUI Elements.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprMarkBubble",

@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "TTE Input",
-    "path": "folders/3- Scripts/TTE Input.yy",
+    "path": "folders/CLIENT/3- Scripts/TTE Input.yy",
   },
   "resourceVersion": "1.0",
   "name": "tte_ext_input_create",

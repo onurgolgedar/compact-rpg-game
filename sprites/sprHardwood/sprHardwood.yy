@@ -94,7 +94,7 @@
   },
   "parent": {
     "name": "Backgrounds",
-    "path": "folders/Other Assets/Backgrounds.yy",
+    "path": "folders/CLIENT/Other Assets/Backgrounds.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprHardwood",

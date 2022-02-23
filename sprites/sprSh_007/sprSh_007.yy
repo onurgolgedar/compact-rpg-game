@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Shield",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Item/Shield.yy",
+    "path": "folders/./Sprites/Item/Shield.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprSh_007",

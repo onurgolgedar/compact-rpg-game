@@ -128,7 +128,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Sight",
-    "path": "folders/2- Objects/Lighting/Sight.yy",
+    "path": "folders/CLIENT/2- Objects/Lighting/Sight.yy",
   },
   "resourceVersion": "1.0",
   "name": "parLight_sight",

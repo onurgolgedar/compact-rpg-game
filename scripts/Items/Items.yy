@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Items",
-    "path": "folders/3- Scripts/Items.yy",
+    "path": "folders/CLIENT/3- Scripts/Items.yy",
   },
   "resourceVersion": "1.0",
   "name": "Items",

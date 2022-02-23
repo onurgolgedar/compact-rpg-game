@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "N",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Item/Bow/N.yy",
+    "path": "folders/./Sprites/Item/Bow/N.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprBowN_001",

@@ -30,7 +30,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Trees",
-    "path": "folders/2- Objects/Environment/Trees.yy",
+    "path": "folders/CLIENT/2- Objects/Environment/Trees.yy",
   },
   "resourceVersion": "1.0",
   "name": "objTree3",

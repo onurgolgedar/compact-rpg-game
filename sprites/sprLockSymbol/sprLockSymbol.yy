@@ -78,7 +78,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Map",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/GUI/Map.yy",
+    "path": "folders/./Sprites/GUI/Map.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprLockSymbol",

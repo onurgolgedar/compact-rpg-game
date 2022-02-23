@@ -3,6 +3,7 @@
   "glyphOperations": 0,
   "interpreter": 0,
   "pointRounding": 0,
+  "applyKerning": 0,
   "fontName": "Consolas",
   "styleName": "Regular",
   "size": 13.0,
@@ -150,7 +151,7 @@
   "maintainGms1Font": false,
   "parent": {
     "name": "Other Assets",
-    "path": "folders/_SERVER/Other Assets.yy",
+    "path": "folders/SERVER/Other Assets.yy",
   },
   "resourceVersion": "1.0",
   "name": "fontTable_SERVER",

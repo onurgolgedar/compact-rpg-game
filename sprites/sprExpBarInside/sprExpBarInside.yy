@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Exp Bar Set",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/GUI/Bar/Exp Bar Set.yy",
+    "path": "folders/./Sprites/GUI/Bar/Exp Bar Set.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprExpBarInside",

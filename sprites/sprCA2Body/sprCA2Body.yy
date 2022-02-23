@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "CA2",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Creature/CA2.yy",
+    "path": "folders/./Sprites/Creature/CA2.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprCA2Body",

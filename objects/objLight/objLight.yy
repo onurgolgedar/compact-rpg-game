@@ -139,7 +139,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Lighting",
-    "path": "folders/2- Objects/Lighting.yy",
+    "path": "folders/CLIENT/2- Objects/Lighting.yy",
   },
   "resourceVersion": "1.0",
   "name": "objLight",

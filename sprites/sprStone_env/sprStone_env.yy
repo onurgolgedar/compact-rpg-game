@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Stone",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Environment/Stone.yy",
+    "path": "folders/./Sprites/Environment/Stone.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprStone_env",

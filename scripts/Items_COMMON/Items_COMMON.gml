@@ -4,7 +4,7 @@ function Items_COMMON() {
 	#macro ITEMTYPE_CLOTHES 2
 	#macro ITEMTYPE_SHIELD 3
 	#macro ITEMTYPE_MATTER 4
-	#macro ITEMTYPE_PRECIOUS 5
+	#macro ITEMTYPE_VALUABLE 5
 	
 	#macro SWORD_000 0
 	#macro SWORD_001 1
@@ -16,44 +16,44 @@ function Items_COMMON() {
 	#macro CLOTHES_002 502
 	#macro CLOTHES_003 503
 	
-	#macro PRECIOUS_000 3000
+	#macro VALUABLE_000 3000
 }
 
 function item_get_COMMON(_code, upgrade = 0) {
 	switch (_code) {
 		case SWORD_000:
-			return item_setup_COMMON({ name: "Sword 1", code: SWORD_000, type: ITEMTYPE_SWORD, isCollectable: false, physicalPower_base: 7, magicalPower_base: 17, criticalChance_base: 0, attackSpeed_base: 1.2, worth_base: 200, sprite: sprSword_045, physicalPower: undefined, magicalPower: undefined, criticalChance: undefined, attackSpeed: undefined, worth: undefined, upgrade: upgrade, marketPrice: undefined })
+			return item_setup_COMMON(new sword_item("Wooden Sword", SWORD_000, sprSword_000, 5, 0, 0, 1, 10, upgrade))
 		case SWORD_001:
-			return item_setup_COMMON({ name: "Sword 2", code: SWORD_001, type: ITEMTYPE_SWORD, isCollectable: false, physicalPower_base: 13, magicalPower_base: 11, criticalChance_base: 0, attackSpeed_base: 1.1, worth_base: 200, sprite: sprSword_021, physicalPower: undefined, magicalPower: undefined, criticalChance: undefined, attackSpeed: undefined, worth: undefined, upgrade: upgrade, marketPrice: undefined })
+			return item_setup_COMMON(new sword_item("Basic Sword", SWORD_001, sprSword_001, 7, 0, 15, 1.1, 30, upgrade))
 		case SWORD_002:
-			return item_setup_COMMON({ name: "Sword 3", code: SWORD_002, type: ITEMTYPE_SWORD, isCollectable: false, physicalPower_base: 18, magicalPower_base: 7, criticalChance_base: 0, attackSpeed_base: 1.4, worth_base: 200, sprite: sprSword_005, physicalPower: undefined, magicalPower: undefined, criticalChance: undefined, attackSpeed: undefined, worth: undefined, upgrade: upgrade, marketPrice: undefined })
+			return item_setup_COMMON(new sword_item("Golden Sword", SWORD_002, sprSword_002, 10, 10, 0, 1.2, 100, upgrade))
 		case SWORD_003:
-			return item_setup_COMMON({ name: "Sword 4", code: SWORD_003, type: ITEMTYPE_SWORD, isCollectable: false, physicalPower_base: 21, magicalPower_base: 0, criticalChance_base: 0, attackSpeed_base: 1.4, worth_base: 200, sprite: sprSword_046, physicalPower: undefined, magicalPower: undefined, criticalChance: undefined, attackSpeed: undefined, worth: undefined, upgrade: upgrade, marketPrice: undefined })
+			return item_setup_COMMON(new sword_item("Sword", SWORD_003, sprSword_003, 12, 0, 20, 1.2, 90, upgrade))
 
 		case CLOTHES_000:
-			return item_setup_COMMON({ name: "Clothes 1", code: CLOTHES_000, type: ITEMTYPE_CLOTHES, isCollectable: false, maxHp_base: 0, maxMana_base: 40, slowRate_base: 0, worth_base: 400, sprite: sprClothes_010, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: upgrade, marketPrice: undefined })
+			return item_setup_COMMON(new clothes_item("Basic Clothes", CLOTHES_000, sprClothes_000, 50, 0, 0, 10, upgrade))
 		case CLOTHES_001:
-			return item_setup_COMMON({ name: "Clothes 2", code: CLOTHES_001, type: ITEMTYPE_CLOTHES, isCollectable: false, maxHp_base: 30, maxMana_base: 15, slowRate_base: 0, worth_base: 400, sprite: sprClothes_009, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: upgrade, marketPrice: undefined })
+			return item_setup_COMMON(new clothes_item("Clothes", CLOTHES_001, sprClothes_001, 70, 0, 5, 10, upgrade))
 		case CLOTHES_002:
-			return item_setup_COMMON({ name: "Clothes 3", code: CLOTHES_002, type: ITEMTYPE_CLOTHES, isCollectable: false, maxHp_base: 60, maxMana_base: 0, slowRate_base: 10, worth_base: 400, sprite: sprClothes_020, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: upgrade, marketPrice: undefined })
+			return item_setup_COMMON(new clothes_item("Imperial Clothes", CLOTHES_002, sprClothes_002, 100, 0, 7, 10, upgrade))
 		case CLOTHES_003:
-			return item_setup_COMMON({ name: "Clothes 4", code: CLOTHES_003, type: ITEMTYPE_CLOTHES, isCollectable: false, maxHp_base: 90, maxMana_base: 0, slowRate_base: 20, worth_base: 400, sprite: sprClothes_007, maxHp: undefined, maxMana: undefined, slowRate: undefined, worth: undefined, upgrade: upgrade, marketPrice: undefined })
+			return item_setup_COMMON(new clothes_item("Knight's Clothes", CLOTHES_003, sprClothes_003, 120, 0, 10, 10, upgrade))
 
-		case PRECIOUS_000:
-			return item_setup_COMMON({ name: "Silver", code: PRECIOUS_000, type: ITEMTYPE_PRECIOUS, isCollectable: true, worth_base: 50, sprite: sprSilver, worth: undefined, upgrade: 0, marketPrice: undefined })
+		case VALUABLE_000:
+			return item_setup_COMMON(new valuable_item("Silver", VALUABLE_000, sprValuable_000, 100, upgrade))
 	}
 }
 
 function item_copy_COMMON(item) {
 	switch (item.type) {
 		case ITEMTYPE_SWORD:
-			return { name: item.name, code: item.code, type: item.type, isCollectable: item.isCollectable, physicalPower_base: item.physicalPower_base, magicalPower_base: item.magicalPower_base, criticalChance_base: item.criticalChance_base, attackSpeed_base: item.attackSpeed_base, worth_base: item.worth_base, sprite: item.sprite, physicalPower: item.physicalPower, magicalPower: item.magicalPower, criticalChance: item.criticalChance, attackSpeed: item.attackSpeed, worth: item.worth, upgrade: item.upgrade, marketPrice: undefined}
+			return new sword_item(item.name, item.code, item.sprite, item.physicalPower, item.magicalPower, item.criticalChance, item.attackSpeed, item.worth, item.upgrade)
 
 		case ITEMTYPE_CLOTHES:
-			return { name: item.name, code: item.code, type: item.type, isCollectable: item.isCollectable, maxHp_base: item.maxHp_base, maxMana_base: item.maxMana_base, slowRate_base: item.slowRate_base, worth_base: item.worth_base, sprite: item.sprite, maxHp: item.maxHp, maxMana: item.maxMana, slowRate: item.slowRate, worth: item.worth, upgrade: item.upgrade, marketPrice: undefined }
+			return new clothes_item(item.name, item.code, item.sprite, item.maxHp, item.maxMana, item.slowRate, item.worth, item.upgrade)
 			
-		case ITEMTYPE_PRECIOUS:
-			return { name: item.name, code: item.code, type: item.type, isCollectable: item.isCollectable, worth_base: item.worth_base, sprite: item.sprite, worth: item.worth, upgrade: item.upgrade, marketPrice: undefined }
+		case ITEMTYPE_VALUABLE:
+			return new valuable_item(item.name, item.code, item.sprite, item.worth, item.upgrade)
 	}
 }
 
@@ -65,25 +65,11 @@ function item_get_title_COMMON(item) {
 		case ITEMTYPE_CLOTHES:
 			return "[b]"+item.name+" (+"+string(item.upgrade)+")[/b]"
 			
-		case ITEMTYPE_PRECIOUS:
+		case ITEMTYPE_VALUABLE:
 			return "[b]"+item.name+strret(" (+"+string(item.upgrade)+")", item.upgrade != 0)+"[/b]"
 	}
 	
 	return ""
-}
-
-function box_create_COMMON(item = undefined, isForQuest = false, count = 1) {
-	if (item == undefined)
-		return  {item: global.boxEmpty_COMMON.item, tag: { isActive: global.boxEmpty_COMMON.tag.isActive, isForQuest: global.boxEmpty_COMMON.tag.isForQuest }, count: global.boxEmpty_COMMON.count}
-	else
-		return {item: item_copy_COMMON(item), tag: {isActive: false, isForQuest: isForQuest}, count: count}
-}
-
-function box_get_confirmation_number_COMMON(box) {
-	if (box == undefined)
-		return "--"
-	else
-		return string(box.tag.isActive)+string(box.tag.isForQuest)+string(item_get_confirmation_number_COMMON(box.item))
 }
 
 function item_setup_COMMON(item, upgrade = undefined) {
@@ -106,7 +92,7 @@ function item_setup_COMMON(item, upgrade = undefined) {
 			item.worth = item.worth_base
 			break
 			
-		case ITEMTYPE_PRECIOUS:
+		case ITEMTYPE_VALUABLE:
 			item.worth = item.worth_base
 			break
 	}
@@ -121,7 +107,7 @@ function item_get_confirmation_number_COMMON(item) {
 		return string(item.physicalPower)+string(item.magicalPower)+string(item.attackSpeed)+string(item.criticalChance)+string(item.worth)+string(item.upgrade)
 	else if (item.type == ITEMTYPE_CLOTHES)
 		return string(item.maxHp)+string(item.maxMana)+string(item.slowRate)+string(item.worth)+string(item.upgrade)
-	else if (item.type == ITEMTYPE_PRECIOUS)
+	else if (item.type == ITEMTYPE_VALUABLE)
 		return string(item.worth)+string(item.upgrade)
 }
 
@@ -164,4 +150,57 @@ function item_delete_COMMON(box, accountID = undefined, box_i = undefined, box_j
 	}
 	
 	return false
+}
+
+function sword_item (_name, _code, _sprite, _physicalPower, _magicalPower, _criticalChance, _attackSpeed, _worth, _upgrade) constructor
+{
+	name = _name
+	code = _code
+	type = ITEMTYPE_SWORD
+	isCollectable = false
+	sprite = _sprite
+	physicalPower_base = _physicalPower
+	magicalPower_base = _magicalPower
+	criticalChance_base = _criticalChance
+	attackSpeed_base = _attackSpeed
+	upgrade = _upgrade
+	worth_base = _worth
+	
+	physicalPower = undefined
+	magicalPower = undefined
+	criticalChance = undefined
+	attackSpeed = undefined
+	worth = undefined
+}
+
+function clothes_item (_name, _code, _sprite, _maxHp, _maxMana, _slowRate, _worth, _upgrade) constructor
+{
+	name = _name
+	code = _code
+	type = ITEMTYPE_CLOTHES
+	isCollectable = false
+	sprite = _sprite
+	maxHp_base = _maxHp
+	maxMana_base = _maxMana
+	slowRate_base = _slowRate
+	upgrade = _upgrade
+	worth_base = _worth
+	
+	maxHp = undefined
+	maxMana = undefined
+	slowRate = undefined
+	worth = undefined
+}
+
+function valuable_item (_name, _code, _sprite, _worth, _upgrade) constructor
+{
+	name = _name
+	code = _code
+	type = ITEMTYPE_VALUABLE
+	isCollectable = true
+	sprite = _sprite
+	upgrade = _upgrade
+	worth_base = _worth
+	
+	worth = undefined
 }

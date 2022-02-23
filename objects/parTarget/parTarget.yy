@@ -42,7 +42,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "2- Objects",
-    "path": "folders/2- Objects.yy",
+    "path": "folders/CLIENT/2- Objects.yy",
   },
   "resourceVersion": "1.0",
   "name": "parTarget",

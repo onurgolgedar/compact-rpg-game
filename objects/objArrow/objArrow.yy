@@ -34,7 +34,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Skill Visuals",
-    "path": "folders/2- Objects/Skill Visuals.yy",
+    "path": "folders/CLIENT/2- Objects/Skill Visuals.yy",
   },
   "resourceVersion": "1.0",
   "name": "objArrow",

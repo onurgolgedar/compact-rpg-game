@@ -2,7 +2,7 @@
   "type": 1,
   "parent": {
     "name": "Lighting",
-    "path": "folders/Other Assets/Shaders/Lighting.yy",
+    "path": "folders/CLIENT/Other Assets/Shaders/Lighting.yy",
   },
   "resourceVersion": "1.0",
   "name": "sh_blend_light_sight",

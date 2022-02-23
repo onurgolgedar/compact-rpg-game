@@ -28,7 +28,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Effects",
-    "path": "folders/2- Objects/Effects.yy",
+    "path": "folders/CLIENT/2- Objects/Effects.yy",
   },
   "resourceVersion": "1.0",
   "name": "parEffect",

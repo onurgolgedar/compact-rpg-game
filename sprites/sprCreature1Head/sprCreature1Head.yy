@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Creatures",
-    "path": "folders/1- Sprites/Rigidbodies/Creatures.yy",
+    "path": "folders/CLIENT/1- Sprites/Rigidbodies/Creatures.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprCreature1Head",

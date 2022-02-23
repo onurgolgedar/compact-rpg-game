@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Tree",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Environment/Tree.yy",
+    "path": "folders/./Sprites/Environment/Tree.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprTreeBody_env",

@@ -74,7 +74,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Main Menu",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/GUI/Menu/Main Menu.yy",
+    "path": "folders/./Sprites/GUI/Menu/Main Menu.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprFullscreenButton",

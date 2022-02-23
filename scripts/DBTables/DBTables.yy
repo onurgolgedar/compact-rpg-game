@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "DB",
-    "path": "folders/3- Scripts/DB.yy",
+    "path": "folders/CLIENT/3- Scripts/DB.yy",
   },
   "resourceVersion": "1.0",
   "name": "DBTables",

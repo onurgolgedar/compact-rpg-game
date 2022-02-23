@@ -1,15 +1,15 @@
-function item_get_text(item) {
+function item_get_text(item, marketPrice = undefined) {
 	item_setup_COMMON(item)
 	
 	switch (item.type) {
 		case ITEMTYPE_SWORD:
-			return item_get_title_COMMON(item)+"\nAttack (PHY): "+string(item.physicalPower)+"\nAttack (MAG): "+string(item.magicalPower)+"\nSpeed: "+string(item.attackSpeed)+"\n\n"+string(item.worth)+"[img=sprCoin2]"+strret("\nPrice: "+string(item.marketPrice)+"[img=sprCoin2]", item.marketPrice != undefined)
+			return item_get_title_COMMON(item)+"\nAttack (PHY): "+string(item.physicalPower)+"\nAttack (MAG): "+string(item.magicalPower)+"\nSpeed: "+string(item.attackSpeed)+"\n\n"+string(item.worth)+"[img=sprCoin2]"+strret("\nPrice: "+string(marketPrice)+"[img=sprCoin2]", marketPrice != undefined)
 		
 		case ITEMTYPE_CLOTHES:
-			return item_get_title_COMMON(item)+"\nHealth: "+string(item.maxHp)+"\nMana: "+string(item.maxMana)+"\nSlow Rate: "+string(item.slowRate)+"%\n\n"+string(item.worth)+"[img=sprCoin2]"+strret("\nPrice: "+string(item.marketPrice)+"[img=sprCoin2]", item.marketPrice != undefined)
+			return item_get_title_COMMON(item)+"\nHealth: "+string(item.maxHp)+"\nMana: "+string(item.maxMana)+"\nSlow Rate: "+string(item.slowRate)+"%\n\n"+string(item.worth)+"[img=sprCoin2]"+strret("\nPrice: "+string(marketPrice)+"[img=sprCoin2]", marketPrice != undefined)
 		
-		case ITEMTYPE_PRECIOUS:
-			return item_get_title_COMMON(item)+"\n\n"+string(item.worth)+"[img=sprCoin2]"+strret("\nPrice: "+string(item.marketPrice)+"[img=sprCoin2]", item.marketPrice != undefined)
+		case ITEMTYPE_VALUABLE:
+			return item_get_title_COMMON(item)+"\n\n"+string(item.worth)+"[img=sprCoin2]"+strret("\nPrice: "+string(marketPrice)+"[img=sprCoin2]", marketPrice != undefined)
 	}
 	
 	return ""

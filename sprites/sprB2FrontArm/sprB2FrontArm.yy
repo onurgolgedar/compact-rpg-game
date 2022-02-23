@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "B2",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Creature/B2.yy",
+    "path": "folders/./Sprites/Creature/B2.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprB2FrontArm",

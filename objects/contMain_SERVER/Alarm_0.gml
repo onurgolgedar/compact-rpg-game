@@ -6,7 +6,7 @@ for (var i = 0; i < ds_size; i++) {
 		_row[? PLAYERS_DEATHTIMER_SERVER] -= 1/20
 		
 		if (_row[? PLAYERS_DEATHTIMER_SERVER] == 0)
-			spawn_player_SERVER(_row[? PLAYERS_SOCKETID_SERVER])
+			player_spawn_SERVER(_row[? PLAYERS_SOCKETID_SERVER])
 	}
 }
 
@@ -31,15 +31,7 @@ tell_all_manas_SERVER()
 tell_all_energies_SERVER()
 tell_all_angles_SERVER()
 
-with (objCreature1_SERVER) {
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_POSITION, string(npcID)+"|"+string(x)+"|"+string(y), BUFFER_TYPE_STRING, true)
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_HP, string(npcID)+"|"+string(hp), BUFFER_TYPE_STRING, true)
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_MANA, string(npcID)+"|"+string(mana), BUFFER_TYPE_STRING, true)
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_ENERGY, string(npcID)+"|"+string(energy), BUFFER_TYPE_STRING, true)
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_ROTATION, string(npcID)+"|"+string(image_angle), BUFFER_TYPE_STRING, true)
-}
-
-with (objNPC_SERVER) {
+with (parNPC_SERVER) {
 	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_POSITION, string(npcID)+"|"+string(x)+"|"+string(y), BUFFER_TYPE_STRING, true)
 	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_HP, string(npcID)+"|"+string(hp), BUFFER_TYPE_STRING, true)
 	net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_MANA, string(npcID)+"|"+string(mana), BUFFER_TYPE_STRING, true)

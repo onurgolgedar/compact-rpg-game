@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Potion&Kit",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Item/Potion&Kit.yy",
+    "path": "folders/./Sprites/Item/Potion&Kit.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprPotion_001Q",

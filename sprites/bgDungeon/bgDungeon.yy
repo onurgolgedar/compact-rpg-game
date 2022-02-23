@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Background",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Background.yy",
+    "path": "folders/./Sprites/Background.yy",
   },
   "resourceVersion": "1.0",
   "name": "bgDungeon",

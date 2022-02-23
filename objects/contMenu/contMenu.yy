@@ -28,7 +28,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Room Controls",
-    "path": "folders/2- Objects/Controls/Room Controls.yy",
+    "path": "folders/CLIENT/2- Objects/Controls/Room Controls.yy",
   },
   "resourceVersion": "1.0",
   "name": "contMenu",

@@ -3,6 +3,7 @@
   "glyphOperations": 0,
   "interpreter": 0,
   "pointRounding": 0,
+  "applyKerning": 0,
   "fontName": "Corbel",
   "styleName": "Regular",
   "size": 18.0,
@@ -1257,7 +1258,7 @@
   "maintainGms1Font": false,
   "parent": {
     "name": "Other Assets",
-    "path": "folders/Other Assets.yy",
+    "path": "folders/CLIENT/Other Assets.yy",
   },
   "resourceVersion": "1.0",
   "name": "fontName",

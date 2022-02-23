@@ -29,7 +29,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Windows",
-    "path": "folders/2- Objects/Windows.yy",
+    "path": "folders/CLIENT/2- Objects/Windows.yy",
   },
   "resourceVersion": "1.0",
   "name": "objCharacter_window",

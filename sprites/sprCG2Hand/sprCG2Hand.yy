@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "CG2",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Creature/CG2.yy",
+    "path": "folders/./Sprites/Creature/CG2.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprCG2Hand",

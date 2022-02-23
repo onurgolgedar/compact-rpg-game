@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Clothes",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Clothes&Hair/Clothes.yy",
+    "path": "folders/./Sprites/Clothes&Hair/Clothes.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprClothes2_npc",

@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Skill",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Skill.yy",
+    "path": "folders/./Sprites/Skill.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprSkill_12",

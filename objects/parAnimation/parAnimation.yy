@@ -32,7 +32,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Animations",
-    "path": "folders/2- Objects/Animations.yy",
+    "path": "folders/CLIENT/2- Objects/Animations.yy",
   },
   "resourceVersion": "1.0",
   "name": "parAnimation",

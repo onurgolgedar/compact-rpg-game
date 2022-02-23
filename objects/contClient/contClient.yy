@@ -27,7 +27,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Networking",
-    "path": "folders/2- Objects/Controls/Networking.yy",
+    "path": "folders/CLIENT/2- Objects/Controls/Networking.yy",
   },
   "resourceVersion": "1.0",
   "name": "contClient",

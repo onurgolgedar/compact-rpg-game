@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Plant",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Environment/Plant.yy",
+    "path": "folders/./Sprites/Environment/Plant.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprPlant",

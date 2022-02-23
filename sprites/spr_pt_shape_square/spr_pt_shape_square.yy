@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "pt_shapes_gms2",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Other/geon_fx/pt_shapes_gms2.yy",
+    "path": "folders/./Sprites/Other/geon_fx/pt_shapes_gms2.yy",
   },
   "resourceVersion": "1.0",
   "name": "spr_pt_shape_square",

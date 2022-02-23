@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "CW1",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Creature/CW1.yy",
+    "path": "folders/./Sprites/Creature/CW1.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprCW1FrontArm",

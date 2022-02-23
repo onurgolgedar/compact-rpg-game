@@ -26,7 +26,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Networking",
-    "path": "folders/_SERVER/2- Objects/Controls/Networking.yy",
+    "path": "folders/SERVER/2- Objects/Controls/Networking.yy",
   },
   "resourceVersion": "1.0",
   "name": "contServer_SERVER",

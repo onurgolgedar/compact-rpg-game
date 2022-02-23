@@ -46,8 +46,6 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						var _box = json_parse(_data)
 						if (_box.item == pointer_null)
 							_box.item = undefined
-						else if (_box.item.marketPrice == pointer_null)
-							_box.item.marketPrice = undefined
 							
 						ds_grid_set(boxes_SERVER, i, j, _box)
 					}
@@ -139,8 +137,6 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						var _box = json_parse(_data)
 						if (_box.item == pointer_null)
 							_box.item = undefined
-						else if (_box.item.marketPrice == pointer_null)
-							_box.item.marketPrice = undefined
 							
 						ds_grid_set(boxes, i, j, _box)
 					}
@@ -501,6 +497,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						y = yy
 					}
 				
+					ds_map_set(global.lastPositions_sent, socketID_sender, undefined)
 					db_set_row_value(global.DB_SRV_TABLE_accountInfo, accountID, ACCOUNTINFO_LOCATION_SERVER, locationID)
 				}
 				break
@@ -804,7 +801,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							ds_grid_set(boxes_SERVER, 2, 1, { item: item_get_COMMON(CLOTHES_001), tag: {isActive: false, isForQuest: false}, count: 1 })
 							ds_grid_set(boxes_SERVER, 0, 2, { item: item_get_COMMON(CLOTHES_002), tag: {isActive: false, isForQuest: false}, count: 1 })
 							ds_grid_set(boxes_SERVER, 1, 2, { item: item_get_COMMON(CLOTHES_003), tag: {isActive: false, isForQuest: false}, count: 1 })
-							ds_grid_set(boxes_SERVER, 2, 2, { item: item_get_COMMON(PRECIOUS_000), tag: {isActive: false, isForQuest: false}, count: 2 })
+							ds_grid_set(boxes_SERVER, 2, 2, { item: item_get_COMMON(VALUABLE_000), tag: {isActive: false, isForQuest: false}, count: 2 })
 						
 							ds_map_add(global.playerBoxes, accountName, boxes_SERVER)
 						}
@@ -834,7 +831,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							
 							global.playerQuests[? accountName] = value
 							
-							quests_set(accountName)
+							quests_set_SERVER(accountName)
 						}
 						else {
 							// Init Quests
@@ -895,7 +892,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 																					receivedFrom: undefined, targets: undefined, targetCounts: undefined, targetCounts_completed: undefined, isAuto: true,
 																					isDeletable: true, isRepeatable: false, requiredQuests: [[3]], requiredLevel: undefined })
 																					
-							quests_set(accountName)
+							quests_set_SERVER(accountName)
 						}
 					}
 					
@@ -977,7 +974,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						if (id.socketID != socketID_sender) {
 							net_server_send(socketID_sender, CODE_SPAWN_PLAYER, string(id.socketID)+"|"+string(x)+"|"+string(y)+"|"+string(maxHp)+"|"+string(maxEnergy)+"|"+string(maxMana)+"|"+string(class)+
 																				"|"+string(movementSpeed)+"|"+string(physicalPower)+"|"+string(magicalPower)+"|"+string(attackSpeed)+"|"+string(level), BUFFER_TYPE_STRING)
-							send_appearence_to_all_SERVER(id.socketID, socketID_sender)
+							tell_appearence_SERVER(id.socketID, socketID_sender)
 						}
 				
 					with (objCreature1_SERVER)
@@ -989,10 +986,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, account[? ACCOUNTS_CLASS_SERVER], BUFFER_TYPE_STRING)
 					
 					// Spawn Player
-					var instance = spawn_player_SERVER(socketID_sender)
+					var instance = player_spawn_SERVER(socketID_sender)
 					
 					// Send Private Data
-					net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: box_get_boxes_string_SERVER(socketID_sender), gold: accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
+					net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
 					net_server_send(socketID_sender, CODE_GET_ACCOUNTINFO, accountInfoRow[? ACCOUNTINFO_GOLD_SERVER], BUFFER_TYPE_INT32)
 				
 					// Send Shared Data
@@ -1134,11 +1131,8 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							var _box = json_parse(_data)
 							if (_box.item == pointer_null)
 								_box.item = undefined
-							else {
-								if (_box.item.marketPrice == pointer_null)
-									_box.item.marketPrice = undefined
+							else 
 								_box.item = item_get_COMMON(_box.item.code, itemUpgrade)
-							}
 							
 							ds_grid_set(boxes_TAKEN, i, j, _box)
 						}
@@ -1254,6 +1248,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					accountInfoRow = db_create_row(data[0])
 					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = real(data[5])
 					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = real(data[6])
+					accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER] = 1
 					db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
 					db_save_table(global.DB_SRV_TABLE_accountInfo)
 				}
@@ -1261,6 +1256,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				{
 					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = real(data[5])
 					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = real(data[6])
+					accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER] = 1
 					db_save_table(global.DB_SRV_TABLE_accountInfo)
 				}
 				
@@ -1382,7 +1378,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						if (box.item != undefined and box.item.type == real(data[0])) {
 							item_setup_COMMON(box.item)
 							if (box_get_confirmation_number_COMMON(box) == data[3]) {
-								var price = isLoot ? 0 : box.item.marketPrice
+								var price = isLoot ? 0 : box.tag.marketPrice
 								if (instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] >= price) {
 									var itemAdded_info
 									if (data[5] == "undefined")
@@ -1401,7 +1397,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 												net_server_send(socketID_sender, CODE_DIALOGUE, "Purchase|You have purchased "+item_get_title_COMMON(box.item)+".\n[c="+string(c_red)+"]-"+string(price)+"[/c] [img=sprCoin2]|undefined|undefined|undefined|1", BUFFER_TYPE_STRING)
 											}
 											
-											net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: box_get_boxes_string_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
+											net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
 										}
 										else
 											item_delete_COMMON(box, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER], itemAdded_info.i, itemAdded_info.j)
@@ -1433,7 +1429,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						if (item_delete_COMMON(box, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER], real(data[1]), real(data[2]))) {
 							instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] += price
 									
-							net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: box_get_boxes_string_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
+							net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
 							net_server_send(socketID_sender, CODE_DIALOGUE, "Sell|You have sold "+item_get_title_COMMON(box.item)+".\n[c="+string(c_lime)+"]"+string(price)+"[/c] [img=sprCoin2]|undefined|undefined|undefined|1", BUFFER_TYPE_STRING)
 						}
 					}
@@ -1444,11 +1440,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 	
-			case _CODE_DIALOGUE:
-				var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
-				if (instance == undefined or !instance_exists(instance))
-					break
-			
+			case _CODE_DIALOGUE:			
 				var title = "undefined"
 				var text = "undefined"
 				var buttons = "undefined"
@@ -1461,21 +1453,21 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							case 1:
 								title = "Message"
 								text = "You are given a cup of coffee.\nHow much gold do you want to tip?"
-								buttons = json_stringify([ new dButton("10", sprite_get_name(sprCoin), false, 10), new dButton("20", sprite_get_name(sprCoin), false, 20),
-														   new dButton("30", sprite_get_name(sprCoin), false, 30), new dButton("40", sprite_get_name(sprCoin), false, 40),
-														   new dButton("50", sprite_get_name(sprCoin), false, 50), new dButton("60", sprite_get_name(sprCoin), false, 60),
-														   new dButton("70", sprite_get_name(sprCoin), false, 70), new dButton("80", sprite_get_name(sprCoin), false, 80),
-														   new dButton("90", sprite_get_name(sprCoin), false, 90), new dButton("100", sprite_get_name(sprCoin), false, 100) ])
+								buttons = json_stringify([ new dialogueButton("10", sprite_get_name(sprCoin), false, 10), new dialogueButton("20", sprite_get_name(sprCoin), false, 20),
+														   new dialogueButton("30", sprite_get_name(sprCoin), false, 30), new dialogueButton("40", sprite_get_name(sprCoin), false, 40),
+														   new dialogueButton("50", sprite_get_name(sprCoin), false, 50), new dialogueButton("60", sprite_get_name(sprCoin), false, 60),
+														   new dialogueButton("70", sprite_get_name(sprCoin), false, 70), new dialogueButton("80", sprite_get_name(sprCoin), false, 80),
+														   new dialogueButton("90", sprite_get_name(sprCoin), false, 90), new dialogueButton("100", sprite_get_name(sprCoin), false, 100) ])
 								break
 								
 							case 2:
 								title = "Message 2"
 								text = "You are given a cup of coffee.\nHow much gold do you want to tip?"
-								buttons = json_stringify([ new dButton("10", sprite_get_name(sprCoin), false, 10), new dButton("20", sprite_get_name(sprCoin), false, 20),
-														   new dButton("30", sprite_get_name(sprCoin), false, 30), new dButton("40", sprite_get_name(sprCoin), false, 40),
-														   new dButton("50", sprite_get_name(sprCoin), false, 50), new dButton("60", sprite_get_name(sprCoin), false, 60),
-														   new dButton("70", sprite_get_name(sprCoin), false, 70), new dButton("80", sprite_get_name(sprCoin), false, 80),
-														   new dButton("90", sprite_get_name(sprCoin), false, 90), new dButton("100", sprite_get_name(sprCoin), false, 100) ])
+								buttons = json_stringify([ new dialogueButton("10", sprite_get_name(sprCoin), false, 10), new dialogueButton("20", sprite_get_name(sprCoin), false, 20),
+														   new dialogueButton("30", sprite_get_name(sprCoin), false, 30), new dialogueButton("40", sprite_get_name(sprCoin), false, 40),
+														   new dialogueButton("50", sprite_get_name(sprCoin), false, 50), new dialogueButton("60", sprite_get_name(sprCoin), false, 60),
+														   new dialogueButton("70", sprite_get_name(sprCoin), false, 70), new dialogueButton("80", sprite_get_name(sprCoin), false, 80),
+														   new dialogueButton("90", sprite_get_name(sprCoin), false, 90), new dialogueButton("100", sprite_get_name(sprCoin), false, 100) ])
 								break
 						}
 						break
@@ -1484,7 +1476,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				if (title != "undefined")
 					net_server_send(socketID_sender, CODE_DIALOGUE, title+"|"+text+"|"+string(data[1])+"|"+buttons+"|"+data[0]+"|undefined", BUFFER_TYPE_STRING)
 				else {
-					var dialogueBox = dialogue_progress_SERVER(real(data[1]), real(data[2]), asset_get_index(data[0]), real(data[4]), real(data[3]), instance, socketID_sender)
+					var dialogueBox = dialogue_progress_SERVER(real(data[1]), real(data[2]), asset_get_index(data[0]), real(data[4]), real(data[3]), socketID_sender)
 					if (dialogueBox != undefined)
 						net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify(dialogueBox), BUFFER_TYPE_STRING)
 				}
@@ -1499,7 +1491,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				if (instance == undefined or !instance_exists(instance))
 					break
 			
-				net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({boxes: box_get_boxes_string_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER]}), BUFFER_TYPE_STRING)
+				net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER]}), BUFFER_TYPE_STRING)
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1507,7 +1499,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case _CODE_GET_INVENTORY_SKILL:
-				net_server_send(socketID_sender, CODE_GET_INVENTORY_SKILL, get_boxes_skill_grid_SERVER(socketID_sender), BUFFER_TYPE_STRING)
+				net_server_send(socketID_sender, CODE_GET_INVENTORY_SKILL, json_write_skillboxes_SERVER(socketID_sender), BUFFER_TYPE_STRING)
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1591,7 +1583,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				break
 				
 			case _CODE_GET_ACTIVE_QUESTS:
-				send_active_quests(socketID_sender)
+				tell_active_quests_SERVER(socketID_sender)
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //

@@ -153,7 +153,7 @@
   "nineSlice": null,
   "parent": {
     "name": "C7",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Creature/C7.yy",
+    "path": "folders/./Sprites/Creature/C7.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprC7Head",

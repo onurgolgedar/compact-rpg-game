@@ -78,7 +78,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Aim",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/GUI/Aim.yy",
+    "path": "folders/./Sprites/GUI/Aim.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprAim",

@@ -161,7 +161,7 @@
   "nineSlice": null,
   "parent": {
     "name": "GUI",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/GUI.yy",
+    "path": "folders/./Sprites/GUI.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprDirectionArrow",

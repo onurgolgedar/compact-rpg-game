@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "CW3",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Creature/CW3.yy",
+    "path": "folders/./Sprites/Creature/CW3.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprCW3Arm",

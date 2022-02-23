@@ -27,7 +27,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Environment",
-    "path": "folders/2- Objects/Environment.yy",
+    "path": "folders/CLIENT/2- Objects/Environment.yy",
   },
   "resourceVersion": "1.0",
   "name": "objTrail",

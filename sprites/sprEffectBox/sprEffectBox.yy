@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Effect Box",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Effect Box.yy",
+    "path": "folders/./Sprites/Effect Box.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprEffectBox",

@@ -82,7 +82,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Other",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Other.yy",
+    "path": "folders/./Sprites/Other.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprLootbox",

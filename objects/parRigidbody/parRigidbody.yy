@@ -29,7 +29,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Rigidbodies",
-    "path": "folders/2- Objects/Rigidbodies.yy",
+    "path": "folders/CLIENT/2- Objects/Rigidbodies.yy",
   },
   "resourceVersion": "1.0",
   "name": "parRigidbody",

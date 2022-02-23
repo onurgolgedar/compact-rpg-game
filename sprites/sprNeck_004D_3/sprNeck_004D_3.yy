@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Necklace",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Item/Necklace.yy",
+    "path": "folders/./Sprites/Item/Necklace.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprNeck_004D_3",

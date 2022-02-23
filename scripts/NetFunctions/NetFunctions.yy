@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Library",
-    "path": "folders/3- Scripts/Net/Library.yy",
+    "path": "folders/CLIENT/3- Scripts/Net/Library.yy",
   },
   "resourceVersion": "1.0",
   "name": "NetFunctions",

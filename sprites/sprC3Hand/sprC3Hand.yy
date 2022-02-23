@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "C3",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Creature/C3.yy",
+    "path": "folders/./Sprites/Creature/C3.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprC3Hand",

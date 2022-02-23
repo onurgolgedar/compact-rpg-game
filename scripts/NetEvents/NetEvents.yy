@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Net",
-    "path": "folders/3- Scripts/Net.yy",
+    "path": "folders/CLIENT/3- Scripts/Net.yy",
   },
   "resourceVersion": "1.0",
   "name": "NetEvents",

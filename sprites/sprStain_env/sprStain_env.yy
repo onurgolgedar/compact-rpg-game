@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Environment",
-    "path": "folders/COMMON/Lufulus' Creatures/Sprites/Environment.yy",
+    "path": "folders/./Sprites/Environment.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprStain_env",

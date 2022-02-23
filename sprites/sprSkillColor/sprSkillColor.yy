@@ -137,7 +137,7 @@
             {"id":"84d85510-f78a-4ddf-a5d8-693515c0518d","Key":2.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"9491a9ee-ff26-4a7e-b4b7-1157e7f36df6","path":"sprites/sprSkillColor/sprSkillColor.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"a30d1bb8-9b39-4b4d-bda6-0a89abec0a8b","Key":3.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"85ff7e90-c954-416d-b52f-a4470ca47260","path":"sprites/sprSkillColor/sprSkillColor.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"8dba0bba-7f9a-4d90-a683-3d66e748ef59","Key":4.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"7ec03e0b-68f6-462f-acb8-f381d675459e","path":"sprites/sprSkillColor/sprSkillColor.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
-          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"modifiers":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack",},
+          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack","modifiers":[],},
     ],
     "visibleRange": null,
     "lockOrigin": false,
@@ -165,7 +165,7 @@
   "nineSlice": null,
   "parent": {
     "name": "GUI",
-    "path": "folders/1- Sprites/GUI.yy",
+    "path": "folders/CLIENT/1- Sprites/GUI.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprSkillColor",
