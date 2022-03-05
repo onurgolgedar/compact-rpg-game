@@ -1,0 +1,1 @@
+visible = contClient.alarm[0] != -1 or contClient.alarm[1] != -1

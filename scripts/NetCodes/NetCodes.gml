@@ -54,7 +54,7 @@ function codes() {
 	
 	#macro CODE_GET_ACCOUNTINFO 4001
 	
-	#macro CODE_box_change_active 7000
+	#macro CODE_BOX_CHANGE_ACTIVE 7000
 	#macro CODE_GET_INVENTORY 7001
 	#macro CODE_box_change_position 7002
 	#macro CODE_APPEARENCE 7003

@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprCreature1Head","path":"sprites/sprCreature1Head/sprCreature1Head.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprCreature1Head",
     "tags": [],
     "resourceType": "GMSequence",

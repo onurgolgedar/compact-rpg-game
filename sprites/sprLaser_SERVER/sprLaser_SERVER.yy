@@ -138,7 +138,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprLaser_SERVER","path":"sprites/sprLaser_SERVER/sprLaser_SERVER.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprLaser_SERVER",
     "tags": [],
     "resourceType": "GMSequence",

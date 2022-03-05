@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprNothingness","path":"sprites/sprNothingness/sprNothingness.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprNothingness",
     "tags": [],
     "resourceType": "GMSequence",

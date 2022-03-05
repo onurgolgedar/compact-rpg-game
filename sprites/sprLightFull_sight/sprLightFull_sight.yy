@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprLightFull_sight","path":"sprites/sprLightFull_sight/sprLightFull_sight.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprLightFull_sight",
     "tags": [],
     "resourceType": "GMSequence",

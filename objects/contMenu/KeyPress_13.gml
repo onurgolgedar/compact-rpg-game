@@ -1,1 +1,2 @@
-event_user(0)
+/*global.connectionGoal = 3
+event_user(0)*/

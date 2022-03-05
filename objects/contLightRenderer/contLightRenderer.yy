@@ -27,7 +27,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Lighting",
-    "path": "folders/CLIENT/2- Objects/Lighting.yy",
+    "path": "folders/CLIENT/2- Objects/Rigidbodies/Lighting.yy",
   },
   "resourceVersion": "1.0",
   "name": "contLightRenderer",

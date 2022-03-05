@@ -9,7 +9,7 @@ global.playerSkillBoxes = ds_map_create() // Skill Boxes
 global.locations = ds_map_create() // Locations
 ds_map_add(global.locations, 1, new location("Castle of Tophra", 1, 2200, 1830))
 ds_map_add(global.locations, 2, new location("Arena", 1, 6612, 2444))
-ds_map_add(global.locations, 3, new location("Outside", 1, 5100, 5100))
+ds_map_add(global.locations, 3, new location("Outside", 1, 9500, 2000))
 
 // Inventory Data
 global.bc_hor_COMMON = 5

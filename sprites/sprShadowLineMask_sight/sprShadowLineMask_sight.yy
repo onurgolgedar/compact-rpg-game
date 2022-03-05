@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprShadowLineMask_sight","path":"sprites/sprShadowLineMask_sight/sprShadowLineMask_sight.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprShadowLineMask_sight",
     "tags": [],
     "resourceType": "GMSequence",

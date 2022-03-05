@@ -138,7 +138,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprClothes_008","path":"sprites/sprClothes_008/sprClothes_008.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprClothes_008",
     "tags": [],
     "resourceType": "GMSequence",

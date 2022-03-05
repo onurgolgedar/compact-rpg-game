@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprHardwood","path":"sprites/sprHardwood/sprHardwood.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprHardwood",
     "tags": [],
     "resourceType": "GMSequence",

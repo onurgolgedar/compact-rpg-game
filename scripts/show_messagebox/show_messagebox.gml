@@ -4,6 +4,7 @@ function show_messagebox(xx, yy, title, text, duration = -1) {
 	messageBox.text = text
 	messageBox.maxDuration = duration
 	messageBox.duration = duration
+	messageBox.owner = undefined
 	if (duration != -1)
 		messageBox.alarm[1] = SEC
 	

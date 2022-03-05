@@ -24,5 +24,5 @@ if (is_mouse_on() and !is_click_blocked()) {
 		exit
 		
 	if (onBox_box.item.type == ITEMTYPE_CLOTHES or onBox_box.item.type == ITEMTYPE_SWORD)
-		net_client_send(_CODE_box_change_active, string(onBox_box.item.type)+"|"+string(onBox_i)+"|"+string(onBox_j)+"|"+box_get_confirmation_number_COMMON(onBox_box), BUFFER_TYPE_STRING)
+		net_client_send(_CODE_BOX_CHANGE_ACTIVE, json_stringify({ type: onBox_box.item.type, i: onBox_i, j: onBox_j, confirmation: box_get_confirmation_number_COMMON(onBox_box) }), BUFFER_TYPE_STRING)
 }

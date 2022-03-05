@@ -10,11 +10,19 @@ function Items_COMMON() {
 	#macro SWORD_001 1
 	#macro SWORD_002 2
 	#macro SWORD_003 3
+	#macro SWORD_000X 100
+	#macro SWORD_001X 101
+	#macro SWORD_002X 102
+	#macro SWORD_003X 103
 
 	#macro CLOTHES_000 500
 	#macro CLOTHES_001 501
 	#macro CLOTHES_002 502
 	#macro CLOTHES_003 503
+	#macro CLOTHES_000X 600
+	#macro CLOTHES_001X 601
+	#macro CLOTHES_002X 602
+	#macro CLOTHES_003X 603
 	
 	#macro VALUABLE_000 3000
 }
@@ -29,6 +37,14 @@ function item_get_COMMON(_code, upgrade = 0) {
 			return item_setup_COMMON(new sword_item("Golden Sword", SWORD_002, sprSword_002, 10, 10, 0, 1.2, 100, upgrade))
 		case SWORD_003:
 			return item_setup_COMMON(new sword_item("Sword", SWORD_003, sprSword_003, 12, 0, 20, 1.2, 90, upgrade))
+		case SWORD_000X:
+			return item_setup_COMMON(new sword_item("Arena Sword: One", SWORD_000X, sprSword_012, 25, 0, 25, 1.7, 100, upgrade))
+		case SWORD_001X:
+			return item_setup_COMMON(new sword_item("Arena Sword: Two", SWORD_001X, sprSword_005, 15, 0, 50, 2, 100, upgrade))
+		case SWORD_002X:
+			return item_setup_COMMON(new sword_item("Arena Sword: Three", SWORD_002X, sprSword_025, 10, 10, 10, 1.55, 100, upgrade))
+		case SWORD_003X:
+			return item_setup_COMMON(new sword_item("Arena Sword: Four", SWORD_003X, sprSword_023, 10, 25, 0, 1.25, 100, upgrade))
 
 		case CLOTHES_000:
 			return item_setup_COMMON(new clothes_item("Basic Clothes", CLOTHES_000, sprClothes_000, 50, 0, 0, 10, upgrade))
@@ -38,6 +54,14 @@ function item_get_COMMON(_code, upgrade = 0) {
 			return item_setup_COMMON(new clothes_item("Imperial Clothes", CLOTHES_002, sprClothes_002, 100, 0, 7, 10, upgrade))
 		case CLOTHES_003:
 			return item_setup_COMMON(new clothes_item("Knight's Clothes", CLOTHES_003, sprClothes_003, 120, 0, 10, 10, upgrade))
+		case CLOTHES_000X:
+			return item_setup_COMMON(new clothes_item("Arena Armor: One", CLOTHES_000X, sprClothes_006, 50, 20, 5, 100, upgrade))
+		case CLOTHES_001X:
+			return item_setup_COMMON(new clothes_item("Arena Armor: Two", CLOTHES_001X, sprClothes_005, 100, 40, 10, 100, upgrade))
+		case CLOTHES_002X:
+			return item_setup_COMMON(new clothes_item("Arena Armor: Three", CLOTHES_002X, sprClothes_013, 140, 0, 15, 100, upgrade))
+		case CLOTHES_003X:
+			return item_setup_COMMON(new clothes_item("Arena Armor: Four", CLOTHES_003X, sprClothes_017, 25, 20, 0, 100, upgrade))
 
 		case VALUABLE_000:
 			return item_setup_COMMON(new valuable_item("Silver", VALUABLE_000, sprValuable_000, 100, upgrade))

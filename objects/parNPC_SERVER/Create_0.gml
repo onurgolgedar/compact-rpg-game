@@ -15,7 +15,7 @@ function change_hp(value) {
 	
 	var diff = hp-beforeHp
 	if (diff < 0)
-		net_server_send(SOCKET_ID_ALL, CODE_SLIDING_TEXT, string(targetID)+"|"+string(0)+"|"+string(-40)+"|"+string(round(diff))+"|"+string(0.7+abs(diff)/100*1.4)+"|"+string(irandom_range(250, 270)*choose(1, -1))+"|"+string(-420+random_range(-150, -250))+"|"+string(c_red)+"|"+string(0.9+abs(diff)/100*1.4), BUFFER_TYPE_STRING, true)
+		net_server_send(SOCKET_ID_ALL, CODE_SLIDING_TEXT, json_stringify({ socketID: targetID, xx: 0, yy: -40, text: string(round(diff)), life: 0.7+abs(diff)/100*1.4, spd_x: irandom_range(250, 270)*choose(1, -1), spd_y: -420+random_range(-150, -250), color: c_red, size: 0.9+abs(diff)/100*1.4, maxlife: 0.7+abs(diff)/100*1.4 }), BUFFER_TYPE_STRING, true)
 }
 
 function change_energy(value) {

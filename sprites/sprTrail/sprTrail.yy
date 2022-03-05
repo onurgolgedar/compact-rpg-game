@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprTrail","path":"sprites/sprTrail/sprTrail.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprTrail",
     "tags": [],
     "resourceType": "GMSequence",

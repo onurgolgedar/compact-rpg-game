@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprClothes_014","path":"sprites/sprClothes_014/sprClothes_014.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprClothes_014",
     "tags": [],
     "resourceType": "GMSequence",

@@ -16,7 +16,7 @@ function player_recalculate_statistics_SERVER() {
 	magicalPower += (class == CLASS_MAGE_SERVER)*10
 	
 	var weaponBox = box_get_active_SERVER(socketID, ITEMTYPE_SWORD)
-	if (weaponBox != undefined && weaponBox.item != undefined) {
+	if (weaponBox != undefined and weaponBox.item != undefined) {
 		item_setup_COMMON(weaponBox.item)
 		
 		physicalPower += weaponBox.item.physicalPower
@@ -25,7 +25,7 @@ function player_recalculate_statistics_SERVER() {
 	}
 	
 	var clothesBox = box_get_active_SERVER(socketID, ITEMTYPE_CLOTHES)
-	if (clothesBox != undefined && clothesBox.item != undefined) {
+	if (clothesBox != undefined and clothesBox.item != undefined) {
 		item_setup_COMMON(clothesBox.item)
 		
 		maxHp += clothesBox.item.maxHp
@@ -37,9 +37,9 @@ function player_recalculate_statistics_SERVER() {
 	mana = min(mana, maxMana)
 	movementSpeed = movementSpeed_base+movementSpeed_add
 	
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_MAXHP, string(socketID)+"|"+string(maxHp), BUFFER_TYPE_STRING, true)
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_MAXMANA, string(socketID)+"|"+string(maxMana), BUFFER_TYPE_STRING, true)
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ENERGY, string(socketID)+"|"+string(maxEnergy), BUFFER_TYPE_STRING, true)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_MAXHP, json_stringify({ socketID: socketID, maxHp: maxHp }), BUFFER_TYPE_STRING, true)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_MAXMANA, json_stringify({ socketID: socketID, maxMana: maxMana }), BUFFER_TYPE_STRING, true)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ENERGY, json_stringify({ socketID: socketID, energy: maxEnergy }), BUFFER_TYPE_STRING, true)
 }
 
 function player_spawn_SERVER(socketID) {
@@ -105,9 +105,7 @@ function player_spawn_SERVER(socketID) {
 	newPlayer.playerRow[? PLAYERS_ANGLE_SERVER] = newPlayer.image_angle
 	newPlayer.playerRow[? PLAYERS_DEATHTIMER_SERVER] = 0
 	
-	net_server_send(SOCKET_ID_ALL, CODE_SPAWN_PLAYER, string(socketID)+"|"+string(newPlayer.x)+"|"+string(newPlayer.y)+"|"+string(newPlayer.maxHp)+"|"+string(newPlayer.maxEnergy)
-					+"|"+string(newPlayer.mana)+"|"+string(newPlayer.class)+"|"+string(newPlayer.movementSpeed)+"|"+string(newPlayer.physicalPower)
-					+"|"+string(newPlayer.magicalPower)+"|"+string(newPlayer.attackSpeed)+"|"+string(newPlayer.level), BUFFER_TYPE_STRING)
+	net_server_send(SOCKET_ID_ALL, CODE_SPAWN_PLAYER, json_stringify({ socketID: newPlayer.socketID, xx: round(newPlayer.x), yy: round(newPlayer.y), maxHp: newPlayer.maxHp, maxEnergy: newPlayer.maxEnergy, maxMana: newPlayer.maxMana, class: newPlayer.class, movementSpeed: newPlayer.movementSpeed, physicalPower: newPlayer.physicalPower, magicalPower: newPlayer.magicalPower, attackSpeed: newPlayer.attackSpeed, level: newPlayer.level }), BUFFER_TYPE_STRING)
 					
 	tell_appearence_SERVER(socketID, SOCKET_ID_ALL)
 	

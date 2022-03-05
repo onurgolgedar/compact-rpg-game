@@ -146,7 +146,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprAim_archery","path":"sprites/sprAim_archery/sprAim_archery.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "",
     "tags": [],
     "resourceType": "GMSequence",

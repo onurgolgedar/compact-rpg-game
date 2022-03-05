@@ -28,7 +28,7 @@ if (is_mouse_on() and !is_click_blocked()) {
 			if (skills[i].index == onBox_box.skill.index)
 				break
 			else if (skills[i].index == undefined) {
-				net_client_send(_CODE_SET_SKILLBOX, string(i)+"|"+string(onBox_box.skill.index)+"|-1", BUFFER_TYPE_STRING)
+				net_client_send(_CODE_SET_SKILLBOX, json_stringify({ index: onBox_box.skill.index, to: i, from: -1 }), BUFFER_TYPE_STRING)
 				break
 			}
 		}

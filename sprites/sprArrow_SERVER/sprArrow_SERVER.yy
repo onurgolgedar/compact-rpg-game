@@ -138,7 +138,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprArrow_SERVER","path":"sprites/sprArrow_SERVER/sprArrow_SERVER.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprArrow_SERVER",
     "tags": [],
     "resourceType": "GMSequence",

@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprCreature1FrontArm","path":"sprites/sprCreature1FrontArm/sprCreature1FrontArm.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprCreature1FrontArm",
     "tags": [],
     "resourceType": "GMSequence",

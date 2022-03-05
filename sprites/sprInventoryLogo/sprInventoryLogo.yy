@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprInventoryLogo","path":"sprites/sprInventoryLogo/sprInventoryLogo.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprInventoryLogo",
     "tags": [],
     "resourceType": "GMSequence",

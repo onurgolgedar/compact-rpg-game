@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprSkill2_symbol","path":"sprites/sprSkill2_symbol/sprSkill2_symbol.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprSkill2_symbol",
     "tags": [],
     "resourceType": "GMSequence",

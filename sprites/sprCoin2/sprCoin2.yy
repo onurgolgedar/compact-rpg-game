@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprCoin2","path":"sprites/sprCoin2/sprCoin2.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprCoin2",
     "tags": [],
     "resourceType": "GMSequence",

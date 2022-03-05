@@ -1,3 +1,6 @@
+if (room == roomMenu)
+	exit
+
 var limitZoom_h = floor(768*0.75)
 var value = 0.95
 

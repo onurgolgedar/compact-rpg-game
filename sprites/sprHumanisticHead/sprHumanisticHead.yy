@@ -138,7 +138,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprHumanisticHead","path":"sprites/sprHumanisticHead/sprHumanisticHead.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprHumanisticHead",
     "tags": [],
     "resourceType": "GMSequence",

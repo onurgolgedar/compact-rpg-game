@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprBorderSkills","path":"sprites/sprBorderSkills/sprBorderSkills.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprBorderSkills",
     "tags": [],
     "resourceType": "GMSequence",

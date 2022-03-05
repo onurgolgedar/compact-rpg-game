@@ -138,7 +138,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprCreature_SERVER","path":"sprites/sprCreature_SERVER/sprCreature_SERVER.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprCreature_SERVER",
     "tags": [],
     "resourceType": "GMSequence",

@@ -154,7 +154,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprSkillColor","path":"sprites/sprSkillColor/sprSkillColor.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "",
     "tags": [],
     "resourceType": "GMSequence",

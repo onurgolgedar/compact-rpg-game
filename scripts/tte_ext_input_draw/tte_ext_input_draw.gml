@@ -29,6 +29,8 @@ function tte_ext_input_draw() {
         
 		        for(var l = 0; l < ds_list_size(lines); l++) {
 					var char = lines[| l]
+					if (password)
+						char = string_repeat("*", string_length(char))
 					
 		            if (selVisible and focus) {						
 		                draw_set_color(sel)
@@ -82,7 +84,7 @@ function tte_ext_input_draw() {
 
 		draw_set_color(bg)
 		draw_set_alpha(bg_alpha)
-		draw_roundrect(x, y, x+width-1, y+height-1, false)
+		draw_roundrect_ext(x, y, x+width-1, y+height-1, 20, 20, false)
 	
 		draw_surface(tte_surface, x+padding_left, y+padding_top)
 		draw_set_color(c_black) draw_set_alpha(1)

@@ -17,7 +17,7 @@ if (global.held_box != undefined) {
 			}
 		
 			if (mouseOn_box != undefined)
-				net_client_send(_CODE_box_change_active, string(mouseOn_box_i)+"|"+string(global.held_box_i)+"|"+string(global.held_box_j)+"|"+box_get_confirmation_number_COMMON(global.held_box), BUFFER_TYPE_STRING)
+				net_client_send(_CODE_BOX_CHANGE_ACTIVE, json_stringify({ type: mouseOn_box_i, i: global.held_box_i, j: global.held_box_j, confirmation: box_get_confirmation_number_COMMON(global.held_box) }), BUFFER_TYPE_STRING)
 		}
 	}
 }

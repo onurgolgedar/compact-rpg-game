@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprShield","path":"sprites/sprShield/sprShield.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprShield",
     "tags": [],
     "resourceType": "GMSequence",

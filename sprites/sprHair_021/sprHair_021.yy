@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprHair_021","path":"sprites/sprHair_021/sprHair_021.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprHair_021",
     "tags": [],
     "resourceType": "GMSequence",

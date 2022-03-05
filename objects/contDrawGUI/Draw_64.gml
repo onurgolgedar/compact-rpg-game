@@ -84,7 +84,7 @@ if (is_alive()) {
 			if (objPlayer.stunned)
 				draw_sprite_ext(sprSkillColor, 4, xx, yy, 1, 1, 0, c_black, 0.7)
 		
-			var rate = skill.cooldown/skill.maxcooldown
+			var rate = skill.cooldown/skill.cooldownmax
 			
 			if (rate > 0.03) {
 				draw_set_alpha(0.65)

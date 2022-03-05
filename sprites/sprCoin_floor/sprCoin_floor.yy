@@ -142,7 +142,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprCoin_floor","path":"sprites/sprCoin_floor/sprCoin_floor.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprCoin_floor",
     "tags": [],
     "resourceType": "GMSequence",

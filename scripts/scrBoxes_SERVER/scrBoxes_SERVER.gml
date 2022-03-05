@@ -21,7 +21,7 @@ function box_change_active_SERVER(socketID, type, box_i, box_j, box_confirmation
 	var boxes_SERVER = global.playerBoxes[? db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID)]
 	
 	var box
-	if (box_i != "undefined" and box_i != undefined)
+	if (box_i != undefined and box_i != undefined)
 		box = ds_grid_get(boxes_SERVER, box_i, box_j)
 	else
 		box = box_create_COMMON()
@@ -50,7 +50,7 @@ function box_change_active_SERVER(socketID, type, box_i, box_j, box_confirmation
 		box.tag.isActive = true
 	}
 			
-	if (box_i != "undefined" and box_i != undefined)
+	if (box_i != undefined and box_i != undefined)
 		ds_grid_set(boxes_SERVER, box_i, box_j, active_box_before)
 	else
 		item_unequip_SERVER(socketID, boxes_SERVER, active_box_before.item)

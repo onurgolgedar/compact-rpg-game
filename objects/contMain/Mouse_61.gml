@@ -1,3 +1,6 @@
+if (room == roomMenu)
+	exit
+
 var limitZoom_h = floor(768*1.3)*(1+2*global.drawServer)
 var value = 1.05
 

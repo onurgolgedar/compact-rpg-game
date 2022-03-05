@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprLight_SERVER","path":"sprites/sprLight_SERVER/sprLight_SERVER.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprLight_SERVER",
     "tags": [],
     "resourceType": "GMSequence",

@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprBar2Inside_hp","path":"sprites/sprBar2Inside_hp/sprBar2Inside_hp.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprBar2Inside_hp",
     "tags": [],
     "resourceType": "GMSequence",

@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprHumanisticFrontArm","path":"sprites/sprHumanisticFrontArm/sprHumanisticFrontArm.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprHumanisticFrontArm",
     "tags": [],
     "resourceType": "GMSequence",

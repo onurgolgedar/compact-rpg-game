@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprCreature1Hand","path":"sprites/sprCreature1Hand/sprCreature1Hand.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprCreature1Hand",
     "tags": [],
     "resourceType": "GMSequence",

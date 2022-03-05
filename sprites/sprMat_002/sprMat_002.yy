@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprMat_002","path":"sprites/sprMat_002/sprMat_002.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprMat_002",
     "tags": [],
     "resourceType": "GMSequence",

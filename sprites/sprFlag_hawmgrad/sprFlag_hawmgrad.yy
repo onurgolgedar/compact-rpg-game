@@ -295,7 +295,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprFlag_hawmgrad","path":"sprites/sprFlag_hawmgrad/sprFlag_hawmgrad.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "",
     "tags": [],
     "resourceType": "GMSequence",

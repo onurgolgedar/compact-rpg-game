@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprHumanisticArm","path":"sprites/sprHumanisticArm/sprHumanisticArm.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprHumanisticArm",
     "tags": [],
     "resourceType": "GMSequence",

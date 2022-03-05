@@ -40,7 +40,7 @@ function dialogue_progress_SERVER(messageID, dialogueNo, owner_assetName, ownerI
 			actionText =  dialogue_set_values_SERVER(ini_read_string(npcName, string(messageID)+"."+string(dialogueNo-1)+",BA"+string(answerBefore+1), "undefined"), playerInstance)
 			actionRedirect =  ini_read_real(npcName, string(messageID)+"."+string(dialogueNo-1)+",BR"+string(answerBefore+1), -1)
 			if (actionRedirect != -1 and socketID_sender != undefined)
-				_net_receive_packet(_CODE_DIALOGUE, object_get_name(owner_assetName)+"|"+string(actionRedirect)+"|1|-1|"+string(ownerID), socketID_sender, owner_assetName)
+				_net_receive_packet(_CODE_DIALOGUE, json_stringify({ owner_assetName: object_get_name(owner_assetName), messageID: string(actionRedirect), dialogueNo: 1, answerBefore: -1, owner: ownerID}), socketID_sender)
 		}		
 			
 		if (actionCode != "undefined") {

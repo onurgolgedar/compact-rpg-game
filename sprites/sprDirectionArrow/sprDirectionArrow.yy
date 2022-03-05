@@ -150,7 +150,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprDirectionArrow","path":"sprites/sprDirectionArrow/sprDirectionArrow.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "",
     "tags": [],
     "resourceType": "GMSequence",

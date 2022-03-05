@@ -28,7 +28,7 @@ if (instance_exists(owner)) {
 	else
 		image_xscale = laser_length/sprite_get_width(sprite_index)
 	
-	net_server_send(SOCKET_ID_ALL, CODE_SKILL2, string(owner.socketID)+"|"+string(x)+"|"+string(y)+"|"+string(image_angle)+"|"+string(image_xscale)+"|"+string(laser_index == 0), BUFFER_TYPE_STRING)
+	net_server_send(SOCKET_ID_ALL, CODE_SKILL2, json_stringify({ socketID: owner.socketID, xx: x, yy: y, angle: image_angle, xscale: image_xscale, lock: laser_index == 0 }), BUFFER_TYPE_STRING, true)
 
 	if (laser_index < 2 and collisionObject != noone) {
 		var laser = instance_create_depth(x+lengthdir_x(sprite_width, image_angle), y+lengthdir_y(sprite_width, image_angle), 0, object_index)

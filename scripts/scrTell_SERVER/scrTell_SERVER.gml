@@ -22,7 +22,7 @@ function tell_appearence_SERVER(socketID, socketID_receiver) {
 	box = box_get_active_SERVER(socketID, ITEMTYPE_CLOTHES)
 	var clothesSprite = box.item == undefined ? sprite_get_name(sprNothingness) : sprite_get_name(box.item.sprite)
 	
-	net_server_send(socketID_receiver, CODE_APPEARENCE, string(socketID)+"|"+weaponSprite+"|"+clothesSprite, BUFFER_TYPE_STRING)
+	net_server_send(socketID_receiver, CODE_APPEARENCE, json_stringify({ socketID: socketID, weapon: weaponSprite, shoulders: clothesSprite }), BUFFER_TYPE_STRING)
 }
 
 function tell_all_angles_SERVER() {
@@ -33,7 +33,7 @@ function tell_all_angles_SERVER() {
 		var _socketID = _playerRow[? PLAYERS_SOCKETID_SERVER]
 		var _value = _playerRow[? PLAYERS_ANGLE_SERVER]
 		
-		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ROTATION, string(_socketID)+"|"+string(_value), BUFFER_TYPE_STRING, true, _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
+		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ROTATION, json_stringify({ socketID: _socketID, angle: _value }), BUFFER_TYPE_STRING, true, _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
 	}
 }
 
@@ -45,7 +45,7 @@ function tell_all_energies_SERVER() {
 		var _socketID = _playerRow[? PLAYERS_SOCKETID_SERVER]
 		var _value = _playerRow[? PLAYERS_ENERGY_SERVER]
 		
-		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ENERGY, string(_socketID)+"|"+string(_value), BUFFER_TYPE_STRING, true, _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
+		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ENERGY, json_stringify({ socketID: _socketID, energy: _value }), BUFFER_TYPE_STRING, true, _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
 	}
 }
 
@@ -57,7 +57,7 @@ function tell_all_healths_SERVER() {
 		var _socketID = _playerRow[? PLAYERS_SOCKETID_SERVER]
 		var _value = _playerRow[? PLAYERS_HP_SERVER]
 		
-		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_HP, string(_socketID)+"|"+string(_value), BUFFER_TYPE_STRING, true, _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
+		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_HP, json_stringify({ socketID: _socketID, hp: _value }), BUFFER_TYPE_STRING, true, _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
 	}
 }
 
@@ -69,7 +69,7 @@ function tell_all_manas_SERVER() {
 		var _socketID = _playerRow[? PLAYERS_SOCKETID_SERVER]
 		var _value = _playerRow[? PLAYERS_MANA_SERVER]
 		
-		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_MANA, string(_socketID)+"|"+string(_value), BUFFER_TYPE_STRING, true, _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
+		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_MANA, json_stringify({ socketID: _socketID, mana: _value }), BUFFER_TYPE_STRING, true, _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
 	}
 }
 
@@ -82,7 +82,7 @@ function tell_all_names(socketID) {
 		var _accID = _onlineAccountRow[? ONLINEACCOUNTS_ACCID_SERVER]
 		var _name = db_get_value_by_key(global.DB_SRV_TABLE_accounts, _accID, ACCOUNTS_NICKNAME_SERVER)
 		
-		net_server_send(socketID == undefined ? SOCKET_ID_ALL : socketID, CODE_TELL_PLAYER_NAME, string(_socketID)+"|"+string(_name), BUFFER_TYPE_STRING, true, _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
+		net_server_send(socketID == undefined ? SOCKET_ID_ALL : socketID, CODE_TELL_PLAYER_NAME, json_stringify({ socketID: _socketID, name: _name }), BUFFER_TYPE_STRING, true, _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
 	}
 }
 
@@ -101,7 +101,7 @@ function tell_all_positions_SERVER(force) {
 			
 			var lastPosition = ds_map_find_value(global.lastPositions_sent, _socketID)
 			if (lastPosition == undefined or force or (lastPosition.xx != _xx or lastPosition.yy != _yy)) {
-				net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_POSITION, string(_socketID)+"|"+string(_xx)+"|"+string(_yy), BUFFER_TYPE_STRING, true, _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
+				net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_POSITION, json_stringify({ socketID: _socketID, xx: _xx, yy: _yy }), BUFFER_TYPE_STRING, true, lastPosition == undefined or force ? 0 : _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
 				ds_map_set(global.lastPositions_sent, _socketID, {xx: _xx, yy: _yy})
 			}
 		}

@@ -138,7 +138,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprTreeBody","path":"sprites/sprTreeBody/sprTreeBody.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprTreeBody",
     "tags": [],
     "resourceType": "GMSequence",

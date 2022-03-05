@@ -37,7 +37,7 @@ function box_get_boxes_string() {
 
 function box_change_active(type, box_i, box_j, box_confirmation_number) {
 	var box
-	if (box_i != "undefined" and box_i != undefined)
+	if (box_i != undefined)
 		box = ds_grid_get(global.boxes, box_i, box_j)
 	else
 		box = box_create_COMMON()
@@ -62,7 +62,7 @@ function box_change_active(type, box_i, box_j, box_confirmation_number) {
 		box.tag.isActive = true
 	}
 			
-	if (box_i != "undefined" and box_i != undefined)
+	if (box_i != undefined)
 		ds_grid_set(global.boxes, box_i, box_j, active_box_before)
 	else
 		unequip_item(active_box_before.item)

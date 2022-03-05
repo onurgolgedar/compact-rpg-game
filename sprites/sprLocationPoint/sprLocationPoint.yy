@@ -154,7 +154,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprLocationPoint","path":"sprites/sprLocationPoint/sprLocationPoint.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "",
     "tags": [],
     "resourceType": "GMSequence",

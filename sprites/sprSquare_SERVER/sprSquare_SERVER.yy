@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprSquare_SERVER","path":"sprites/sprSquare_SERVER/sprSquare_SERVER.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprSquare_SERVER",
     "tags": [],
     "resourceType": "GMSequence",

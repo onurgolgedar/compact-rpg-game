@@ -138,7 +138,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprHair_010","path":"sprites/sprHair_010/sprHair_010.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprHair_010",
     "tags": [],
     "resourceType": "GMSequence",

@@ -9,8 +9,8 @@ function answer(buttonIndex, qKey, value = undefined, xx = 250, yy = 250) {
 }
 
 event_inherited()
-hair = sprHair_008
-clothes = sprClothes_005
+hair = sprHair_001
+clothes = sprClothes_009
 
 rigidbody_create(sprHumanisticShoulders,
 				 sprHumanisticArm, 27,

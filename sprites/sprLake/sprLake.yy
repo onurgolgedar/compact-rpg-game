@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprLake","path":"sprites/sprLake/sprLake.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprLake",
     "tags": [],
     "resourceType": "GMSequence",

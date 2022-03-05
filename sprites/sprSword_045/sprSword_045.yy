@@ -59,7 +59,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprSword_045","path":"sprites/sprSword_045/sprSword_045.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprSword_045",
     "tags": [],
     "resourceType": "GMSequence",

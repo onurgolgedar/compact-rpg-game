@@ -138,7 +138,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprPlayer_SERVER","path":"sprites/sprPlayer_SERVER/sprPlayer_SERVER.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprPlayer_SERVER",
     "tags": [],
     "resourceType": "GMSequence",

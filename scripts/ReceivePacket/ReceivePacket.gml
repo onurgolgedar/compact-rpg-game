@@ -9,36 +9,27 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 	var data
 	#region PARSE PARAMETERS
 	var parameterCount = 0
-	if (is_string(pureData) and string_count("|", pureData) > 0) {
-		parameterCount = string_count("|", pureData)
-		var cut = 0
-		var parameterIndex = 0
-		for (var i = 2; i <= string_length(pureData)+1; i++) {
-		
-			if (i == string_length(pureData)+1 or string_char_at(pureData, i) == "|") {
-				var parameter = string_copy(pureData, cut+1, i-cut-1)
-				data[parameterIndex] = parameter
-
-				cut = i
-				parameterIndex++
-			}
+	if (is_string(pureData)) {
+		if (string_char_at(pureData, 0) == "{" or string_char_at(pureData, 0) == "[")
+			data = json_parse(pureData)
+		else {
+			parameterCount = 1
+			data = pureData
 		}
 	}
 	else {
 		parameterCount = 1
-		data[0] = argument[1]
+		data = pureData
 	}
 	#endregion
 
-	try {
+	/*try {*/
 		switch(code) {										
 			case CODE_GET_INVENTORY:
-				var loaded_data = json_parse(data[0])
-			
 				ds_grid_destroy(global.boxes)
 				
 				var boxes_SERVER = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
-				ds_grid_read(boxes_SERVER, loaded_data.boxes)
+				ds_grid_read(boxes_SERVER, data.boxes)
 				for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++) {
 					for (var j = 0; j < global.bc_ver_COMMON+2; j++) {
 						var _data = ds_grid_get(boxes_SERVER, i, j)
@@ -64,7 +55,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				with (objInventory_window)
 					inventory_refresh()
 					
-				global.gold = loaded_data.gold
+				global.gold = data.gold
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -75,7 +66,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				ds_grid_destroy(global.boxes_skill)
 				
 				var boxes_skill_SERVER = ds_grid_create(global.sc_hor_COMMON*global.pageCount_skill_COMMON, global.sc_ver_COMMON)
-				ds_grid_read(boxes_skill_SERVER, data[0])
+				ds_grid_read(boxes_skill_SERVER, data)
 				for (var i = 0; i < global.sc_hor_COMMON*global.pageCount_skill_COMMON; i++) {
 					for (var j = 0; j < global.sc_ver_COMMON; j++) {
 						var _data = ds_grid_get(boxes_skill_SERVER, i, j)
@@ -108,13 +99,12 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_APPEARENCE:
-				var player = global.playerInstances[? real(data[0])]
+				var player = global.playerInstances[? data.socketID]
 				
 				if (player != undefined)
 					with (player) {
-						id.weaponSprite = asset_get_index(data[1])
-						shoulders.sprite_index = asset_get_index(data[2])
-						//hair = asset_get_index(data[3])
+						id.weaponSprite = asset_get_index(data.weapon)
+						shoulders.sprite_index = asset_get_index(data.shoulders)
 					}
 				break
 			
@@ -123,13 +113,11 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_WINDOW:
-				var loaded_data = json_parse(data[0])
-			
-				var trade_window = instance_create_layer(450, 140, "Windows", asset_get_index(loaded_data.window))
-				trade_window.owner = loaded_data.owner
+				var trade_window = instance_create_layer(450, 140, "Windows", asset_get_index(data.window))
+				trade_window.owner = data.owner
 			
 				var boxes = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
-				ds_grid_read(boxes, loaded_data.data)
+				ds_grid_read(boxes, data.json)
 				for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++) {
 					for (var j = 0; j < global.bc_ver_COMMON+2; j++) {
 						var _data = ds_grid_get(boxes, i, j)
@@ -157,18 +145,18 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_GET_ACCOUNTINFO:
-				global.gold = data[0]
+				global.gold = data
 			break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE_box_change_active:
-				if (data[1] != "undefined")
-					box_change_active(real(data[0]), real(data[1]), real(data[2]), data[3])
+			case CODE_BOX_CHANGE_ACTIVE:
+				if (data.i != pointer_null)
+					box_change_active(data.type, data.i, data.j, data.confirmation)
 				else
-					box_change_active(real(data[0]), undefined, undefined, data[3])
+					box_change_active(data.type, undefined, undefined, data.confirmation)
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -176,7 +164,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_box_change_position:
-				box_change_position(real(data[0]), real(data[1]), real(data[2]), real(data[3]))
+				box_change_position(data.i, data.j, data.target_i, data.target_j)
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -184,9 +172,9 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_DROP_COIN:
-				var coinCenter = instance_create_layer(real(data[1]), real(data[2]), "Floor", objCoinCenter)
-				coinCenter.value = real(data[3])
-				coinCenter.id_server = real(data[0])
+				var coinCenter = instance_create_layer(data.xx, data.yy, "Floor", objCoinCenter)
+				coinCenter.value = data.value
+				coinCenter.id_server = data.coinID
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -194,12 +182,12 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_COLLECT_COIN:
-				var player = global.playerInstances[? real(data[0])]
+				var player = global.playerInstances[? data.socketID]
 				
 				if (player != undefined) {
 					// ?
 					with (objCoinCenter) {
-						if (id_server = real(data[1])) {
+						if (id_server = data.coinID) {
 							collector = player
 							
 							var ds_size = ds_list_size(coins)
@@ -220,8 +208,8 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					}
 				}
 				
-				if (global.socketID_player == real(data[0]))
-					global.gold = real(data[2])
+				if (global.socketID_player == data.socketID)
+					global.gold = data.value
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -229,9 +217,9 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_EFFECT_LASER:
-				var target = global.playerInstances[? real(data[0])]
+				var target = global.playerInstances[? data]
 				if (target == undefined)
-					target = global.creatureInstances[? real(data[0])]
+					target = global.creatureInstances[? data]
 		
 				if (target != undefined) {
 					with (target) {
@@ -246,9 +234,9 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_KILL:
-				var target = global.playerInstances[? real(data[0])]
+				var target = global.playerInstances[? data]
 				if (target == undefined)
-					target = global.creatureInstances[? real(data[0])]
+					target = global.creatureInstances[? data]
 		
 				if (target != undefined)
 					instance_destroy(target)
@@ -259,11 +247,11 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_BASIC_ATTACK:
-				var player = global.playerInstances[? real(data[0])]
+				var player = global.playerInstances[? data.socketID]
 		
 				if (player != undefined)
 					with (player) {
-						anim_start(animSwingASword, real(data[1]), id, animSwingASword_style)
+						anim_start(animSwingASword, data.time, id, animSwingASword_style)
 
 						if (animSwingASword_style < 2)
 							animSwingASword_style++
@@ -278,18 +266,18 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			
 			case CODE_SKILL_INFO:
 				with (objPlayer) {
-					if (data[0] != "undefined") {
-						var skill = skills[real(data[1])]
-						skill.index = real(data[0])
-						skill.code = real(data[5])
-						skill.cooldown = real(data[6])
-						skill.maxcooldown = real(data[2])
-						skill.energy = real(data[3])
-						skill.mana = real(data[4])
-						skill.sprite = get_skill_sprite(real(data[0]))
+					if (data.index != pointer_null) {
+						var skill = skills[data.key]
+						skill.index = data.index
+						skill.code = data.code
+						skill.cooldown = data.cooldown
+						skill.cooldownmax = data.cooldownmax
+						skill.energy = data.energy
+						skill.mana = data.mana
+						skill.sprite = get_skill_sprite(data.index)
 					}
 					else
-						skills[real(data[1])] = { index: undefined, cooldown: undefined, mana: undefined, energy: undefined, sprite: sprNothingness, maxcooldown: undefined, code: undefined }
+						skills[data.key] = { index: undefined, cooldown: undefined, mana: undefined, energy: undefined, sprite: sprNothingness, cooldownmax: undefined, code: undefined }
 				}
 				break
 			
@@ -298,13 +286,13 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_SLIDING_TEXT:
-				var target = global.playerInstances[? real(data[0])]
+				var target = global.playerInstances[? data.socketID]
 				if (target == undefined)
-					target = global.creatureInstances[? real(data[0])]
+					target = global.creatureInstances[? data.socketID]
 		
 				if (target != undefined)
 					with (target) {
-						var _text = {xx: real(data[1]), yy: real(data[2]), text: data[3], life: real(data[4]), spd_x: real(data[5]), spd_y: real(data[6]), color: real(data[7]), size: real(data[8]), maxlife: real(data[4])}
+						var _text = { xx: data.xx, yy: data.yy, text: data.text, life: data.life, spd_x: data.spd_x, spd_y: data.spd_y, color: data.color, size: data.size, maxlife: data.maxlife }
 						ds_list_add(texts, _text)
 					}
 				break
@@ -314,26 +302,26 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 				
 			case CODE_DIALOGUE:
-				if (array_length(data) > 1) {
+				if (!is_array(data)) {
 					var buttonsArray = undefined
-					if (data[3] != "undefined") {
-						buttonsArray = json_parse(data[3])
+					if (data.buttons != pointer_null) {
+						buttonsArray = data.buttons
 						for (var i = 0; i < array_length(buttonsArray); i++)
 							buttonsArray[i].image = asset_get_index(buttonsArray[i].image)
 					}
 				
-					if (data[4] == "undefined")
-						data[4] = undefined
-					if (data[2] == "undefined")
-						data[2] = undefined
-					if (data[5] == "undefined")
-						data[5] = undefined
+					if (data.ownerAssetName == pointer_null)
+						data.ownerAssetName = undefined
+					if (data.messageID == pointer_null)
+						data.messageID = undefined
+					if (data.duration == pointer_null)
+						data.duration = undefined
 					
-					show_questionbox(450, 550, data[0], data[1], data[4] != undefined ? asset_get_index(data[4]) : data[4], data[2] != undefined ? real(data[2]) : data[2], buttonsArray, data[5] != undefined ? real(data[5]) : data[5])
+					show_questionbox(450, 550, data.title, data.text, data.ownerAssetName != undefined ? asset_get_index(data.ownerAssetName) : data.ownerAssetName, data.messageID, buttonsArray, data.duration)
 				}
 				else {
-					var messageBoxes = json_parse(data[0])
-						
+					var messageBoxes = data
+					
 					for (var i = 0; i < 2; i++) {
 						var messageBox = messageBoxes[i]
 						
@@ -363,18 +351,18 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_GET_STATISTICS:
-				var target = global.playerInstances[? real(data[0])]
+				var target = global.playerInstances[? data.socketID]
 				if (target == undefined)
 					break
 
 				with (target) {
-					maxHp = real(data[1])
-					maxEnergy = real(data[2])
-					maxMana = real(data[3])
-					movementSpeed = real(data[4])
-					physicalPower = real(data[5])
-					magicalPower = real(data[6])
-					attackSpeed = real(data[7])
+					maxHp = data.maxHp
+					maxEnergy = data.maxEnergy
+					maxMana = data.maxMana
+					movementSpeed = data.movementSpeed
+					physicalPower = data.physicalPower
+					magicalPower = data.magicalPower
+					attackSpeed = data.attackSpeed
 				}
 			break
 			
@@ -383,7 +371,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_SKILL0:
-				var player = global.playerInstances[? data[0]]
+				var player = global.playerInstances[? data]
 			
 				if (player != undefined) {
 					player.skill[0] = 0
@@ -391,7 +379,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					if (player.object_index == objPlayer) {
 						for (var i = 0; i < 5; i++) {
 							if (player.skills[i].index == SKILL_0) {
-								player.skills[i].cooldown = player.skills[i].maxcooldown
+								player.skills[i].cooldown = player.skills[i].cooldownmax
 								break
 							}
 						}
@@ -404,12 +392,12 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_SKILL1:
-				var player = global.playerInstances[? real(data[0])]
+				var player = global.playerInstances[? data.socketID]
 				if (player != undefined) {
 					with (player) {
-						var arrow = instance_create_layer(real(data[1]), real(data[2]), "Top", objArrow)
+						var arrow = instance_create_layer(data.xx, data.yy, "Top", objArrow)
 						with (arrow) {
-							image_angle = real(data[3])
+							image_angle = data.angle
 							var pow = 1400
 							arrow.spd = {xx: lengthdir_x(pow, image_angle), yy: lengthdir_y(pow, image_angle)}
 							arrow.owner = player
@@ -418,7 +406,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						if (player.object_index == objPlayer) {
 							for (var i = 0; i < 5; i++) {
 								if (player.skills[i].index == SKILL_1) {
-									player.skills[i].cooldown = player.skills[i].maxcooldown
+									player.skills[i].cooldown = player.skills[i].cooldownmax
 									break
 								}
 							}
@@ -432,22 +420,22 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_SKILL2:
-				var player = global.playerInstances[? real(data[0])]
+				var player = global.playerInstances[? data.socketID]
 				if (player != undefined) {
 					with (player) {
-						var laser = instance_create_layer(data[1], data[2], "Top", objSkill2)
+						var laser = instance_create_layer(data.xx, data.yy, "Top", objSkill2)
 						with (laser) {
 							owner = player
-							lock = data[5]
+							lock = data.lock
 							image_blend = c_red
-							image_angle = data[3]
-							image_xscale = data[4]
+							image_angle = data.angle
+							image_xscale = data.xscale
 						}
 					
 						if (player.object_index == objPlayer) {
 							for (var i = 0; i < 5; i++) {
 								if (player.skills[i].index == SKILL_2) {
-									player.skills[i].cooldown = player.skills[i].maxcooldown
+									player.skills[i].cooldown = player.skills[i].cooldownmax
 									break
 								}
 							}
@@ -461,12 +449,12 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_SKILL3:
-				var player = global.playerInstances[? real(data[0])]
+				var player = global.playerInstances[? data]
 				if (player != undefined) {
 					if (player.object_index == objPlayer) {
 						for (var i = 0; i < 5; i++) {
 							if (player.skills[i].index == SKILL_3) {
-								player.skills[i].cooldown = player.skills[i].maxcooldown
+								player.skills[i].cooldown = player.skills[i].cooldownmax
 								break
 							}
 						}
@@ -484,7 +472,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					break
 				
 				var accountID = db_get_value_by_key(global.DB_SRV_TABLE_onlineAccounts, socketID_sender, ONLINEACCOUNTS_ACCID_SERVER)
-				var locationID =  db_get_value_by_key(global.DB_SRV_TABLE_accountInfo, accountID, ACCOUNTINFO_LOCATION_SERVER) + (data[0] == 1 ? 1 : -1)
+				var locationID =  db_get_value_by_key(global.DB_SRV_TABLE_accountInfo, accountID, ACCOUNTINFO_LOCATION_SERVER) + (data == 1 ? 1 : -1)
 				
 				var location = ds_map_find_value(global.locations, locationID)
 				
@@ -507,19 +495,19 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_SPAWN_PLAYER:
-				var _socketID = real(data[0])
+				var _socketID = data.socketID
 		
-				var newPlayer = instance_create_layer(real(data[1]), real(data[2]), "Normal", _socketID == global.socketID_player ? objPlayer : objOtherPlayer)
+				var newPlayer = instance_create_layer(data.xx, data.yy, "Normal", _socketID == global.socketID_player ? objPlayer : objOtherPlayer)
 				newPlayer.socketID = _socketID
-				newPlayer.maxHp = real(data[3])
-				newPlayer.maxEnergy = real(data[4])
-				newPlayer.maxMana = real(data[5])
-				newPlayer.class = data[6]
-				newPlayer.movementSpeed = real(data[7])
-				newPlayer.physicalPower = real(data[8])
-				newPlayer.magicalPower = real(data[9])
-				newPlayer.attackSpeed = real(data[10])
-				newPlayer.level = real(data[11])
+				newPlayer.maxHp = data.maxHp
+				newPlayer.maxEnergy = data.maxEnergy
+				newPlayer.maxMana = data.maxMana
+				newPlayer.class = data.class
+				newPlayer.movementSpeed = data.movementSpeed
+				newPlayer.physicalPower = data.physicalPower
+				newPlayer.magicalPower = data.magicalPower
+				newPlayer.attackSpeed = data.attackSpeed
+				newPlayer.level = data.level
 
 				newPlayer.hp = newPlayer.maxHp
 				newPlayer.energy = newPlayer.maxEnergy
@@ -563,19 +551,19 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_SPAWN_NPC:
-				var _npcID = real(data[0])
+				var _npcID = data.npcID
 		
-				var creature = instance_create_layer(real(data[1]), real(data[2]), "Normal", asset_get_index(data[7]))
+				var creature = instance_create_layer(data.xx, data.yy, "Normal", asset_get_index(data.clientObject))
 				creature.npcID = _npcID
-				creature.maxHp = real(data[3])
-				creature.maxEnergy = real(data[4])
-				creature.maxMana = real(data[5])
+				creature.maxHp = data.maxHp
+				creature.maxEnergy = data.maxEnergy
+				creature.maxMana = data.maxMana
 
 				creature.hp = creature.maxHp
 				creature.energy = creature.maxEnergy
 				creature.mana = creature.maxMana
 				creature.rigidbody_set_definedstance(STANCE_NORMAL, 0.5)
-				creature.name = data[6]
+				creature.name = data.name
 				
 				ds_map_set(global.creatureInstances, _npcID, creature)
 				break
@@ -585,7 +573,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_GET_ACTIVE_QUESTS:
-				ds_map_read(global.activeQuests_player, data[0])
+				ds_map_read(global.activeQuests_player, data)
 				
 				var keys = ds_map_keys_to_array(global.activeQuests_player)
 				var ds_size = array_length(keys)
@@ -609,38 +597,43 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_CONNECT:
-				var _socketID = real(data[0])
+				var _socketID = data
 				if (global.socketID_player == undefined)
 					global.socketID_player = _socketID
 					
 				if (global.connectionGoal == 0)
-					net_client_send(_CODE_SIGNUP, global.clientID_signup+"|"+global.clientPassword_signup+"|"+global.clientName_signup+"|"+global.clientClass_signup, BUFFER_TYPE_STRING)
+					net_client_send(_CODE_SIGNUP, json_stringify({ accountID: global.clientID_signup, password: global.clientPassword_signup, nickname: global.clientName_signup, class: global.clientClass_signup }), BUFFER_TYPE_STRING)
 				else {
 					if (global.serverIP == "127.0.0.1")
-						net_client_send(_CODE_LOGIN, global.clientID+"|"+global.clientPassword, BUFFER_TYPE_STRING)
+						net_client_send(_CODE_LOGIN, json_stringify({ accountID: global.clientID, password: global.clientPassword }), BUFFER_TYPE_STRING)
 					else {
 						// Upload The Account To Remote Server
 						ini_open("Boxes.dbfile")
 							var _str_items = ini_read_string("Items", global.clientID, "")
 							if (_str_items == "")
-								_str_items = "undefined"
+								_str_items = undefined
 							
 							var _str_skills = ini_read_string("Skills", global.clientID, "")
 							if (_str_skills == "")
-								_str_skills = "undefined"
+								_str_skills = undefined
 							
 							var _str_skillBoxes = ini_read_string("SkillBoxes", global.clientID, "")
 							if (_str_skillBoxes == "")
-								_str_skillBoxes = "undefined"
+								_str_skillBoxes = undefined
 						ini_close()
 					
 						ini_open("Quests.dbfile")
 							var _str_quests = ini_read_string("Quests", global.clientID, "")
 							if (_str_quests == "")
-								_str_quests = "undefined"
+								_str_quests = undefined
 						ini_close()
 						
-						net_client_send(_CODE_UPLOAD, global.clientID+"|"+global.clientPassword+"|"+_str_items+"|"+_str_skills+"|"+_str_quests+"|"+string(global.gold)+"|"+string(global.level)+"|"+_str_skillBoxes, BUFFER_TYPE_STRING)
+						var accountInfo = db_get_row(global.DB_SRV_TABLE_accountInfo, global.clientID)
+						
+						if (accountInfo != undefined)
+							net_client_send(_CODE_UPLOAD, json_stringify({ accountID: global.clientID, password: global.clientPassword, items: _str_items, skills: _str_skills, quests: _str_quests, gold: accountInfo[? ACCOUNTINFO_GOLD_SERVER], level: accountInfo[? ACCOUNTINFO_LEVEL_SERVER], skillBoxes: _str_skillBoxes,  }), BUFFER_TYPE_STRING)
+						else
+							net_client_send(_CODE_LOGIN, json_stringify({ accountID: global.clientID, password: global.clientPassword }), BUFFER_TYPE_STRING)
 					}
 				}
 				break
@@ -650,7 +643,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_DISCONNECT:
-				var player = global.playerInstances[? real(data[0])]
+				var player = global.playerInstances[? data]
 				if (player != undefined)
 					instance_destroy(player)
 				break
@@ -660,7 +653,11 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_LOGIN_FAIL:
-				room_goto(roomMenu)
+				if (global.socket != undefined)
+					network_destroy(global.socket)
+				contClient.alarm[1] = -1
+				if (room != roomMenu)
+					room_goto(roomMenu)
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -668,7 +665,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_PING:
-				global.ping_udp = current_time-real(data[0])
+				global.ping_udp = current_time-data
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -680,7 +677,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					if (socketID == global.socketID_player)
 						instance_destroy()
 						
-				global.clientClass = data[0]
+				global.clientClass = data
 		
 				with (contClient)
 					alarm[1] = -1
@@ -701,41 +698,53 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // // */
 			
 			case _CODE_SIGNUP:
-				var onlineAccount = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_SOCKETID_SERVER, ONLINEACCOUNTS_ACCID_SERVER, data[0])
+				var onlineAccount = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_SOCKETID_SERVER, ONLINEACCOUNTS_ACCID_SERVER, data.accountID)
 				if (onlineAccount != undefined) {
 					net_server_send(socketID_sender, CODE_LOGIN_FAIL)
 					break
 				}
 				
-				var account = db_get_row(global.DB_SRV_TABLE_accounts, data[0])
-				if (account == undefined and data[1] != "" and data[2] != "") {
-					account = db_create_row(data[0])
-					account[? ACCOUNTS_PASSWORD_SERVER] = data[1]
-					account[? ACCOUNTS_NICKNAME_SERVER] = data[2]
+				var account = db_get_row(global.DB_SRV_TABLE_accounts, data.accountID)
+				var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, data.accountID)
+				if (account == undefined and accountInfoRow == undefined and data.password != "" and data.nickname != "") {
+					account = db_create_row(data.accountID)
+					account[? ACCOUNTS_PASSWORD_SERVER] = data.password
+					account[? ACCOUNTS_NICKNAME_SERVER] = data.nickname
 						
-					if (data[3] == CLASS_WARRIOR or data[3] == CLASS_ASSASSIN or data[3] == CLASS_MAGE)
-						account[? ACCOUNTS_CLASS_SERVER] = data[3]
+					if (data.class == CLASS_WARRIOR or data.class == CLASS_ASSASSIN or data.class == CLASS_MAGE)
+						account[? ACCOUNTS_CLASS_SERVER] = data.class
 					else
 						account[? ACCOUNTS_CLASS_SERVER] = CLASS_WARRIOR
 						
+					accountInfoRow = db_create_row(data.accountID)
+					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = 5000
+					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = 1
+					accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER] = LOCATION_THE_CASTLE
+					db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
+					db_save_table(global.DB_SRV_TABLE_accountInfo)
+						
 					db_add_row(global.DB_SRV_TABLE_accounts, account)
 					db_save_table(global.DB_SRV_TABLE_accounts)
+					
+					net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have [c="+string(c_lime)+"]signed up[/c] successfully. ", title: "Success", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 4, buttons: undefined }), BUFFER_TYPE_STRING)
 				}
+				else
+					net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "The account already exists. ", title: "Failed", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 4, buttons: undefined }), BUFFER_TYPE_STRING)
 				break
 			
 			case _CODE_LOGIN:
-				var onlineAccount = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_SOCKETID_SERVER, ONLINEACCOUNTS_ACCID_SERVER, data[0])
+				var onlineAccount = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_SOCKETID_SERVER, ONLINEACCOUNTS_ACCID_SERVER, data.accountID)
 				if (onlineAccount != undefined) {
 					net_server_send(socketID_sender, CODE_LOGIN_FAIL)
 					break
 				}
 
-				var account = db_get_row(global.DB_SRV_TABLE_accounts, data[0])
-				if (account != undefined and account[? ACCOUNTS_PASSWORD_SERVER] == data[1]) {
-					if (account[? ACCOUNTS_PASSWORD_SERVER] == data[1]) {
+				var account = db_get_row(global.DB_SRV_TABLE_accounts, data.accountID)
+				if (account != undefined and account[? ACCOUNTS_PASSWORD_SERVER] == data.password) {
+					if (account[? ACCOUNTS_PASSWORD_SERVER] == data.password) {
 					
 						onlineAccount = db_create_row(socketID_sender)
-						onlineAccount[? ONLINEACCOUNTS_ACCID_SERVER] = data[0]
+						onlineAccount[? ONLINEACCOUNTS_ACCID_SERVER] = data.accountID
 						db_add_row(global.DB_SRV_TABLE_onlineAccounts, onlineAccount)
 					}
 					else {
@@ -745,17 +754,8 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				
 					var row = db_create_row(socketID_sender)
 					db_add_row(global.DB_SRV_TABLE_players, row)
-					
-					var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, onlineAccount[? ONLINEACCOUNTS_ACCID_SERVER])
-					if (accountInfoRow == undefined) {
-						accountInfoRow = db_create_row(data[0])
-						accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = 500
-						accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = 1
-						accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER] = LOCATION_THE_CASTLE
-						db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
-					}
 				
-					var accountName = data[0]			
+					var accountName = data.accountID		
 					ini_open("Boxes.dbfile")
 						var _str_items = ini_read_string("Items", accountName, "")
 						var _str_skills = ini_read_string("Skills", accountName, "")
@@ -792,16 +792,6 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							for (var t = 0; t < global.bc_hor_COMMON*global.pageCount_COMMON; t++)
 								for (var z = 0; z < global.bc_ver_COMMON+2; z++)
 									ds_grid_set(boxes_SERVER, t, z, box_create_COMMON())
-	
-							ds_grid_set(boxes_SERVER, 0, 0, { item: item_get_COMMON(SWORD_000), tag: {isActive: false, isForQuest: false}, count: 1 })
-							ds_grid_set(boxes_SERVER, 1, 0, { item: item_get_COMMON(SWORD_001), tag: {isActive: false, isForQuest: false}, count: 1 })
-							ds_grid_set(boxes_SERVER, 2, 0, { item: item_get_COMMON(SWORD_002), tag: {isActive: false, isForQuest: false}, count: 1 })
-							ds_grid_set(boxes_SERVER, 0, 1, { item: item_get_COMMON(SWORD_003), tag: {isActive: false, isForQuest: false}, count: 1 })
-							ds_grid_set(boxes_SERVER, 1, 1, { item: item_get_COMMON(CLOTHES_000), tag: {isActive: false, isForQuest: false}, count: 1 })
-							ds_grid_set(boxes_SERVER, 2, 1, { item: item_get_COMMON(CLOTHES_001), tag: {isActive: false, isForQuest: false}, count: 1 })
-							ds_grid_set(boxes_SERVER, 0, 2, { item: item_get_COMMON(CLOTHES_002), tag: {isActive: false, isForQuest: false}, count: 1 })
-							ds_grid_set(boxes_SERVER, 1, 2, { item: item_get_COMMON(CLOTHES_003), tag: {isActive: false, isForQuest: false}, count: 1 })
-							ds_grid_set(boxes_SERVER, 2, 2, { item: item_get_COMMON(VALUABLE_000), tag: {isActive: false, isForQuest: false}, count: 2 })
 						
 							ds_map_add(global.playerBoxes, accountName, boxes_SERVER)
 						}
@@ -910,7 +900,9 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 									value[? keys[k]] = undefined		
 								else {
 									if (value[? keys[k]].casttime == pointer_null)
-									value[? keys[k]].casttime = undefined		
+										value[? keys[k]].casttime = undefined	
+									if (value[? keys[k]].casttimemax == pointer_null)
+										value[? keys[k]].casttimemax = undefined		
 								}
 							}
 							
@@ -956,32 +948,31 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				
 					// Map Creation
 					with (objRock_SERVER)
-						net_server_send(socketID_sender, CODE_PLACE_OBSTACLES, string(round(x))+"|"+string(round(y))+"|"+string(image_xscale)+"|"+string(image_yscale)+"|"+string(round(image_angle)), BUFFER_TYPE_STRING)
+						net_server_send(socketID_sender, CODE_PLACE_OBSTACLES, json_stringify({ xx: round(x), yy: round(y), xscale: image_xscale, yscale: image_yscale, angle: round(image_angle) }), BUFFER_TYPE_STRING)
 			
 					with (objLight_SERVER)
-						net_server_send(socketID_sender, CODE_PLACE_LIGHTS, string(round(x))+"|"+string(round(y))+"|"+string(Light_Range)+"|"+string(Light_Intensity)+"|"+string(Light_Color)+"|"+string(Light_Shadow_Length), BUFFER_TYPE_STRING)
+						net_server_send(socketID_sender, CODE_PLACE_LIGHTS, json_stringify({ xx: round(x), yy: round(y), range: Light_Range, intensity: Light_Intensity, color: Light_Color, shadow_length: Light_Shadow_Length }), BUFFER_TYPE_STRING)
 				
 					with (objTree_SERVER)
-						net_server_send(socketID_sender, CODE_PLACE_TREES, string(type)+"|"+string(round(x))+"|"+string(round(y))+"|"+string(image_angle)+"|"+string(image_xscale)+"|"+string(image_yscale), BUFFER_TYPE_STRING)
+						net_server_send(socketID_sender, CODE_PLACE_TREES, json_stringify({ type: type, xx: round(x), yy: round(y), xscale: image_xscale, yscale: image_yscale, angle: round(image_angle) }), BUFFER_TYPE_STRING)
 				
 					with (objLake_SERVER)
-						net_server_send(socketID_sender, CODE_PLACE_LAKES, "1|"+string(round(x))+"|"+string(round(y))+"|"+string(image_angle)+"|"+string(image_xscale)+"|"+string(image_yscale), BUFFER_TYPE_STRING)
+						net_server_send(socketID_sender, CODE_PLACE_LAKES, json_stringify({ type: 1, xx: round(x), yy: round(y), xscale: image_xscale, yscale: image_yscale, angle: round(image_angle) }), BUFFER_TYPE_STRING)
 				
 					with (objLake2_SERVER)
-						net_server_send(socketID_sender, CODE_PLACE_LAKES, "2|"+string(round(x))+"|"+string(round(y))+"|"+string(image_angle)+"|"+string(image_xscale)+"|"+string(image_yscale), BUFFER_TYPE_STRING)
+						net_server_send(socketID_sender, CODE_PLACE_LAKES, json_stringify({ type: 2, xx: round(x), yy: round(y), xscale: image_xscale, yscale: image_yscale, angle: round(image_angle) }), BUFFER_TYPE_STRING)
 				
 					with (objPlayer_SERVER)
 						if (id.socketID != socketID_sender) {
-							net_server_send(socketID_sender, CODE_SPAWN_PLAYER, string(id.socketID)+"|"+string(x)+"|"+string(y)+"|"+string(maxHp)+"|"+string(maxEnergy)+"|"+string(maxMana)+"|"+string(class)+
-																				"|"+string(movementSpeed)+"|"+string(physicalPower)+"|"+string(magicalPower)+"|"+string(attackSpeed)+"|"+string(level), BUFFER_TYPE_STRING)
+							net_server_send(socketID_sender, CODE_SPAWN_PLAYER, json_stringify({ socketID: id.socketID, xx: round(x), yy: round(y), maxHp: maxHp, maxEnergy: maxEnergy, maxMana: maxMana, class: class, movementSpeed: movementSpeed, physicalPower: physicalPower, magicalPower: magicalPower, attackSpeed: attackSpeed, level: level }), BUFFER_TYPE_STRING)
 							tell_appearence_SERVER(id.socketID, socketID_sender)
 						}
 				
 					with (objCreature1_SERVER)
-						net_server_send(socketID_sender, CODE_SPAWN_NPC, string(targetID)+"|"+string(x)+"|"+string(y)+"|"+string(maxHp)+"|"+string(maxEnergy)+"|"+string(maxMana)+"|"+string(name)+"|"+object_get_name(clientObject), BUFFER_TYPE_STRING)
+						net_server_send(socketID_sender, CODE_SPAWN_NPC, json_stringify({ npcID: id.targetID, xx: round(x), yy: round(y), maxHp: maxHp, maxEnergy: maxEnergy, maxMana: maxMana, name: name, clientObject: object_get_name(clientObject) }), BUFFER_TYPE_STRING)
 						
 					with (objNPC_SERVER)
-						net_server_send(socketID_sender, CODE_SPAWN_NPC, string(targetID)+"|"+string(x)+"|"+string(y)+"|"+string(maxHp)+"|"+string(maxEnergy)+"|"+string(maxMana)+"|"+string(name)+"|"+object_get_name(clientObject), BUFFER_TYPE_STRING)
+						net_server_send(socketID_sender, CODE_SPAWN_NPC, json_stringify({ npcID: id.targetID, xx: round(x), yy: round(y), maxHp: maxHp, maxEnergy: maxEnergy, maxMana: maxMana, name: name, clientObject: object_get_name(clientObject) }), BUFFER_TYPE_STRING)
 	
 					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, account[? ACCOUNTS_CLASS_SERVER], BUFFER_TYPE_STRING)
 					
@@ -989,6 +980,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					var instance = player_spawn_SERVER(socketID_sender)
 					
 					// Send Private Data
+					var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, onlineAccount[? ONLINEACCOUNTS_ACCID_SERVER])
 					net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
 					net_server_send(socketID_sender, CODE_GET_ACCOUNTINFO, accountInfoRow[? ACCOUNTINFO_GOLD_SERVER], BUFFER_TYPE_INT32)
 				
@@ -1014,7 +1006,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					break
 			
 				with (instance) {
-					var skill_index = real(data[1])
+					var skill_index = data.index
 					
 					var isCancelled = false
 					var foundI = undefined
@@ -1022,9 +1014,9 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						if (skills[? i] != undefined and skills[? i].index == skill_index) {
 							foundI = i
 							if (skills[? i].casttime == undefined) {
-								if (real(data[2]) != -1 and skills[? real(data[2])] != undefined and skills[? real(data[0])] != undefined) {
-									var other_skill_index = skills[? real(data[0])].index
-									ds_map_set(skills, real(data[2]),
+								if (data.from != -1 and skills[? data.from] != undefined and skills[? data.to] != undefined) {
+									var other_skill_index = skills[? data.to].index
+									ds_map_set(skills, data.from,
 									{
 										index: other_skill_index,
 										cooldownmax: global.skill_cooldown_max_COMMON[other_skill_index],
@@ -1036,17 +1028,17 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 										mana: global.skill_mana_COMMON[other_skill_index],
 										energy: global.skill_energy_COMMON[other_skill_index]
 									})
-									ds_map_set(global.playerSkillBoxes[? onlineAccount], real(data[2]),
+									ds_map_set(global.playerSkillBoxes[? onlineAccount], data.from,
 									{
-										index: skills[? real(data[2])].index,
-										cooldownmax: skills[? real(data[2])].cooldownmax,
-										cooldown: skills[? real(data[2])].cooldown,
-										code: skills[? real(data[2])].code,
-										object: skills[? real(data[2])].object,
-										casttimemax: skills[? real(data[2])].casttimemax,
-										casttime: skills[? real(data[2])].casttime,
-										mana: skills[? real(data[2])].mana,
-										energy: skills[? real(data[2])].energy
+										index: skills[? data.from].index,
+										cooldownmax: skills[? data.from].cooldownmax,
+										cooldown: skills[? data.from].cooldown,
+										code: skills[? data.from].code,
+										object: skills[? data.from].object,
+										casttimemax: skills[? data.from].casttimemax,
+										casttime: skills[? data.from].casttime,
+										mana: skills[? data.from].mana,
+										energy: skills[? data.from].energy
 									})
 								}
 								else {
@@ -1061,9 +1053,9 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					if (isCancelled)
 						break
 					
-					if (data[0] != "undefined") {
+					if (data.to != -1) {
 						// ? Duplication
-						ds_map_set(skills, real(data[0]),
+						ds_map_set(skills, data.to,
 						{
 							index: skill_index,
 							cooldownmax: global.skill_cooldown_max_COMMON[skill_index],
@@ -1075,17 +1067,17 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							mana: global.skill_mana_COMMON[skill_index],
 							energy: global.skill_energy_COMMON[skill_index]
 						})
-						ds_map_set(global.playerSkillBoxes[? onlineAccount], real(data[0]),
+						ds_map_set(global.playerSkillBoxes[? onlineAccount], data.to,
 						{
-							index: skills[? real(data[0])].index,
-							cooldownmax: skills[? real(data[0])].cooldownmax,
-							cooldown: skills[? real(data[0])].cooldown,
-							code: skills[? real(data[0])].code,
-							object: skills[? real(data[0])].object,
-							casttimemax: skills[? real(data[0])].casttimemax,
-							casttime: skills[? real(data[0])].casttime,
-							mana: skills[? real(data[0])].mana,
-							energy: skills[? real(data[0])].energy
+							index: skills[? data.to].index,
+							cooldownmax: skills[? data.to].cooldownmax,
+							cooldown: skills[? data.to].cooldown,
+							code: skills[? data.to].code,
+							object: skills[? data.to].object,
+							casttimemax: skills[? data.to].casttimemax,
+							casttime: skills[? data.to].casttime,
+							mana: skills[? data.to].mana,
+							energy: skills[? data.to].energy
 						})
 					}
 					else {
@@ -1100,29 +1092,45 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case _CODE_UPLOAD:
-				var accountRow = db_get_row(global.DB_SRV_TABLE_accounts, data[0])
-				if (accountRow != undefined and accountRow[? ACCOUNTS_PASSWORD_SERVER] != data[1])
+				var accountRow = db_get_row(global.DB_SRV_TABLE_accounts, data.accountID)
+				if (accountRow != undefined and accountRow[? ACCOUNTS_PASSWORD_SERVER] != data.password)
 					break
 					
-				if (data[0] == "" or data[1] == "")
+				if (data.accountID == "" or data.accountID == "Local" or data.password == "")
 					break
 					
-				if (global.playerBoxes[? socketID_sender] != undefined)
-					ds_grid_destroy(global.playerBoxes[? socketID_sender])
+				if (global.playerBoxes[? socketID_sender] != undefined) {
+					if (ds_exists(global.playerBoxes[? socketID_sender], ds_type_grid))
+						ds_grid_destroy(global.playerBoxes[? socketID_sender])
+						
+					global.playerBoxes[? socketID_sender] = undefined
+				}
 					
-				if (global.playerSkills[? socketID_sender] != undefined)
-					ds_grid_destroy(global.playerSkills[? socketID_sender])
+				if (global.playerSkills[? socketID_sender] != undefined) {
+					if (ds_exists(global.playerSkills[? socketID_sender], ds_type_grid))
+						ds_grid_destroy(global.playerSkills[? socketID_sender])
+						
+					global.playerSkills[? socketID_sender] = undefined
+				}
 					
-				if (global.playerQuests[? socketID_sender] != undefined)
-					ds_map_destroy(global.playerQuests[? socketID_sender])
+				if (global.playerQuests[? socketID_sender] != undefined) {
+					if (ds_exists(global.playerQuests[? socketID_sender], ds_type_map))
+						ds_map_destroy(global.playerQuests[? socketID_sender])
+						
+					global.playerQuests[? socketID_sender] = undefined
+				}
 					
-				if (global.playerSkillBoxes[? socketID_sender] != undefined)
-					ds_map_destroy(global.playerSkillBoxes[? socketID_sender])
+				if (global.playerSkillBoxes[? socketID_sender] != undefined) {
+					if (ds_exists(global.playerSkillBoxes[? socketID_sender], ds_type_map))
+						ds_map_destroy(global.playerSkillBoxes[? socketID_sender])
+						
+					global.playerSkillBoxes[? socketID_sender] = undefined
+				}
 				
 				// Uploaded Items
-				if (data[2] != "undefined") {
+				if (data.items != pointer_null) {
 					var boxes_TAKEN = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
-					ds_grid_read(boxes_TAKEN, data[2])
+					ds_grid_read(boxes_TAKEN, data.items)
 					
 					for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++) {
 						for (var j = 0; j < global.bc_ver_COMMON+2; j++) {
@@ -1132,27 +1140,27 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 							if (_box.item == pointer_null)
 								_box.item = undefined
 							else 
-								_box.item = item_get_COMMON(_box.item.code, itemUpgrade)
+								_box.item = item_get_COMMON(_box.item.code, _box.item.upgrade)
 							
 							ds_grid_set(boxes_TAKEN, i, j, _box)
 						}
 					}
 				
-					global.playerBoxes[? data[0]] = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
+					global.playerBoxes[? data.accountID] = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
 					for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++) {
 						for (var j = 0; j < global.bc_ver_COMMON+2; j++) {
 							var box = ds_grid_get(boxes_TAKEN, i, j)
 		
-							ds_grid_set(global.playerBoxes[? data[0]], i, j, box)
+							ds_grid_set(global.playerBoxes[? data.accountID], i, j, box)
 						}
 					}
 					ds_grid_destroy(boxes_TAKEN)
 				}
 				
 				// Uploaded Skill Tree
-				if (data[3] != "undefined") {
+				if (data.skills != pointer_null) {
 					var boxes_TAKEN = ds_grid_create(global.sc_hor_COMMON*global.pageCount_COMMON, global.sc_ver_COMMON)
-					ds_grid_read(boxes_TAKEN, data[3])
+					ds_grid_read(boxes_TAKEN, data.skills)
 					for (var i = 0; i < global.sc_hor_COMMON*global.pageCount_COMMON; i++) {
 						for (var j = 0; j < global.sc_ver_COMMON; j++) {
 							var _data = ds_grid_get(boxes_TAKEN, i, j)
@@ -1167,21 +1175,21 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						}
 					}
 				
-					global.playerSkills[? data[0]] = ds_grid_create(global.sc_hor_COMMON*global.pageCount_COMMON, global.sc_ver_COMMON)
+					global.playerSkills[? data.accountID] = ds_grid_create(global.sc_hor_COMMON*global.pageCount_COMMON, global.sc_ver_COMMON)
 					for (var i = 0; i < global.sc_hor_COMMON*global.pageCount_COMMON; i++) {
 						for (var j = 0; j < global.sc_ver_COMMON; j++) {
 							var box = ds_grid_get(boxes_TAKEN, i, j)
 		
-							ds_grid_set(global.playerSkills[? data[0]], i, j, box)
+							ds_grid_set(global.playerSkills[? data.accountID], i, j, box)
 						}
 					}
 					ds_grid_destroy(boxes_TAKEN)
 				}
 				
 				// Uploaded Quests
-				if (data[4] != "undefined") {
+				if (data.quests != pointer_null) {
 					var quests_TAKEN = ds_map_create()
-					ds_map_read(quests_TAKEN, data[4])
+					ds_map_read(quests_TAKEN, data.quests)
 					
 					var _quests_keys = ds_map_keys_to_array(quests_TAKEN)
 					var ds_size = array_length(_quests_keys)
@@ -1202,20 +1210,20 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						ds_map_set(quests_TAKEN, key, _quest)
 					}
 				
-					global.playerQuests[? data[0]] = ds_map_create()
+					global.playerQuests[? data.accountID] = ds_map_create()
 					for (var i = 0; i < ds_size; i++) {
 						var key = _quests_keys[i]
 						var quest = ds_map_find_value(quests_TAKEN, key)
 		
-						ds_map_add(global.playerQuests[? data[0]], key, quest)
+						ds_map_add(global.playerQuests[? data.accountID], key, quest)
 					}
 					ds_map_destroy(quests_TAKEN)
 				}
 				
 				// Uploaded Skill Boxes
-				if (data[7] != "undefined") {
+				if (data.skillBoxes != pointer_null) {
 					var skillBoxes_TAKEN = ds_map_create()
-					ds_map_read(skillBoxes_TAKEN, data[7])
+					ds_map_read(skillBoxes_TAKEN, data.skillBoxes)
 					
 					var _skillBoxes_keys = ds_map_keys_to_array(skillBoxes_TAKEN)
 					var ds_size = array_length(_skillBoxes_keys)
@@ -1233,34 +1241,31 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						ds_map_set(skillBoxes_TAKEN, key, _skillBox)
 					}
 				
-					global.playerSkillBoxes[? data[0]] = ds_map_create()
+					global.playerSkillBoxes[? data.accountID] = ds_map_create()
 					for (var i = 0; i < ds_size; i++) {
 						var key = _skillBoxes_keys[i]
 						var skillBox = ds_map_find_value(skillBoxes_TAKEN, key)
 		
-						ds_map_add(global.playerSkillBoxes[? data[0]], key, skillBox)
+						ds_map_add(global.playerSkillBoxes[? data.skillBoxes], key, skillBox)
 					}
 					ds_map_destroy(skillBoxes_TAKEN)
 				}
 				
-				var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, data[0])
+				var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, data.accountID)
 				if (accountInfoRow == undefined) {
-					accountInfoRow = db_create_row(data[0])
-					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = real(data[5])
-					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = real(data[6])
-					accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER] = 1
+					accountInfoRow = db_create_row(data.accountID)
 					db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
-					db_save_table(global.DB_SRV_TABLE_accountInfo)
-				}
-				else
-				{
-					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = real(data[5])
-					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = real(data[6])
-					accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER] = 1
-					db_save_table(global.DB_SRV_TABLE_accountInfo)
 				}
 				
-				_net_receive_packet(_CODE_LOGIN, data[0]+"|"+data[1], socketID_sender)
+				if (data.gold != pointer_null)
+					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = data.gold
+				if (data.level != pointer_null)
+					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = data.level
+				accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER] = 1
+
+				db_save_table(global.DB_SRV_TABLE_accountInfo)
+				
+				_net_receive_packet(_CODE_LOGIN, { accountID: data.accountID, password: data.password }, socketID_sender)
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1273,7 +1278,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					break
 			
 				with (instance) {
-					switch (data[0]) {
+					switch (data) {
 						case 1:
 							key_w = false
 							break
@@ -1304,14 +1309,14 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			
 				with (instance)
 					if (attackSpeed_rem == 0 and energy > 15) {
-						var dir = point_direction(x, y, data[0], data[1])
+						var dir = point_direction(x, y, data.xx, data.yy)
 						image_angle = dir
 					
 						change_energy(-15)
 	
 						attackSpeed_rem = 1/attackSpeed
 						attackTimer = attackSpeed_rem*0.6
-						net_server_send(SOCKET_ID_ALL, CODE_BASIC_ATTACK, string(socketID_sender)+"|"+string(1/attackSpeed), BUFFER_TYPE_STRING)
+						net_server_send(SOCKET_ID_ALL, CODE_BASIC_ATTACK, json_stringify({ socketID: socketID_sender, time: 1/attackSpeed }), BUFFER_TYPE_STRING)
 					}
 				break
 			
@@ -1333,18 +1338,18 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case _CODE_box_change_active:
+			case _CODE_BOX_CHANGE_ACTIVE:
 				var box
-				if (data[1] != "undefined")
-					box = box_change_active_SERVER(socketID_sender, real(data[0]), real(data[1]), real(data[2]), data[3])
+				if (data.i != pointer_null)
+					box = box_change_active_SERVER(socketID_sender, data.type, data.i, data.j, data.confirmation)
 				else
-					box = box_change_active_SERVER(socketID_sender, real(data[0]), undefined, undefined, data[3])
+					box = box_change_active_SERVER(socketID_sender, data.type, undefined, undefined, data.confirmation)
 					
 				if (box != -1) {
-					if (data[1] != "undefined")
-						net_server_send(socketID_sender, CODE_box_change_active, data[0]+"|"+data[1]+"|"+data[2]+"|"+data[3], BUFFER_TYPE_STRING)
+					if (data.i != pointer_null)
+						net_server_send(socketID_sender, CODE_BOX_CHANGE_ACTIVE, json_stringify({ type: data.type, i: data.i, j: data.j, confirmation: data.confirmation }), BUFFER_TYPE_STRING)
 					else
-						net_server_send(socketID_sender, CODE_box_change_active, data[0]+"|undefined|undefined|"+data[3], BUFFER_TYPE_STRING)
+						net_server_send(socketID_sender, CODE_BOX_CHANGE_ACTIVE, json_stringify({ type: data.type, i: undefined, j: undefined, confirmation: data.confirmation }), BUFFER_TYPE_STRING)
 					
 					var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
 					if (instance == undefined or !instance_exists(instance))
@@ -1356,7 +1361,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					_box = box_get_active_SERVER(socketID_sender, ITEMTYPE_CLOTHES)
 					var clothesSprite = _box.item == undefined ? sprite_get_name(sprNothingness) : sprite_get_name(_box.item.sprite)
 					
-					net_server_send(SOCKET_ID_ALL, CODE_APPEARENCE, string(socketID_sender)+"|"+weaponSprite+"|"+clothesSprite, BUFFER_TYPE_STRING)
+					net_server_send(SOCKET_ID_ALL, CODE_APPEARENCE, json_stringify({ socketID: socketID_sender, weapon: weaponSprite, shoulders: clothesSprite }), BUFFER_TYPE_STRING)
 				}
 				break
 				
@@ -1370,31 +1375,31 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					break
 			
 				with (parNPC_SERVER) {
-					if (id.npcID == real(data[4])) {
-						var isLoot = real(data[7])
+					if (id.npcID == data.npcID) {
+						var isLoot = data.isLoot
 						var boxes = isLoot == false ? id.boxes : id.lootBoxes
 						
-						var box = ds_grid_get(boxes, real(data[1]), real(data[2]))
-						if (box.item != undefined and box.item.type == real(data[0])) {
+						var box = ds_grid_get(boxes, data.i, data.j)
+						if (box.item != undefined and box.item.type == data.type) {
 							item_setup_COMMON(box.item)
-							if (box_get_confirmation_number_COMMON(box) == data[3]) {
+							if (box_get_confirmation_number_COMMON(box) == data.confirmation) {
 								var price = isLoot ? 0 : box.tag.marketPrice
 								if (instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] >= price) {
 									var itemAdded_info
-									if (data[5] == "undefined")
+									if (data.target_i == pointer_null)
 										itemAdded_info = item_add_SERVER(box, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER])
 									else
-										itemAdded_info = item_add_SERVER(box, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER], real(data[5]), real(data[6]))
+										itemAdded_info = item_add_SERVER(box, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER], data.i, data.j)
 										
 									if (itemAdded_info.result) {
 										var success = true
 										if (isLoot)
-											success = item_delete_COMMON(box, undefined, real(data[1]), real(data[2]), 1, boxes)
+											success = item_delete_COMMON(box, undefined, data.i, data.j, 1, boxes)
 											
 										if (success) {					
 											if (!isLoot) {
 												instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] -= price
-												net_server_send(socketID_sender, CODE_DIALOGUE, "Purchase|You have purchased "+item_get_title_COMMON(box.item)+".\n[c="+string(c_red)+"]-"+string(price)+"[/c] [img=sprCoin2]|undefined|undefined|undefined|1", BUFFER_TYPE_STRING)
+												net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have purchased "+item_get_title_COMMON(box.item)+".\n[c="+string(c_red)+"]-"+string(price)+"[/c] [img=sprCoin2]", title: "Purchase", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 1, buttons: undefined }), BUFFER_TYPE_STRING)
 											}
 											
 											net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
@@ -1420,17 +1425,17 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				if (instance == undefined or !instance_exists(instance))
 					break
 			
-				var box = ds_grid_get(global.playerBoxes[? instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER]], real(data[1]), real(data[2]))
+				var box = ds_grid_get(global.playerBoxes[? instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER]], data.i, data.j)
 						
-				if (box.item != undefined and box.item.type == real(data[0])) {
+				if (box.item != undefined and box.item.type ==  data.type) {
 					item_setup_COMMON(box.item)
-					if (box_get_confirmation_number_COMMON(box) == data[3]) {
+					if (box_get_confirmation_number_COMMON(box) == data.confirmation) {
 						var price = box.item.worth/2
-						if (item_delete_COMMON(box, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER], real(data[1]), real(data[2]))) {
+						if (item_delete_COMMON(box, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER], data.i, data.j)) {
 							instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] += price
 									
 							net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
-							net_server_send(socketID_sender, CODE_DIALOGUE, "Sell|You have sold "+item_get_title_COMMON(box.item)+".\n[c="+string(c_lime)+"]"+string(price)+"[/c] [img=sprCoin2]|undefined|undefined|undefined|1", BUFFER_TYPE_STRING)
+							net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have sold "+item_get_title_COMMON(box.item)+".\n[c="+string(c_lime)+"]"+string(price)+"[/c] [img=sprCoin2]", title: "Sell", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 1, buttons: undefined }), BUFFER_TYPE_STRING)
 						}
 					}
 				}
@@ -1441,14 +1446,14 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 	
 			case _CODE_DIALOGUE:			
-				var title = "undefined"
-				var text = "undefined"
-				var buttons = "undefined"
+				var title = undefined
+				var text = undefined
+				var buttons = undefined
 			
-				switch (asset_get_index(data[0])) {
+				switch (asset_get_index(data.owner_assetName)) {
 					// contMain
 					case contMain:
-						switch (data[1]) {
+						switch (data.messageID) {
 							// Message -1
 							case 1:
 								title = "Message"
@@ -1473,10 +1478,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 						break
 				}
 				
-				if (title != "undefined")
-					net_server_send(socketID_sender, CODE_DIALOGUE, title+"|"+text+"|"+string(data[1])+"|"+buttons+"|"+data[0]+"|undefined", BUFFER_TYPE_STRING)
+				if (title != undefined)
+					net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: text, title: title , messageID: data.messageID, ownerAssetName: data.ownerAssetName, duration: data.time, buttons: data.buttons }), BUFFER_TYPE_STRING)
 				else {
-					var dialogueBox = dialogue_progress_SERVER(real(data[1]), real(data[2]), asset_get_index(data[0]), real(data[4]), real(data[3]), socketID_sender)
+					var dialogueBox = dialogue_progress_SERVER(data.messageID, data.dialogueNo, asset_get_index(data.owner_assetName), data.owner, data.answerBefore, socketID_sender)
 					if (dialogueBox != undefined)
 						net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify(dialogueBox), BUFFER_TYPE_STRING)
 				}
@@ -1491,7 +1496,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				if (instance == undefined or !instance_exists(instance))
 					break
 			
-				net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER]}), BUFFER_TYPE_STRING)
+				net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1512,7 +1517,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					break
 			
 				with (instance)
-					net_server_send(socketID_sender, CODE_GET_STATISTICS, string(socketID_sender)+"|"+string(maxHp)+"|"+string(maxEnergy)+"|"+string(maxMana)+"|"+string(movementSpeed)+"|"+string(physicalPower)+"|"+string(magicalPower)+"|"+string(attackSpeed), BUFFER_TYPE_STRING)
+					net_server_send(socketID_sender, CODE_GET_STATISTICS, json_stringify({ socketID: socketID_sender, maxHp: maxHp, maxEnergy: maxEnergy, maxMana: maxMana, movementSpeed: movementSpeed, physicalPower: physicalPower, magicalPower: magicalPower, attackSpeed: attackSpeed }), BUFFER_TYPE_STRING)
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1520,19 +1525,18 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case _CODE_DROP_COIN:
-				var coinCenter = instance_create(real(data[0]), real(data[1]), objCoinCenter_SERVER)
+				var coinCenter = instance_create(data.xx, data.yy, objCoinCenter_SERVER)
 				coinCenter.value = 20
-				net_server_send(SOCKET_ID_ALL, CODE_DROP_COIN, string(coinCenter)+"|"+string(coinCenter.x)+"|"+string(coinCenter.y)+"|"+string(coinCenter.value), BUFFER_TYPE_STRING)
+				net_server_send(SOCKET_ID_ALL, CODE_DROP_COIN, json_stringify({ coinID: coinCenter, xx: coinCenter.x, yy: coinCenter.y, value: coinCenter.value }), BUFFER_TYPE_STRING)
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case _CODE_box_change_position:
-				if (box_change_position_SERVER(socketID_sender, real(data[0]), real(data[1]), real(data[2]), real(data[3]))) {
-					net_server_send(socketID_sender, CODE_box_change_position, data[0]+"|"+data[1]+"|"+data[2]+"|"+data[3], BUFFER_TYPE_STRING)
-				}
+			case _CODE_BOX_CHANGE_POSITION:
+				if (box_change_position_SERVER(socketID_sender, data.i, data.j, data.target_i, data.target_j))
+					net_server_send(socketID_sender, CODE_box_change_position, json_stringify({ i: data.i, j: data.j, target_i: data.target_i, target_j: data.target_j }), BUFFER_TYPE_STRING)
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1540,7 +1544,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case _CODE_PING:
-				net_server_send(socketID_sender, CODE_PING, data[0], BUFFER_TYPE_INT32, true)
+				net_server_send(socketID_sender, CODE_PING, data, BUFFER_TYPE_INT32, true)
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1552,14 +1556,14 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				if (instance == undefined or !instance_exists(instance))
 					break
 			
-				instance.image_angle = data[0]
+				instance.image_angle = data
 				var arrow = cast_skill(1, instance)
 				if (arrow != undefined) {
-					arrow.image_angle = data[0]
+					arrow.image_angle = data
 					var pow = 1400
-					arrow.spd = {xx: lengthdir_x(pow, data[0]), yy: lengthdir_y(pow, data[0])}
+					arrow.spd = { xx: lengthdir_x(pow, data), yy: lengthdir_y(pow, data) }
 				
-					net_server_send(SOCKET_ID_ALL, CODE_SKILL1, string(socketID_sender)+"|"+string(arrow.x)+"|"+string(arrow.y)+"|"+string(arrow.image_angle), BUFFER_TYPE_STRING)
+					net_server_send(SOCKET_ID_ALL, CODE_SKILL1, json_stringify({ socketID: socketID_sender, xx: arrow.x, yy: arrow.y, angle: arrow.image_angle }), BUFFER_TYPE_STRING)
 				}
 				break
 			
@@ -1572,7 +1576,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				if (instance == undefined or !instance_exists(instance))
 					break
 			
-				instance.image_angle = data[0]
+				instance.image_angle = data
 				var laser = cast_skill(2, instance)
 				if (laser != undefined) {
 					with (laser) {
@@ -1610,7 +1614,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					break
 			
 				with (instance) {
-					var dir = point_direction(x, y, data[0], data[1])
+					var dir = point_direction(x, y, data.xx, data.yy)
 					image_angle = dir
 				}
 				break
@@ -1624,7 +1628,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				if (accountID == undefined)
 					break
 					
-				ds_map_delete(global.playerQuests[? accountID], data[0])	
+				ds_map_delete(global.playerQuests[? accountID], data)
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1637,7 +1641,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 					break
 			
 				with (instance) {
-					switch (data[0]) {
+					switch (data) {
 						case 1:
 							key_w = true
 							break
@@ -1668,12 +1672,12 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // // */
 			
 			case CODE_TELL_PLAYER_POSITION:
-				var _socketID = real(data[0])
+				var _socketID = data.socketID
 		
 				var player = global.playerInstances[? _socketID]
 				if (player != undefined) {
-					player.x = real(data[1])
-					player.y = real(data[2])
+					player.x = data.xx
+					player.y = data.yy
 				}
 				break
 			
@@ -1682,12 +1686,12 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_NPC_POSITION:
-				var npcID = real(data[0])
+				var npcID = data.npcID
 		
 				var creature = global.creatureInstances[? npcID]
 				if (creature != undefined) {
-					creature.x = real(data[1])
-					creature.y = real(data[2])
+					creature.x = data.xx
+					creature.y = data.yy
 				}
 				break
 		
@@ -1696,14 +1700,14 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_PLAYER_NAME:
-				var _socketID = real(data[0])
+				var _socketID = data.socketID
 				var player = global.playerInstances[? _socketID]
 			
-				ds_map_set(global.playerNames, _socketID, data[1])
+				ds_map_set(global.playerNames, _socketID, data.name)
 				if (_socketID == global.socketID_player)
-					global.clientName = data[1]
+					global.clientName = data.name
 				if (player != undefined)
-					player.name = data[1]
+					player.name = data.name
 				break
 		
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1711,10 +1715,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_PLAYER_HP:
-				var player = global.playerInstances[? real(data[0])]
+				var player = global.playerInstances[? data.socketID]
 			
 				if (player != undefined)
-					player.hp = real(data[1])
+					player.hp = data.hp
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1722,10 +1726,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_NPC_HP:
-				var creature = global.creatureInstances[? real(data[0])]
+				var creature = global.creatureInstances[? data.npcID]
 			
 				if (creature != undefined)
-					creature.hp = real(data[1])
+					creature.hp = data.hp
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1733,10 +1737,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_PLAYER_MANA:
-				var player = global.playerInstances[? real(data[0])]
+				var player = global.playerInstances[? data.socketID]
 			
 				if (player != undefined)
-					player.mana = real(data[1])
+					player.mana = data.mana
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1744,10 +1748,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_NPC_MANA:
-				var creature = global.creatureInstances[? real(data[0])]
+				var creature = global.creatureInstances[? data.npcID]
 			
 				if (creature != undefined)
-					creature.mana = real(data[1])
+					creature.mana = data.mana
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1755,10 +1759,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_PLAYER_MAXMANA:
-				var player = global.playerInstances[? real(data[0])]
+				var player = global.playerInstances[? data.socketID]
 			
 				if (player != undefined) {
-					player.maxMana = real(data[1])
+					player.maxMana = data.maxMana
 					player.mana = min(player.maxMana, player.mana)
 					player.manaBarP = player.mana/player.maxMana
 				}
@@ -1769,10 +1773,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_PLAYER_MAXENERGY:
-				var player = global.playerInstances[? real(data[0])]
+				var player = global.playerInstances[? data.socketID]
 			
 				if (player != undefined) {
-					player.energy = real(data[1])
+					player.energy = data.energy
 					player.energy = min(player.maxEnergy, player.energy)
 				}
 				break
@@ -1782,10 +1786,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_NPC_ENERGY:
-				var creature = global.creatureInstances[? real(data[0])]
+				var creature = global.creatureInstances[? data.npcID]
 			
 				if (creature != undefined)
-					creature.energy = real(data[1])
+					creature.energy = data.energy
 				break
 		
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1793,10 +1797,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_PLAYER_ROTATION:
-				var player = global.playerInstances[? real(data[0])]
+				var player = global.playerInstances[? data.socketID]
 			
 				if (player != undefined)
-					player.image_angle_target = real(data[1])
+					player.image_angle_target = data.angle
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1804,10 +1808,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_NPC_ROTATION:
-				var creature = global.creatureInstances[? real(data[0])]
+				var creature = global.creatureInstances[? data.npcID]
 			
 				if (creature != undefined)
-					creature.image_angle_target = real(data[1])
+					creature.image_angle_target = data.angle
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1815,10 +1819,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_PLAYER_ENERGY:
-				var player = global.playerInstances[? real(data[0])]
+				var player = global.playerInstances[? data.socketID]
 			
 				if (player != undefined)
-					player.energy = real(data[1])
+					player.energy = data.energy
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1826,10 +1830,10 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_PLAYER_MAXHP:
-				var player = global.playerInstances[? real(data[0])]
+				var player = global.playerInstances[? data.socketID]
 			
 				if (player != undefined) {
-					player.maxHp = real(data[1])
+					player.maxHp = data.maxHp
 					player.hp = min(player.maxHp, player.hp)
 					player.healthBarP = player.hp/player.maxHp
 				}
@@ -1840,12 +1844,12 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_PLACE_OBSTACLES:
-				var obstacleCreator = instance_create(real(data[0]), real(data[1]), objObstacleCreator)
+				var obstacleCreator = instance_create(data.xx, data.yy, objObstacleCreator)
 				with (obstacleCreator) {
 					obstacleSprite = sprRockGrid
-					image_xscale = real(data[2])
-					image_yscale = real(data[3])
-					image_angle = real(data[4])
+					image_xscale = data.xscale
+					image_yscale = data.yscale
+					image_angle = data.angle
 				
 					polygon = polygon_from_instance(id)
 					event_user(0)
@@ -1857,12 +1861,12 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_PLACE_LIGHTS:
-				var light = instance_create(real(data[0]), real(data[1]), objLight)
+				var light = instance_create(data.xx, data.yy, objLight)
 				with (light) {
-					Light_Range = real(data[2])
-					Light_Intensity = real(data[3])
-					Light_Color = real(data[4])
-					Light_Shadow_Length = real(data[5])
+					Light_Range = data.range
+					Light_Intensity = data.intensity
+					Light_Color = data.color
+					Light_Shadow_Length = data.shadow_length
 					Light_Angle = 0
 					Light_Direction = 0
 	
@@ -1877,18 +1881,18 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			case CODE_PLACE_TREES:
 				var tree
 			
-				if (data[0] == 1)
-					tree = instance_create_layer(real(data[1]), real(data[2]), "Top", objTree)
-				else if (data[0] == 2)
-					tree = instance_create_layer(real(data[1]), real(data[2]), "Top", objTree2)
-				else if (data[0] == 3)
-					tree = instance_create_layer(real(data[1]), real(data[2]), "Top", objTree3)
-				else if (data[0] == 4)
-					tree = instance_create_layer(real(data[1]), real(data[2]), "Top", objTree4)
+				if (data.type == 1)
+					tree = instance_create_layer(data.xx, data.yy, "Top", objTree)
+				else if (data.type == 2)
+					tree = instance_create_layer(data.xx, data.yy, "Top", objTree2)
+				else if (data.type == 3)
+					tree = instance_create_layer(data.xx, data.yy, "Top", objTree3)
+				else if (data.type == 4)
+					tree = instance_create_layer(data.xx, data.yy, "Top", objTree4)
 			
-				tree.image_angle = real(data[3])
-				tree.image_xscale = real(data[4])
-				tree.image_yscale = real(data[5])
+				tree.image_angle = data.angle
+				tree.image_xscale = data.xscale
+				tree.image_yscale = data.yscale
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1898,19 +1902,19 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			case CODE_PLACE_LAKES:
 				var lake
 			
-				if (data[0] == 1)
-					lake = instance_create_layer(real(data[1]), real(data[2]), "Below", objLake)
-				else if (data[0] == 2)
-					lake = instance_create_layer(real(data[1]), real(data[2]), "Below", objLake2)
+				if (data.type == 1)
+					lake = instance_create_layer(data.xx, data.yy, "Below", objLake)
+				else if (data.type == 2)
+					lake = instance_create_layer(data.xx, data.yy, "Below", objLake2)
 			
-				lake.image_angle = real(data[3])
-				lake.image_xscale = real(data[4])
-				lake.image_yscale = real(data[5])
+				lake.image_angle = data.angle
+				lake.image_xscale = data.xscale
+				lake.image_yscale = data.yscale
 				break
 		}
-	}
+	/*}
 	catch (error) {
 		global.networkErrors_count++
 		show_message(error)
-	}
+	}*/
 }

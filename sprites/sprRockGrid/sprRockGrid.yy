@@ -75,7 +75,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprRockGrid","path":"sprites/sprRockGrid/sprRockGrid.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "sprRockGrid",
     "tags": [],
     "resourceType": "GMSequence",

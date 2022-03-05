@@ -295,7 +295,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"sprFlag_belingfur","path":"sprites/sprFlag_belingfur/sprFlag_belingfur.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "",
     "tags": [],
     "resourceType": "GMSequence",
