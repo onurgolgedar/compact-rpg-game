@@ -33,7 +33,7 @@ function change_mana(value) {
 }
 
 function choose_target() {
-	function_call(choose_target, 0.1, true)
+	function_call_COMMON(choose_target, 0.1, true)
 }
 #endregion
 
@@ -49,6 +49,6 @@ boxes = undefined
 lootBoxes = undefined
 
 target = undefined
-function_call(choose_target, 1, true)
+function_call_COMMON(choose_target, 1, true)
 
 visible = global.drawServer

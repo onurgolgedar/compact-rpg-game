@@ -1,9 +1,9 @@
 function main_loop_t() {
 	onWater = !place_empty(x, y, parLake_SERVER)
 
-	function_call(main_loop_t, 1/5, true)
+	function_call_COMMON(main_loop_t, 1/5, true)
 }
-function_call(main_loop_t, 1/5, true)
+function_call_COMMON(main_loop_t, 1/5, true)
 
 targetID = undefined
 level = 1

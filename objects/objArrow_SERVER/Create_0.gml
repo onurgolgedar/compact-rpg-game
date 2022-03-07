@@ -7,6 +7,6 @@ skill_index = SKILL_1
 
 spd = undefined
 
-function_call(destroy, 1.5, true)
+function_call_COMMON(destroy, 1.5, true)
 
 visible = global.drawServer

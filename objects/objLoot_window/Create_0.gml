@@ -73,9 +73,9 @@ function main_loop() {
 	if (global.held_box != undefined and mouseOnButton < pageCount)
 		page = mouseOnButton+1
 
-	function_call(main_loop, 1/20, true)
+	function_call_COMMON(main_loop, 1/20, true)
 }
-function_call(main_loop, 1/20, true)
+function_call_COMMON(main_loop, 1/20, true)
 
 title = "LOOT"
 pageCount = global.pageCount_COMMON

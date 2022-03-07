@@ -22,9 +22,9 @@ function alpha_loop() {
 		_alpha_factor += 0.3
 	image_alpha = _alpha_factor*_alpha_factor
 		
-	function_call(alpha_loop, 1/30, true)
+	function_call_COMMON(alpha_loop, 1/30, true)
 }
-function_call(alpha_loop, 1/30, true)
+function_call_COMMON(alpha_loop, 1/30, true)
 
 
 function after_creation() {
@@ -32,7 +32,7 @@ function after_creation() {
 		ds_list_add(owner.windows, id)
 	event_user(0)
 }
-function_call(after_creation, 1, false)
+function_call_COMMON(after_creation, 1, false)
 
 function bring_forward() {
 	onFront = true

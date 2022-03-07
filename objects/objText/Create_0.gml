@@ -28,4 +28,4 @@ line_spacing = 2
 offset_x = undefined
 offset_y = undefined
 
-function_call(user_event_0, 1, false)
+function_call_COMMON(user_event_0, 1, false)

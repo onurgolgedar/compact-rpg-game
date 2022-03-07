@@ -29,7 +29,7 @@ function timed_set_name() {
 }
 #endregion
 
-function_call(timed_set_name, 1, false)
+function_call_COMMON(timed_set_name, 1, false)
 
 target = 0
 animTarget = undefined

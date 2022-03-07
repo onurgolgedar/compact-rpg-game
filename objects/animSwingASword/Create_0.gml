@@ -10,7 +10,7 @@ function animation_000() {
 	else if (style == 2)
 		anim_set_stance(STANCE_BA0_SWORD_003, time/2)
 
-	function_call(animation_001, time, true)
+	function_call_COMMON(animation_001, time, true)
 }
 
 function animation_001() {
@@ -23,14 +23,14 @@ function animation_001() {
 	else if (style == 2)
 		anim_set_stance(STANCE_BA1_SWORD_003, time/2)
 
-	function_call(animation_002, time, true)
+	function_call_COMMON(animation_002, time, true)
 }
 
 function animation_002() {
 	var time = id.time*0.15
 	
 	anim_set_stance(STANCE_NORMAL, time)
-	function_call(animation_destroy, time_delayed(time), true)
+	function_call_COMMON(animation_destroy, time_delayed(time), true)
 }
 
 function animation_destroy() {

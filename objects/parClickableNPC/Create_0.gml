@@ -5,3 +5,4 @@ function is_mouse_on() {
 event_inherited()
 
 hover = false
+windows = ds_list_create()

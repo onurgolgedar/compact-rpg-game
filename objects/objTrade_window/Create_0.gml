@@ -76,9 +76,9 @@ function main_loop() {
 	height_ext_bot_more = !instance_exists(objInventory_window)*42
 	height = global.bc_ver_COMMON*boxHeight+(global.bc_ver_COMMON-1)*boxBetween+offset*2+height_ext_bot+offset+height_ext_bot_more+offset+height_ext_top+offset
 
-	function_call(main_loop, 1/20, true)
+	function_call_COMMON(main_loop, 1/20, true)
 }
-function_call(main_loop, 1/20, true)
+function_call_COMMON(main_loop, 1/20, true)
 
 title = "TRADE"
 pageCount = global.pageCount_COMMON

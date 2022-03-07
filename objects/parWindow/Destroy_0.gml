@@ -16,6 +16,6 @@ if (!isRefreshing) {
 
 	with (parWindow) {
 	    if (depth == other.minDepth)
-	        function_call(bring_forward, 1, false)
+	        function_call_COMMON(bring_forward, 1, false)
 	}
 }

@@ -21,4 +21,4 @@ function execute() {
 	instance_destroy()
 }
 
-function_call(execute, 0.1, true)
+function_call_COMMON(execute, 0.1, true)

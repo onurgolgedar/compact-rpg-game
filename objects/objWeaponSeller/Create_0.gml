@@ -1,4 +1,3 @@
-windows = ds_list_create()
 function answer(buttonIndex, qKey, value = undefined, xx = 250, yy = 250) {
 	if (qKey == dialogue_get_qKey_COMMON(-1, 1)) {
 		switch (buttonIndex) {

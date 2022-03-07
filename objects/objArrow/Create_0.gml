@@ -10,4 +10,4 @@ disappearing = 0
 
 spd = undefined
 
-function_call(destroy, 1.5, true)
+function_call_COMMON(destroy, 1.5, true)

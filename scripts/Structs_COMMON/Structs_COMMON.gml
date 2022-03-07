@@ -1,8 +1,8 @@
-function dialogueButton(_text, _image = undefined, _hover = false, _value = undefined) constructor
+function dialogueButton(_text, _image = undefined, _value = undefined) constructor
 {
     text = _text
     image = _image
-	hover = _hover
+	hover = false
 	value = _value
 }
 

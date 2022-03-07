@@ -87,9 +87,9 @@ function main_loop() {
 		boxFocused_j = undefined
 	}
 	
-	function_call(main_loop, 1/20, true)
+	function_call_COMMON(main_loop, 1/20, true)
 }
-function_call(main_loop, 1/20, true)
+function_call_COMMON(main_loop, 1/20, true)
 
 title = "EQUIPMENTS"
 

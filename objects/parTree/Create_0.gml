@@ -1,5 +1,5 @@
 function main() {
-	function_call(main, 1/20, true)
+	function_call_COMMON(main, 1/20, true)
 	
 	if (place_meeting(x, y, objPlayer)) {
 		if (image_alpha != 0.4) {
@@ -23,7 +23,7 @@ function main() {
 	}
 }
 
-function_call(main, 1/20, true)
+function_call_COMMON(main, 1/20, true)
 
 if (body_type == 1) {
 	var down = instance_create_layer(x, y, "Top", objTreeBody)

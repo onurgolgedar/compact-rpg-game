@@ -30,7 +30,7 @@ function main() {
 				client_send_skill_cast(objPlayer.skills[4].code, objPlayer.skills[4].index)
 	}
 		
-	function_call(main, 1/20, true)
+	function_call_COMMON(main, 1/20, true)
 }
 
-function_call(main, 1/20, true)
+function_call_COMMON(main, 1/20, true)

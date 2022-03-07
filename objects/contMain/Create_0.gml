@@ -1,4 +1,4 @@
-function_call_init()
+function_call_init_COMMON()
 
 function main_loop() {
 	var _period = floor(global.gameTime*100)/10
@@ -12,9 +12,9 @@ function main_loop() {
 	with (parClickableNPC)
 		hover = is_mouse_on()
 
-	function_call(main_loop, 1/20, true)
+	function_call_COMMON(main_loop, 1/20, true)
 }
-function_call(main_loop, 1/20, true)
+function_call_COMMON(main_loop, 1/20, true)
 
 game_set_speed(50, gamespeed_fps) // Max: 240
 
