@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Others",
-    "path": "folders/./Sprites/Item/Others.yy",
+    "path": "folders/CLIENT/1- Sprites/Item/Others.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprChallenge",

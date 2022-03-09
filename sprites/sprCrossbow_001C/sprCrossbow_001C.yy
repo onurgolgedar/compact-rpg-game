@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "C",
-    "path": "folders/./Sprites/Item/Crossbow/C.yy",
+    "path": "folders/CLIENT/1- Sprites/Item/Crossbow/C.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprCrossbow_001C",

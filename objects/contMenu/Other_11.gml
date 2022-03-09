@@ -6,6 +6,9 @@ with (tteID_signup)
 	
 with (tteName_signup)
 	global.clientName_signup = tte_ext_input_get_text()
+	
+with (tteCOOP_signup)
+	global.coopID = tte_ext_input_get_text()
 			
 with (ttePassword_signup)
 	global.clientPassword_signup = tte_ext_input_get_text()
@@ -21,9 +24,14 @@ global.clientClass_signup = "Warrior"
 if (global.clientPassword_signup == passwordRepeat) {
 	if (string_count(".", global.serverIP) == 3 and string_length(global.clientPassword_signup) > 0 and string_length(global.clientID_signup) > 0) {
 		with (contClient) {
+			// Sign up
 			global.connectionGoal = 0
 			alarm[0] = SEC*0.1
 			alarm[1] = SEC*3
 		}
 	}
+}
+else {
+	var messageBox = show_messagebox(250, 250, "Failed", "Passwords do not match.", 4)
+	messageBox.depth = depth-1000
 }

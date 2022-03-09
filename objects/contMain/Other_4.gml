@@ -12,9 +12,10 @@ camera_set_view_border(global.camera, camera_get_view_width(global.camera)/2, ca
 //camera_set_view_target(global.camera, objPlayer)
 camera_set_view_speed(global.camera, 7, 7)
 
-var quality = 1.45
+var quality = 1.35
+var gui_scale = 1.15
 surface_resize(application_surface, cameraWidth*quality/scale, cameraHeight*quality/scale)
-display_set_gui_size(cameraWidth/scale*1.15, cameraHeight/scale*1.15)
+display_set_gui_size(cameraWidth/scale*gui_scale, cameraHeight/scale*gui_scale)
 window_set_size(cameraWidth/scale, cameraHeight/scale)
 
 if (room == roomMenu)

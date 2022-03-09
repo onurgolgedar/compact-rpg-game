@@ -69,8 +69,8 @@
   ],
   "nineSlice": null,
   "parent": {
-    "name": "Skill",
-    "path": "folders/./Sprites/Skill.yy",
+    "name": "Symbols",
+    "path": "folders/CLIENT/1- Sprites/Skill Visuals/Symbols.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprSkill_10",

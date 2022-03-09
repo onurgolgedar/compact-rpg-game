@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Stone",
-    "path": "folders/./Sprites/Environment/Stone.yy",
+    "path": "folders/CLIENT/1- Sprites/Environment/Stone.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprStone2_env",

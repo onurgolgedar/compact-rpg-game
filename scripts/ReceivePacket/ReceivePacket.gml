@@ -1,4 +1,4 @@
-function _net_receive_packet(code, pureData, socketID_sender) {
+function _net_receive_packet(code, pureData, socketID_sender, redirection, bufferType) {
 	if (global.playerControlMode and instance_exists(global.selectedPlayer)) {
 		if (socketID_sender == global.socketID_player)
 			socketID_sender = global.selectedPlayer.socketID
@@ -22,8 +22,13 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 		data = pureData
 	}
 	#endregion
+	
+	if (code != 2002 and code != 2001 and code != 2005 and code != 2003 and code != 2004 and
+		code != 3005 and code != 3000 and code != 3001 and code != 3002 and code != 3003 and
+		code != 3004 and code != 5002 and code != 15002 and code != 10302)
+		show_debug_message(string(code)+": "+string(data))
 
-	/*try {*/
+	//try {
 		switch(code) {										
 			case CODE_GET_INVENTORY:
 				ds_grid_destroy(global.boxes)
@@ -163,7 +168,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE_box_change_position:
+			case CODE__BOX_CHANGE_POSITION:
 				box_change_position(data.i, data.j, data.target_i, data.target_j)
 				break
 				
@@ -638,6 +643,7 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 				}
 				break
 		
+		
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -653,8 +659,8 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_LOGIN_FAIL:
-				if (global.socket != undefined)
-					network_destroy(global.socket)
+				if (global.socket_CLIENT != undefined)
+					network_destroy(global.socket_CLIENT)
 				contClient.alarm[1] = -1
 				if (room != roomMenu)
 					room_goto(roomMenu)
@@ -671,16 +677,45 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
+				
+			case CODE_CONNECT_COOP:
+				if (global.socketID_COOP_player == undefined)
+					global.socketID_COOP_player = data
+			
+				if (global.clientID != "Local" and global.coopID != "")	
+					with (contClient)
+						alarm[3] = 1
+				break
+				
+			case CODE_JOIN_COOP:
+				if (global.socketID_COOP_player == undefined)
+					global.socketID_COOP_player = data
+			
+				if (global.clientID != "Local" and global.coopID != "")	
+					with (contClient)
+						alarm[3] = 1
+				break
+				
+				
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_LOGIN_SUCCESS:
+				if (global.clientID == "Local" and global.coopID == "")
+					global.coopID = ""
+			
 				with (parPlayer)
 					if (socketID == global.socketID_player)
 						instance_destroy()
 						
 				global.clientClass = data
 		
-				with (contClient)
+				with (contClient) {
+					if (global.coopID == "" and global.publicGame)
+						client_coop_connect(global.coopIP, PORT_TCP_COOP)
 					alarm[1] = -1
+				}
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1534,9 +1569,9 @@ function _net_receive_packet(code, pureData, socketID_sender) {
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case _CODE_BOX_CHANGE_POSITION:
+			case _CODE__BOX_CHANGE_POSITION:
 				if (box_change_position_SERVER(socketID_sender, data.i, data.j, data.target_i, data.target_j))
-					net_server_send(socketID_sender, CODE_box_change_position, json_stringify({ i: data.i, j: data.j, target_i: data.target_i, target_j: data.target_j }), BUFFER_TYPE_STRING)
+					net_server_send(socketID_sender, CODE__BOX_CHANGE_POSITION, json_stringify({ i: data.i, j: data.j, target_i: data.target_i, target_j: data.target_j }), BUFFER_TYPE_STRING)
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //

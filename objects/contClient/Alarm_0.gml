@@ -1,1 +1,1 @@
-client_connect(global.serverIP, PORT_TCP)
+client_connect(global.serverIP, global.mainTCP_port)

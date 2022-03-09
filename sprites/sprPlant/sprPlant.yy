@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Plant",
-    "path": "folders/./Sprites/Environment/Plant.yy",
+    "path": "folders/CLIENT/1- Sprites/Environment/Plant.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprPlant",

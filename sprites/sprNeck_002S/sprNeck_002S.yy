@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "S",
-    "path": "folders/./Sprites/Item/Necklace/S.yy",
+    "path": "folders/CLIENT/1- Sprites/Item/Necklace/S.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprNeck_002S",

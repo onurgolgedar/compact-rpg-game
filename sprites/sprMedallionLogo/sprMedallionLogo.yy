@@ -69,8 +69,8 @@
   ],
   "nineSlice": null,
   "parent": {
-    "name": "Other",
-    "path": "folders/./Sprites/Other.yy",
+    "name": "GUI",
+    "path": "folders/CLIENT/1- Sprites/GUI.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprMedallionLogo",

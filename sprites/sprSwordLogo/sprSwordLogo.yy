@@ -69,8 +69,8 @@
   ],
   "nineSlice": null,
   "parent": {
-    "name": "Other",
-    "path": "folders/./Sprites/Other.yy",
+    "name": "Environment",
+    "path": "folders/CLIENT/1- Sprites/Environment.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprSwordLogo",

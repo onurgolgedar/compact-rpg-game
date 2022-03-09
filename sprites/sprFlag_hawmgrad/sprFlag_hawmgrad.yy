@@ -306,7 +306,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Environment",
-    "path": "folders/./Sprites/Environment.yy",
+    "path": "folders/CLIENT/1- Sprites/Environment.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprFlag_hawmgrad",

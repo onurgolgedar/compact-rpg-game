@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Potion&Kit",
-    "path": "folders/./Sprites/Item/Potion&Kit.yy",
+    "path": "folders/CLIENT/1- Sprites/Item/Potion&Kit.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprMedicalKit2",

@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Background",
-    "path": "folders/./Sprites/Background.yy",
+    "path": "folders/CLIENT/1- Sprites/Background.yy",
   },
   "resourceVersion": "1.0",
   "name": "bgCave",

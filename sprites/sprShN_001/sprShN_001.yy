@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "N",
-    "path": "folders/./Sprites/Item/Shield/N.yy",
+    "path": "folders/CLIENT/1- Sprites/Item/Shield/N.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprShN_001",

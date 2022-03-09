@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Clothes",
-    "path": "folders/./Sprites/Clothes&Hair/Clothes.yy",
+    "path": "folders/CLIENT/1- Sprites/Item/Clothes.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprClothes9_npc",
