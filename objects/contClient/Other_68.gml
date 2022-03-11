@@ -11,7 +11,7 @@ if (port == global.mainTCP_port or port == global.mainUDP_port) {
 		case network_type_data:
 			var data = net_buffer_read(load_buffer)
 			if (data != undefined)
-				_net_receive_packet(data[0], data[1], load_id, data[2], net_buffer_get_type_reverse(data[3]))
+				_net_receive_packet(data[0], data[1], load_id, data[2], net_buffer_get_type_reverse(data[3]), async_load)
 			break
 		
 		case network_type_connect:
@@ -27,17 +27,13 @@ if (port == global.mainTCP_port or port == global.mainUDP_port) {
 			break
 	}
 }
-else if (async_load[? "port"] == PORT_TCP_COOP or async_load[? "port"] == PORT_UDP_COOP) {
-	load_buffer = async_load[? "buffer"]
-	load_id = async_load[? "id"]
-	load_type = async_load[? "type"]
-	
-	switch(load_type)
-	{		
-		case network_type_data:
-			var data = net_buffer_read(load_buffer)
-			if (data != undefined)
-				_net_receive_packet_COOP(data[0], data[1], load_id)
-			break
+else if (port == PORT_TCP_COOP or port == PORT_UDP_COOP) {
+	if (async_load[? "type"] == network_type_data) {
+		load_buffer = async_load[? "buffer"]
+		load_id = async_load[? "id"]
+		
+		var data = net_buffer_read(load_buffer)
+		if (data != undefined)
+			_net_receive_packet_COOP(data[0], data[1], load_id)
 	}
 }

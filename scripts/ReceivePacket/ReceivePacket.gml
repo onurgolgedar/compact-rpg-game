@@ -1,4 +1,4 @@
-function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, bufferType) {
+function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, bufferType, asyncMap) {
 	if (global.playerControlMode and instance_exists(global.selectedPlayer)) {
 		if (socketID_sender == global.socketID_player)
 			socketID_sender = global.selectedPlayer.socketID

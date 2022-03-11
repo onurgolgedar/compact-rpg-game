@@ -1,7 +1,6 @@
 function net_client_send(code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = false, bufferInfo = BUFFER_INFO_DEFAULT, forCOOP = false) {
 	if (!is_net_local(global.serverIP, global.coopID) or forCOOP or debug_mode) {
-		if (global.all_tcp_mode)
-			isUDP = false
+		isUDP = global.all_tcp_mode ? false : isUDP
 		
 		if (global.coopID != "" and bufferInfo == BUFFER_INFO_DEFAULT)
 			bufferInfo = global.socket_CLIENT
@@ -29,8 +28,7 @@ function net_server_send(socketID, code, data = 0, bufferType = BUFFER_TYPE_BOOL
 	var buffer = undefined	
 	
 	if (socketID != global.socketID_player) {
-		if (global.all_tcp_mode)
-			isUDP = false
+		isUDP = global.all_tcp_mode ? false : isUDP
 		
 		if (socketID == SOCKET_ID_ALL) {
 			var ds_size = db_get_table_size(global.DB_SRV_TABLE_clients)
