@@ -141,7 +141,8 @@ function db_set_row_value(table, primaryValue, column, value) {
 		}
 	}
 
-	row[? column] = value
+	if (row != undefined)
+		row[? column] = value
 }
 
 function db_draw_table(table_x, table_y, table, columnCount) {

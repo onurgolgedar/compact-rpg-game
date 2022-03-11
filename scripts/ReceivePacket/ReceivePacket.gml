@@ -1,4 +1,4 @@
-function _net_receive_packet(code, pureData, socketID_sender, redirection, bufferType) {
+function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, bufferType) {
 	if (global.playerControlMode and instance_exists(global.selectedPlayer)) {
 		if (socketID_sender == global.socketID_player)
 			socketID_sender = global.selectedPlayer.socketID
@@ -23,10 +23,16 @@ function _net_receive_packet(code, pureData, socketID_sender, redirection, buffe
 	}
 	#endregion
 	
-	if (code != 2002 and code != 2001 and code != 2005 and code != 2003 and code != 2004 and
-		code != 3005 and code != 3000 and code != 3001 and code != 3002 and code != 3003 and
-		code != 3004 and code != 5002 and code != 15002 and code != 10302)
-		show_debug_message(string(code)+": "+string(data))
+		if (code != 2002 and code != 2001 and code != 2005 and code != 2003 and code != 2004 and
+			code != 3005 and code != 3000 and code != 3001 and code != 3002 and code != 3003 and
+			code != 1000 and code != 1001 and code != 1002 and code != 1003 and code != 1004 and
+			code != 2000 and code != 2002 and code != 7003 and code != 2007 and
+			code != 2006 and code != 1500 and code != 7001 and code != 5000 and code != 1501 and
+			code != 3004 and code != 5002 and code != 15002 and code != 10302 and code != 4001 and
+			code != 6000 and code != 10300 and code != 10301 and code != 10301)
+			if (!is_string(pureData) or string_length(pureData) < 100)
+				//show_messagebox(50, 150, "From: "+string(socketID_sender), "Code: "+string(code)+"\n"+string(data), 7)
+				show_debug_message("From: "+string(socketID_sender)+"\n[ Code: "+string(code)+"\n  Data: "+string(data)+" ]")
 
 	//try {
 		switch(code) {										
@@ -661,6 +667,8 @@ function _net_receive_packet(code, pureData, socketID_sender, redirection, buffe
 			case CODE_LOGIN_FAIL:
 				if (global.socket_CLIENT != undefined)
 					network_destroy(global.socket_CLIENT)
+				if (global.socket_COOP != undefined)
+					network_destroy(global.socket_COOP)
 				contClient.alarm[1] = -1
 				if (room != roomMenu)
 					room_goto(roomMenu)
@@ -1009,7 +1017,7 @@ function _net_receive_packet(code, pureData, socketID_sender, redirection, buffe
 					with (objNPC_SERVER)
 						net_server_send(socketID_sender, CODE_SPAWN_NPC, json_stringify({ npcID: id.targetID, xx: round(x), yy: round(y), maxHp: maxHp, maxEnergy: maxEnergy, maxMana: maxMana, name: name, clientObject: object_get_name(clientObject) }), BUFFER_TYPE_STRING)
 	
-					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, account[? ACCOUNTS_CLASS_SERVER], BUFFER_TYPE_STRING)
+					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, account[? ACCOUNTS_CLASS_SERVER], BUFFER_TYPE_STRING,,,bufferInfo)
 					
 					// Spawn Player
 					var instance = player_spawn_SERVER(socketID_sender)

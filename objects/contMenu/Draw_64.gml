@@ -38,8 +38,6 @@ if (mouseHover) {
 	
 	if (device_mouse_check_button_pressed(0, mb_left)) {
 		global.connectionGoal = 3
-		global.mainTCP_port = PORT_TCP
-		global.mainUDP_port = PORT_UDP
 		event_user(0)
 	}
 }
@@ -67,8 +65,6 @@ if (mouseHover) {
 	
 	if (device_mouse_check_button_pressed(0, mb_left)) {
 		global.connectionGoal = 1
-		global.mainTCP_port = PORT_TCP
-		global.mainUDP_port = PORT_UDP
 		event_user(0)
 	}
 }

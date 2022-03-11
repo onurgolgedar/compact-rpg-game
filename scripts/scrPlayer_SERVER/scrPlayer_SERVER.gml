@@ -42,12 +42,14 @@ function player_recalculate_statistics_SERVER() {
 	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ENERGY, json_stringify({ socketID: socketID, energy: maxEnergy }), BUFFER_TYPE_STRING, true)
 }
 
-function player_spawn_SERVER(socketID) {
+function player_spawn_SERVER(socketID) {	
 	with (objPlayer)
 		if (id.socketID == socketID)
 			instance_destroy()
 			
 	var accountID = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID)
+	if (accountID == undefined)
+		return undefined
 	var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, accountID)
 	
 	var location = ds_map_find_value(global.locations, accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
@@ -110,4 +112,5 @@ function player_spawn_SERVER(socketID) {
 	tell_appearence_SERVER(socketID, SOCKET_ID_ALL)
 	
 	return newPlayer
+	
 }

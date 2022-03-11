@@ -1,13 +1,11 @@
 function main() {
 	function_call_COMMON(main, 1/20, true)
-	if (global.socket_CLIENT == undefined)
-		exit
 	
-	// Data Transfer
-	net_client_send(_CODE_PING, current_time, BUFFER_TYPE_INT32, true)
-	net_client_send(_CODE_MOUSE_POSITION, json_stringify({ xx: mouse_x, yy: mouse_y }), BUFFER_TYPE_STRING, true)
-	
-	if (is_alive() and !objPlayer.stunned) {
+	if (is_alive() and !objPlayer.stunned and global.socket_CLIENT != undefined) {
+		// Data Transfer
+		net_client_send(_CODE_PING, current_time, BUFFER_TYPE_INT32, true)
+		net_client_send(_CODE_MOUSE_POSITION, json_stringify({ xx: mouse_x, yy: mouse_y }), BUFFER_TYPE_STRING, true)
+		
 		// Input - Basic Attack
 		if (device_mouse_check_button(0, mb_left) and anim_end(objPlayer) and get_active_item(ITEMTYPE_SWORD) != undefined and check_gui_to_attack())
 			net_client_send(_CODE_BASIC_ATTACK, json_stringify({ xx: mouse_x, yy: mouse_y }), BUFFER_TYPE_STRING, true)

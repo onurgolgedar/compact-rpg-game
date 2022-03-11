@@ -1,1 +1,1 @@
-function_call_COMMON(function() { window_center() }, 1, false)
+function_call_COMMON(function() { window_center() }, 2, false)

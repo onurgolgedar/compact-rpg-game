@@ -21,6 +21,7 @@ game_set_speed(50, gamespeed_fps) // Max: 240
 global.ping_udp = 0
 global.networkErrors_count = 0
 global.delta_COMMON = delta()
+global.clientName = ""
 global.playerNames = ds_map_create()
 global.playerInstances = ds_map_create()
 global.creatureInstances = ds_map_create()

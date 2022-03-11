@@ -1,4 +1,5 @@
-if (async_load[? "port"] == PORT_TCP) {
+var port = async_load[? "port"]
+if (port == PORT_TCP or port == PORT_UDP) {
 	load_buffer = async_load[? "buffer"]
 	load_id = async_load[? "id"]
 	load_type = async_load[? "type"]

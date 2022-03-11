@@ -1,1 +1,1 @@
-net_client_send_COOP(CODE_HOST_COOP, global.socketID_COOP_player*10000+irandom_range(1000, 9999), BUFFER_TYPE_FLOAT64)
+net_client_send(CODE_HOST_COOP, global.socketID_COOP_player*10000+irandom_range(1000, 9999), BUFFER_TYPE_FLOAT64,,,true)

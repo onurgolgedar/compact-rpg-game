@@ -1,16 +1,20 @@
 function refresh() {
-	isRefreshing = true
-	instance_destroy()
-	isRefreshing = false
+	if (afterCreationTriggered) {
+		isRefreshing = true
+		instance_destroy()
+		isRefreshing = false
 	
-	var _depth = depth
-	var _onFront = onFront
-	var window = instance_create_layer(x, y, "Windows", object_index)
-	window.isRefreshing = true
-	window.depth = _depth
-	window.onFront = _onFront
+		var _depth = depth
+		var _onFront = onFront
+		var window = instance_create_layer(x, y, "Windows", object_index)
+		window.isRefreshing = true
+		window.depth = _depth
+		window.onFront = _onFront
 	
-	return window
+		return window
+	}
+	
+	return undefined
 }
 
 function is_mouse_on() {
@@ -31,6 +35,7 @@ function after_creation() {
 	if (owner != undefined)
 		ds_list_add(owner.windows, id)
 	event_user(0)
+	afterCreationTriggered = true
 }
 function_call_COMMON(after_creation, 1, false)
 
@@ -44,6 +49,7 @@ held_offset_x = undefined
 held_offset_y = undefined
 isOnExitButton = false
 
+afterCreationTriggered = false
 isRefreshing = false
 onFront = false
 minDepth = 999

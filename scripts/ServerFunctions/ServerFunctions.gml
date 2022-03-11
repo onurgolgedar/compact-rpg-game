@@ -1,6 +1,11 @@
 function _server_init() {
-	global.socket = network_create_server(network_socket_tcp, PORT_TCP, MAX_CLIENTS)
-	global.socket_udp = network_create_server(network_socket_udp, PORT_TCP, MAX_CLIENTS)
+	global.server = network_create_server(network_socket_tcp, PORT_TCP, MAX_CLIENTS)
+	global.socket_udp = network_create_socket_ext(network_socket_udp, PORT_UDP)
+	global.socket_udp_COOP = network_create_socket_ext(network_socket_udp, PORT_UDP_COOP)
+	
+	ini_open("config.ini")
+		global.all_tcp_mode = ini_read_real("NETWORK", "all_tcp_mode", 1)
+	ini_close()
 }
 
 /// @param socketID

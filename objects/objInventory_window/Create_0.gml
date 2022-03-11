@@ -4,9 +4,11 @@ function inventory_refresh() {
 	var _depth = depth
 	var _onFront = onFront
 	var window = refresh()
-	window.page = page
-	window.image_alpha = image_alpha
-	window._alpha_factor = _alpha_factor
+	if (window != undefined) {
+		window.page = page
+		window.image_alpha = image_alpha
+		window._alpha_factor = _alpha_factor
+	}
 		
 	return window
 }

@@ -5,12 +5,6 @@ function _net_event_disconnect_SERVER(load_buffer, load_id, load_socketID, load_
 	var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, load_socketID, PLAYERS_INSTANCE_SERVER)
 	if (instance != undefined)
 		instance_destroy(instance)
-		
-	/*var accountID = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, load_socketID)
-	if (accountID != undefined) {
-		ds_grid_destroy(global.playerBoxes[? accountID])
-		ds_map_delete(global.playerBoxes, accountID)
-	}*/
 	
 	db_delete_row(global.DB_SRV_TABLE_players, load_socketID)
 	db_delete_row(global.DB_SRV_TABLE_onlineAccounts, load_socketID)

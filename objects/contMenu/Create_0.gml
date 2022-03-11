@@ -5,6 +5,7 @@ global.publicGame = true
 global.mainTCP_port = PORT_TCP
 global.mainUDP_port = PORT_UDP
 global.coopID = ""
+global.clientID = ""
 
 tteID = instance_create(65, 200, objTTEInput)
 with (tteID) {
@@ -26,12 +27,14 @@ tteIP = instance_create(room_width-330, room_height-90, objTTEInput)
 with (tteIP) {
 	visible = false
 	title = "Server"
+	tte_ext_input_set_text("TR")
 }
 
 tteIP_COOP = instance_create(room_width-330, room_height-170, objTTEInput)
 with (tteIP_COOP) {
 	visible = false
 	title = "Co-op Server"
+	tte_ext_input_set_text("TR")
 }
 
 tteID_signup = instance_create(1245, 200, objTTEInput)
@@ -65,5 +68,3 @@ with (tteCOOP_signup) {
 with (tteClass_signup) {
 	title = "Class"
 }*/
-
-alarm[0] = SEC/4

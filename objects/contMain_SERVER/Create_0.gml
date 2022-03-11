@@ -24,12 +24,14 @@ global.pageCount_skill_COMMON = 3
 global.boxEmpty_skill_COMMON = {skill: undefined}
 
 // Server Control Mode
+global.drawEventEnabled = true
 global.selectedPlayer = undefined
 global.playerControlMode = false
 
 define_skills_base_COMMON()
 
 alarm[0] = room_speed/30
+alarm[1] = room_speed/10
 
 wheel_x = undefined
 wheel_y = undefined

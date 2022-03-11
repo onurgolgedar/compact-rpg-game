@@ -1,9 +1,13 @@
 function dialogue_set_values_SERVER(text, playerInstance) {
 	if (playerInstance == undefined or instance_exists(playerInstance)) {
 		var result = text
+		var value = undefined
 		
 		// List of changes
-		result = string_replace_all(text, "{name}", playerInstance != undefined ? global.playerNames[? playerInstance.socketID] : "")
+		value = playerInstance != undefined ? global.playerNames[? playerInstance.socketID] : undefined
+		if (value == undefined)
+			value = ""
+		result = string_replace_all(text, "{name}", value)
 		
 		return result
 	}

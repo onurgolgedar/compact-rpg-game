@@ -72,9 +72,11 @@ if (page == 1) {
 		draw_text_outlined(x+offset+5, y+height-18, "Gold", 1, c_black, 10, 1, 1, 0)
 	draw_set_color(c_ltgray) draw_set_halign(fa_right)
 	
-		draw_text_outlined(x+width-offset-10, y+height_ext_top+offset+offset+18, global.clientName, 1, c_black, 10, 0.8, 0.8, 0)
-		draw_text_outlined(x+width-offset-10, y+height_ext_top+offset+offset+18+between, global.clientClass, 1, c_black, 10, 0.8, 0.8, 0)
-		draw_text_outlined(x+width-offset-10, y+height_ext_top+offset+offset+18+between*2, global.level, 1, c_black, 10, 0.8, 0.8, 0)
+		if (global.clientName != undefined) {
+			draw_text_outlined(x+width-offset-10, y+height_ext_top+offset+offset+18, global.clientName, 1, c_black, 10, 0.8, 0.8, 0)
+			draw_text_outlined(x+width-offset-10, y+height_ext_top+offset+offset+18+between, global.clientClass, 1, c_black, 10, 0.8, 0.8, 0)
+			draw_text_outlined(x+width-offset-10, y+height_ext_top+offset+offset+18+between*2, global.level, 1, c_black, 10, 0.8, 0.8, 0)
+		}
 	
 		with (objPlayer) {
 			draw_text_outlined(other.x+other.width-other.offset-10, other.y+other.height-18-between*4, string(physicalPower), 1, c_black, 10, 1, 1, 0)
