@@ -1028,7 +1028,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 					net_server_send(socketID_sender, CODE_GET_ACCOUNTINFO, accountInfoRow[? ACCOUNTINFO_GOLD_SERVER], BUFFER_TYPE_INT32)
 				
 					// Send Shared Data
-					tell_all_names()
+					tell_all_names(,true)
 					tell_all_positions_SERVER(true)
 				}
 				else
