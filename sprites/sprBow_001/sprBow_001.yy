@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "Bow",
-    "path": "folders/CLIENT/1- Sprites/Item/Bow.yy",
+    "path": "folders/CLIENT/1- Sprites/Items/Bow.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprBow_001",

@@ -21,7 +21,7 @@ if (!is_click_blocked() and global.held_box != undefined) {
 		}
 		else if (global.held_from_assetName == object_get_name(objInventory_window)) {
 			if (mouseOn_box != undefined) {
-				net_client_send(_CODE__BOX_CHANGE_POSITION, json_stringify({ i: global.held_box_i, j: global.held_box_j, target_i: mouseOn_box_i, target_j: mouseOn_box_j }), BUFFER_TYPE_STRING)
+				net_client_send(_CODE_BOX_CHANGE_POSITION, json_stringify({ i: global.held_box_i, j: global.held_box_j, target_i: mouseOn_box_i, target_j: mouseOn_box_j }), BUFFER_TYPE_STRING)
 				boxes_alpha[global.held_box_i][global.held_box_j] = 0
 			}
 		}

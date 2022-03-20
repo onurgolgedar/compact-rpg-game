@@ -42,9 +42,9 @@ if (clientObject == objWeaponSeller) {
 		for (var z = 0; z < global.bc_ver_COMMON+2; z++)
 			ds_grid_set(lootBoxes, t, z, box_create_COMMON())
 
-	ds_grid_set(lootBoxes, 0, 0, {item: item_get_COMMON(SWORD_000), tag: {isActive: false, isForQuest: false}, count: 1})
-	ds_grid_set(lootBoxes, 1, 0, {item: item_get_COMMON(SWORD_001), tag: {isActive: false, isForQuest: false}, count: 1})
-	ds_grid_set(lootBoxes, 0, 1, {item: item_get_COMMON(VALUABLE_000), tag: {isActive: false, isForQuest: false}, count: 1})
+	ds_grid_set(lootBoxes, 0, 0, {item: item_get_COMMON(SWORD_000), tag: {isForQuest: false}, count: 1})
+	ds_grid_set(lootBoxes, 1, 0, {item: item_get_COMMON(SWORD_001), tag: {isForQuest: false}, count: 1})
+	ds_grid_set(lootBoxes, 0, 1, {item: item_get_COMMON(VALUABLE_000), tag: {isForQuest: false}, count: 1})
 	
 	for (var t = 0; t < global.bc_hor_COMMON*global.pageCount_COMMON; t++) {
 		for (var z = 0; z < global.bc_ver_COMMON+2; z++) {

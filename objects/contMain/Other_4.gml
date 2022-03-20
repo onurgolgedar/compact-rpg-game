@@ -10,7 +10,7 @@ var cameraHeight = 768*scale
 camera_set_view_size(global.camera, cameraWidth, cameraHeight)
 camera_set_view_border(global.camera, camera_get_view_width(global.camera)/2, camera_get_view_height(global.camera)/2)
 //camera_set_view_target(global.camera, objPlayer)
-camera_set_view_speed(global.camera, 7, 7)
+camera_set_view_speed(global.camera, 4, 4)
 
 var quality = 1.35
 var gui_scale = 1.15

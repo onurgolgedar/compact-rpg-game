@@ -174,7 +174,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case CODE__BOX_CHANGE_POSITION:
+			case CODE_BOX_CHANGE_POSITION:
 				box_change_position(data.i, data.j, data.target_i, data.target_j)
 				break
 				
@@ -1577,9 +1577,9 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
-			case _CODE__BOX_CHANGE_POSITION:
+			case _CODE_BOX_CHANGE_POSITION:
 				if (box_change_position_SERVER(socketID_sender, data.i, data.j, data.target_i, data.target_j))
-					net_server_send(socketID_sender, CODE__BOX_CHANGE_POSITION, json_stringify({ i: data.i, j: data.j, target_i: data.target_i, target_j: data.target_j }), BUFFER_TYPE_STRING)
+					net_server_send(socketID_sender, CODE_BOX_CHANGE_POSITION, json_stringify({ i: data.i, j: data.j, target_i: data.target_i, target_j: data.target_j }), BUFFER_TYPE_STRING)
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //

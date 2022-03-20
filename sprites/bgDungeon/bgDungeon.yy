@@ -69,8 +69,8 @@
   ],
   "nineSlice": null,
   "parent": {
-    "name": "Background",
-    "path": "folders/CLIENT/1- Sprites/Background.yy",
+    "name": "Backgrounds",
+    "path": "folders/CLIENT/1- Sprites/Backgrounds.yy",
   },
   "resourceVersion": "1.0",
   "name": "bgDungeon",

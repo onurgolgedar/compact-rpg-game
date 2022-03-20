@@ -103,12 +103,12 @@
   "gridX": 0,
   "gridY": 0,
   "frames": [
-    {"compositeImage":{"FrameId":{"name":"7738bac9-461b-4da8-96c7-7b3021074745","path":"sprites/sprClothes004/sprClothes004.yy",},"LayerId":null,"resourceVersion":"1.0","name":"imported","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"7738bac9-461b-4da8-96c7-7b3021074745","path":"sprites/sprClothes004/sprClothes004.yy",},"LayerId":{"name":"cef5c6cd-aeb9-4aff-869c-d7e23eee9192","path":"sprites/sprClothes004/sprClothes004.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"sprClothes004","path":"sprites/sprClothes004/sprClothes004.yy",},"resourceVersion":"1.0","name":"7738bac9-461b-4da8-96c7-7b3021074745","tags":[],"resourceType":"GMSpriteFrame",},
+    {"compositeImage":{"FrameId":{"name":"7738bac9-461b-4da8-96c7-7b3021074745","path":"sprites/sprClothes_004/sprClothes_004.yy",},"LayerId":null,"resourceVersion":"1.0","name":"imported","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
+        {"FrameId":{"name":"7738bac9-461b-4da8-96c7-7b3021074745","path":"sprites/sprClothes_004/sprClothes_004.yy",},"LayerId":{"name":"cef5c6cd-aeb9-4aff-869c-d7e23eee9192","path":"sprites/sprClothes_004/sprClothes_004.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
+      ],"parent":{"name":"sprClothes_004","path":"sprites/sprClothes_004/sprClothes_004.yy",},"resourceVersion":"1.0","name":"7738bac9-461b-4da8-96c7-7b3021074745","tags":[],"resourceType":"GMSpriteFrame",},
   ],
   "sequence": {
-    "spriteId": {"name":"sprClothes004","path":"sprites/sprClothes004/sprClothes004.yy",},
+    "spriteId": {"name":"sprClothes_004","path":"sprites/sprClothes_004/sprClothes_004.yy",},
     "timeUnits": 1,
     "playback": 1,
     "playbackSpeed": 1.0,
@@ -120,7 +120,7 @@
     "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MomentsEventKeyframe>",},
     "tracks": [
       {"name":"frames","spriteId":null,"keyframes":{"Keyframes":[
-            {"id":"3b4f0aaa-5ce7-4c4a-b690-02347b5d780b","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"7738bac9-461b-4da8-96c7-7b3021074745","path":"sprites/sprClothes004/sprClothes004.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+            {"id":"3b4f0aaa-5ce7-4c4a-b690-02347b5d780b","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"7738bac9-461b-4da8-96c7-7b3021074745","path":"sprites/sprClothes_004/sprClothes_004.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
           ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack","modifiers":[],},
     ],
     "visibleRange": null,
@@ -137,9 +137,9 @@
     "yorigin": 39,
     "eventToFunction": {},
     "eventStubScript": null,
-    "parent": {"name":"sprClothes004","path":"sprites/sprClothes004/sprClothes004.yy",},
+    "parent": {"name":"sprClothes_004","path":"sprites/sprClothes_004/sprClothes_004.yy",},
     "resourceVersion": "1.4",
-    "name": "sprClothes004",
+    "name": "sprClothes_004",
     "tags": [],
     "resourceType": "GMSequence",
   },
@@ -152,7 +152,7 @@
     "path": "folders/COMMON/1- Sprites/Items/Clothes.yy",
   },
   "resourceVersion": "1.0",
-  "name": "sprClothes004",
+  "name": "sprClothes_004",
   "tags": [],
   "resourceType": "GMSprite",
 }

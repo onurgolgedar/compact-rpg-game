@@ -22,8 +22,6 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 			var box = ds_grid_get(boxes, i, j)
 			
 			var beforeColor = draw_get_color()
-			if (box.tag.isActive)
-				draw_set_color(c_yellow)
 			draw_set_alpha(1*image_alpha)
 			draw_sprite(sprCell, 0, box_positions.xx_center, box_positions.yy_center)
 			draw_set_color(beforeColor)

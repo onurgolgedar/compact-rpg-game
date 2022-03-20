@@ -70,7 +70,7 @@
   "nineSlice": null,
   "parent": {
     "name": "C",
-    "path": "folders/CLIENT/1- Sprites/Item/Crossbow/C.yy",
+    "path": "folders/CLIENT/1- Sprites/Items/Crossbow/C.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprCrossbow_002C",

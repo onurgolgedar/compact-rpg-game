@@ -149,7 +149,7 @@
   "nineSlice": null,
   "parent": {
     "name": "N",
-    "path": "folders/CLIENT/1- Sprites/Item/Bow/N.yy",
+    "path": "folders/CLIENT/1- Sprites/Items/Bow/N.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprBowN_001",

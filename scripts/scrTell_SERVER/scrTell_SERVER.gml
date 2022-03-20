@@ -25,18 +25,6 @@ function tell_appearence_SERVER(socketID, socketID_receiver) {
 	net_server_send(socketID_receiver, CODE_APPEARENCE, json_stringify({ socketID: socketID, weapon: weaponSprite, shoulders: clothesSprite }), BUFFER_TYPE_STRING)
 }
 
-function tell_all_angles_SERVER() {
-	var ds_size = db_get_table_size(global.DB_SRV_TABLE_players)
-	for (var i = 0; i < ds_size; i++) {
-		var _playerRow = db_get_row_by_index(global.DB_SRV_TABLE_players, i)
-		var _accountInfoRow = db_get_row_by_index(global.DB_SRV_TABLE_accountInfo, i)
-		var _socketID = _playerRow[? PLAYERS_SOCKETID_SERVER]
-		var _value = _playerRow[? PLAYERS_ANGLE_SERVER]
-		
-		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ROTATION, json_stringify({ socketID: _socketID, angle: _value }), BUFFER_TYPE_STRING, true, _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
-	}
-}
-
 function tell_all_energies_SERVER() {
 	var ds_size = db_get_table_size(global.DB_SRV_TABLE_players)
 	for (var i = 0; i < ds_size; i++) {
@@ -85,7 +73,20 @@ function tell_all_names(socketID, force) {
 		var _socketID = _onlineAccountRow[? ONLINEACCOUNTS_SOCKETID_SERVER]
 		var _name = db_get_value_by_key(global.DB_SRV_TABLE_accounts, _accID, ACCOUNTS_NICKNAME_SERVER)
 
-		net_server_send(socketID == undefined ? SOCKET_ID_ALL : socketID, CODE_TELL_PLAYER_NAME, json_stringify({ socketID: _socketID, name: _name }), BUFFER_TYPE_STRING, true, lastPosition == undefined or force ? 0 : _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
+		net_server_send(socketID == undefined ? SOCKET_ID_ALL : socketID, CODE_TELL_PLAYER_NAME, json_stringify({ socketID: _socketID, name: _name }), BUFFER_TYPE_STRING, true, force ? 0 : _accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER])
+	}
+}
+
+function tell_all_angles_SERVER() {
+	var ds_size = db_get_table_size(global.DB_SRV_TABLE_players)
+	for (var i = 0; i < ds_size; i++) {
+		var _playerRow = db_get_row_by_index(global.DB_SRV_TABLE_players, i)
+		var _socketID = _playerRow[? PLAYERS_SOCKETID_SERVER] 
+
+		var _accID = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, _socketID)
+		var _location = db_find_value(global.DB_SRV_TABLE_accountInfo, ACCOUNTINFO_ACCID_SERVER, _accID, ACCOUNTINFO_LOCATION_SERVER)
+		
+		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ROTATION, json_stringify({ socketID: _socketID, angle: _playerRow[? PLAYERS_ANGLE_SERVER] }), BUFFER_TYPE_STRING, true, _location)
 	}
 }
 

@@ -1,15 +1,15 @@
 function box_create_COMMON(item = undefined, isForQuest = false, count = 1) {
 	if (item == undefined)
-		return { item: undefined, tag: { isActive: false, isForQuest: false }, count: 0 }
+		return { item: undefined, tag: { isForQuest: false }, count: 0 }
 	else
-		return { item: item_copy_COMMON(item), tag: { isActive: false, isForQuest: isForQuest }, count: count }
+		return { item: item_copy_COMMON(item), tag: { isForQuest: isForQuest }, count: count }
 }
 
 function box_get_confirmation_number_COMMON(box) {
 	if (box == undefined)
 		return "--"
 	else
-		return string(box.tag.isActive)+string(box.tag.isForQuest)+string(item_get_confirmation_number_COMMON(box.item))
+		return string(box.tag.isForQuest)+string(item_get_confirmation_number_COMMON(box.item))
 }
 
 function box_get_active_SERVER(socketID, type) {
@@ -43,15 +43,11 @@ function box_change_active_SERVER(socketID, type, box_i, box_j, box_confirmation
 		return -1
 	
 	var result = -1
-	active_box_before.tag.isActive = false
 			
-	if (box.item != undefined) {
-		ds_grid_set(boxes_SERVER, type, global.bc_ver_COMMON, box)
-		box.tag.isActive = true
-	}
-			
-	if (box_i != undefined and box_i != undefined)
+	if (box_i != undefined and box_j != undefined) {
 		ds_grid_set(boxes_SERVER, box_i, box_j, active_box_before)
+		ds_grid_set(boxes_SERVER, type, global.bc_ver_COMMON, box)
+	}
 	else
 		item_unequip_SERVER(socketID, boxes_SERVER, active_box_before.item)
 				
@@ -65,8 +61,9 @@ function box_change_active_SERVER(socketID, type, box_i, box_j, box_confirmation
 	return result
 }
 
-function box_change_position_SERVER(socketID, box_i, box_j, target_box_i, target_box_j) {
-	var boxes_SERVER = global.playerBoxes[? db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID)]
+function box_change_position_SERVER(socketID, box_i, box_j, target_box_i, target_box_j, boxes_SERVER = undefined) {
+	if (boxes_SERVER == undefined)
+		boxes_SERVER = global.playerBoxes[? db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID)]
 	
 	var box = ds_grid_get(boxes_SERVER, box_i, box_j)
 	var box_target = ds_grid_get(boxes_SERVER, target_box_i, target_box_j)
