@@ -2,10 +2,10 @@ function save_SERVER() {
 	db_save_table(global.DB_SRV_TABLE_accounts)
 	db_save_table(global.DB_SRV_TABLE_accountInfo)
 
-	var ds_size = db_get_table_size(global.DB_SRV_TABLE_onlineAccounts)
+	var ds_size = db_get_table_size(global.DB_SRV_TABLE_players)
 	for (var i = 0; i < ds_size; i++) {
-		var _row = db_get_row_by_index(global.DB_SRV_TABLE_onlineAccounts, i)
-		var accountID = _row[? ONLINEACCOUNTS_ACCID_SERVER]
+		var _row = db_get_row_by_index(global.DB_SRV_TABLE_players, i)
+		var accountID = _row[? PLAYERS_ACCID_SERVER]
 	
 		// Save - Inventory
 		var boxes_SERVER = global.playerBoxes[? accountID]

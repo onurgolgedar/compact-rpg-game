@@ -478,15 +478,15 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case _CODE_LOCATION:
-				var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
+				var playersRow = db_get_row(global.DB_SRV_TABLE_players, socketID_sender)
+				var instance = playersRow[? PLAYERS_INSTANCE_SERVER]
 				if (instance == undefined or !instance_exists(instance))
 					break
 				
-				var accountID = db_get_value_by_key(global.DB_SRV_TABLE_onlineAccounts, socketID_sender, ONLINEACCOUNTS_ACCID_SERVER)
-				var locationID =  db_get_value_by_key(global.DB_SRV_TABLE_accountInfo, accountID, ACCOUNTINFO_LOCATION_SERVER) + (data == 1 ? 1 : -1)
+				var accountID = playersRow[? PLAYERS_ACCID_SERVER]
+				var locationID =  playersRow[? PLAYERS_LOCATION_SERVER] + (data == 1 ? 1 : -1)
 				
 				var location = ds_map_find_value(global.locations, locationID)
-				
 				if (location != undefined) {
 					var xx = location.spawn_x
 					var yy = location.spawn_y
@@ -498,6 +498,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 				
 					ds_map_set(global.lastPositions_sent, socketID_sender, undefined)
 					db_set_row_value(global.DB_SRV_TABLE_accountInfo, accountID, ACCOUNTINFO_LOCATION_SERVER, locationID)
+					playersRow[? PLAYERS_LOCATION_SERVER] = locationID
 				}
 				break
 				
@@ -741,8 +742,8 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // // */
 			
 			case _CODE_SIGNUP:
-				var onlineAccount = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_SOCKETID_SERVER, ONLINEACCOUNTS_ACCID_SERVER, data.accountID)
-				if (onlineAccount != undefined) {
+				var player = db_find_value(global.DB_SRV_TABLE_players, PLAYERS_SOCKETID_SERVER, PLAYERS_ACCID_SERVER, data.accountID)
+				if (player != undefined) {
 					net_server_send(socketID_sender, CODE_LOGIN_FAIL)
 					break
 				}
@@ -754,15 +755,15 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 					account[? ACCOUNTS_PASSWORD_SERVER] = data.password
 					account[? ACCOUNTS_NICKNAME_SERVER] = data.nickname
 						
-					if (data.class == CLASS_WARRIOR or data.class == CLASS_ASSASSIN or data.class == CLASS_MAGE)
-						account[? ACCOUNTS_CLASS_SERVER] = data.class
-					else
-						account[? ACCOUNTS_CLASS_SERVER] = CLASS_WARRIOR
-						
 					accountInfoRow = db_create_row(data.accountID)
 					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = 5000
 					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = 1
 					accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER] = LOCATION_THE_CASTLE
+					if (data.class == CLASS_WARRIOR or data.class == CLASS_ASSASSIN or data.class == CLASS_MAGE)
+						accountInfoRow[? ACCOUNTINFO_CLASS_SERVER] = data.class
+					else
+						accountInfoRow[? ACCOUNTINFO_CLASS_SERVER] = CLASS_WARRIOR
+
 					db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
 					db_save_table(global.DB_SRV_TABLE_accountInfo)
 						
@@ -776,27 +777,25 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 				break
 			
 			case _CODE_LOGIN:
-				var onlineAccount = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_SOCKETID_SERVER, ONLINEACCOUNTS_ACCID_SERVER, data.accountID)
-				if (onlineAccount != undefined) {
+				var player = db_find_value(global.DB_SRV_TABLE_players, PLAYERS_SOCKETID_SERVER, PLAYERS_ACCID_SERVER, data.accountID)
+				if (player != undefined) {
 					net_server_send(socketID_sender, CODE_LOGIN_FAIL)
 					break
 				}
 
 				var account = db_get_row(global.DB_SRV_TABLE_accounts, data.accountID)
-				if (account != undefined and account[? ACCOUNTS_PASSWORD_SERVER] == data.password) {
+				var accountInfo = db_get_row(global.DB_SRV_TABLE_accountInfo, data.accountID)
+				if (account != undefined and accountInfo != undefined and account[? ACCOUNTS_PASSWORD_SERVER] == data.password) {
 					if (account[? ACCOUNTS_PASSWORD_SERVER] == data.password) {
-					
-						onlineAccount = db_create_row(socketID_sender)
-						onlineAccount[? ONLINEACCOUNTS_ACCID_SERVER] = data.accountID
-						db_add_row(global.DB_SRV_TABLE_onlineAccounts, onlineAccount)
+						player = db_create_row(socketID_sender)
+						player[? PLAYERS_ACCID_SERVER] = data.accountID
+						player[? PLAYERS_LOCATION_SERVER] = accountInfo[? ACCOUNTINFO_LOCATION_SERVER]
+						db_add_row(global.DB_SRV_TABLE_players, player)
 					}
 					else {
 						net_server_send(socketID_sender, CODE_LOGIN_FAIL)
 						break
 					}
-				
-					var row = db_create_row(socketID_sender)
-					db_add_row(global.DB_SRV_TABLE_players, row)
 				
 					var accountName = data.accountID		
 					ini_open("Boxes.dbfile")
@@ -1017,15 +1016,14 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 					with (objNPC_SERVER)
 						net_server_send(socketID_sender, CODE_SPAWN_NPC, json_stringify({ npcID: id.targetID, xx: round(x), yy: round(y), maxHp: maxHp, maxEnergy: maxEnergy, maxMana: maxMana, name: name, clientObject: object_get_name(clientObject) }), BUFFER_TYPE_STRING)
 	
-					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, account[? ACCOUNTS_CLASS_SERVER], BUFFER_TYPE_STRING,,,bufferInfo)
+					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, accountInfo[? ACCOUNTINFO_CLASS_SERVER], BUFFER_TYPE_STRING,,,bufferInfo)
 					
 					// Spawn Player
 					var instance = player_spawn_SERVER(socketID_sender)
 					
 					// Send Private Data
-					var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, onlineAccount[? ONLINEACCOUNTS_ACCID_SERVER])
-					net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
-					net_server_send(socketID_sender, CODE_GET_ACCOUNTINFO, accountInfoRow[? ACCOUNTINFO_GOLD_SERVER], BUFFER_TYPE_INT32)
+					net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: accountInfo[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
+					net_server_send(socketID_sender, CODE_GET_ACCOUNTINFO, accountInfo[? ACCOUNTINFO_GOLD_SERVER], BUFFER_TYPE_INT32)
 				
 					// Send Shared Data
 					tell_all_names(,true)
@@ -1044,8 +1042,8 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 				if (instance == undefined or !instance_exists(instance))
 					break
 					
-				var onlineAccount = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID_sender)
-				if (onlineAccount == undefined)
+				var accID = db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID_sender)
+				if (accID == undefined)
 					break
 			
 				with (instance) {
@@ -1071,7 +1069,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 										mana: global.skill_mana_COMMON[other_skill_index],
 										energy: global.skill_energy_COMMON[other_skill_index]
 									})
-									ds_map_set(global.playerSkillBoxes[? onlineAccount], data.from,
+									ds_map_set(global.playerSkillBoxes[? player], data.from,
 									{
 										index: skills[? data.from].index,
 										cooldownmax: skills[? data.from].cooldownmax,
@@ -1086,7 +1084,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 								}
 								else {
 									skills[? i] = undefined
-									ds_map_delete(global.playerSkillBoxes[? onlineAccount], i)
+									ds_map_delete(global.playerSkillBoxes[? accID], i)
 								}
 							}
 							else
@@ -1110,7 +1108,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 							mana: global.skill_mana_COMMON[skill_index],
 							energy: global.skill_energy_COMMON[skill_index]
 						})
-						ds_map_set(global.playerSkillBoxes[? onlineAccount], data.to,
+						ds_map_set(global.playerSkillBoxes[? accID], data.to,
 						{
 							index: skills[? data.to].index,
 							cooldownmax: skills[? data.to].cooldownmax,
@@ -1125,7 +1123,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 					}
 					else {
 						skills[? foundI] = undefined
-						ds_map_delete(global.playerSkillBoxes[? onlineAccount], foundI)
+						ds_map_delete(global.playerSkillBoxes[? accID], foundI)
 					}
 				}
 				break
@@ -1667,7 +1665,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 				
 			case _CODE_DELETE_QUEST:
-				var accountID = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID_sender)
+				var accountID = db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID_sender)
 				if (accountID == undefined)
 					break
 					

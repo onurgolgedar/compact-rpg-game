@@ -7,7 +7,6 @@ function _net_event_disconnect_SERVER(load_buffer, load_id, load_socketID, load_
 		instance_destroy(instance)
 	
 	db_delete_row(global.DB_SRV_TABLE_players, load_socketID)
-	db_delete_row(global.DB_SRV_TABLE_onlineAccounts, load_socketID)
 	
 	ds_map_delete(global.lastPositions_sent, load_socketID)
 	

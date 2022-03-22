@@ -13,6 +13,16 @@ function main_loop() {
 		hover = is_mouse_on()
 
 	function_call_COMMON(main_loop, 1/20, true)
+	
+if (instance_exists(objPlayer)) {
+		var dis = point_distance(objPlayer.x, objPlayer.y, camera_get_view_x(global.camera)+camera_get_view_width(global.camera)/2, camera_get_view_y(global.camera)+camera_get_view_height(global.camera)/2)
+		if (dis < 30)
+			camera_set_view_speed(global.camera, 3.9, 3.9)
+		else {
+			var spd = 2.9+dis/30*dis/30
+			camera_set_view_speed(global.camera, spd, spd)
+		}
+	}
 }
 function_call_COMMON(main_loop, 1/20, true)
 

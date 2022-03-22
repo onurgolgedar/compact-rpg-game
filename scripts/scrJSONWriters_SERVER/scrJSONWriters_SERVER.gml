@@ -1,6 +1,6 @@
 function json_write_boxes_SERVER(socketID, boxes = undefined) {
 	if (boxes = undefined)
-		boxes = global.playerBoxes[? db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID)]
+		boxes = global.playerBoxes[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
 				
 	var _grid = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
 	for (var k = 0; k < global.bc_hor_COMMON*global.pageCount_COMMON; k++) {
@@ -18,7 +18,7 @@ function json_write_boxes_SERVER(socketID, boxes = undefined) {
 }
 
 function json_write_skillboxes_SERVER(socketID) {
-	var boxes_skill_SERVER = global.playerSkills[? db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, socketID)]
+	var boxes_skill_SERVER = global.playerSkills[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
 				
 	var _grid = ds_grid_create(global.sc_hor_COMMON*global.pageCount_skill_COMMON, global.sc_ver_COMMON)
 	for (var k = 0; k < global.sc_hor_COMMON*global.pageCount_skill_COMMON; k++) {

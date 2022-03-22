@@ -33,24 +33,21 @@ function net_server_send(socketID, code, data = 0, bufferType = BUFFER_TYPE_BOOL
 		if (socketID == SOCKET_ID_ALL) {
 			var ds_size = db_get_table_size(global.DB_SRV_TABLE_clients)
 			for (var i = 0; i < ds_size; i++) {
-				var _clientsRow = db_get_row_by_index(global.DB_SRV_TABLE_clients, i)
-				var _accountID = undefined
-				var _accountLocation = undefined
-
-				// ? Optimization
-				if (location != 0) {
-					_accountID = db_find_value(global.DB_SRV_TABLE_onlineAccounts, ONLINEACCOUNTS_ACCID_SERVER, ONLINEACCOUNTS_SOCKETID_SERVER, _clientsRow[? CLIENTS_SOCKETID])
-					if (_accountID != undefined)
-						_accountLocation = db_find_value(global.DB_SRV_TABLE_accountInfo, ACCOUNTINFO_LOCATION_SERVER, ACCOUNTINFO_ACCID_SERVER, _accountID)
-				}
+				var _playerRow = db_get_row_by_index(global.DB_SRV_TABLE_players, i)
+				if (_playerRow == undefined)
+					continue
 				
-				if (_accountID == undefined or _accountLocation == undefined or _accountLocation == location) {
-					var _socketID = _clientsRow[? CLIENTS_SOCKETID_SERVER]
+				var _location = undefined
+				if (location != 0)
+					_location =  _playerRow[? PLAYERS_LOCATION_SERVER]
+				
+				if (location == 0 or _location == location) {
+					var _socketID = _playerRow[? PLAYERS_SOCKETID_SERVER]
 					var buffer = net_make_buffer(code, data, bufferType, bufferInfo)
 			
 					if (_socketID != global.socketID_player) {
 						if (isUDP) {
-							network_send_udp(_socketID, _clientsRow[? CLIENTS_IP_SERVER], PORT_UDP, buffer, buffer_tell(buffer))
+							network_send_udp(_socketID, _playerRow[? PLAYERS_IP_SERVER], PORT_UDP, buffer, buffer_tell(buffer))
 						}
 						else
 							network_send_packet(_socketID, buffer, buffer_tell(buffer))
@@ -68,7 +65,7 @@ function net_server_send(socketID, code, data = 0, bufferType = BUFFER_TYPE_BOOL
 					var _clientsRow = db_get_row(global.DB_SRV_TABLE_clients, socketID)
 			
 					if (_clientsRow != undefined)
-						network_send_udp(socketID, _clientsRow[? CLIENTS_IP_SERVER], PORT_UDP, buffer, buffer_tell(buffer))
+						network_send_udp(socketID, _playerRow[? PLAYERS_IP_SERVER], PORT_UDP, buffer, buffer_tell(buffer))
 				}
 				else
 					network_send_packet(socketID, buffer, buffer_tell(buffer))
