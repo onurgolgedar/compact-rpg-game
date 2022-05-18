@@ -1,4 +1,48 @@
 if (is_alive()) {
+	with (objPlayer) {
+		var ds_size = ds_list_size(effectBoxes)
+		if (ds_size == 0) {
+			if (other.effectBox_textbox != undefined)
+				instance_destroy(other.effectBox_textbox)
+		}
+		
+		var beforeMouseOn = other.mouseOn_effectBox
+		 other.mouseOn_effectBox = undefined
+		for (var i = 0; i < ds_size; i++) {
+			var effectBox = effectBoxes[| i]
+			
+			var xx = 30+i*55
+			var yy = 40
+			
+			if ((device_mouse_y_to_gui(0) < yy+22 and device_mouse_x_to_gui(0) > xx-22 and device_mouse_x_to_gui(0) < xx+22 and device_mouse_y_to_gui(0) > 8) and !is_click_blocked()) {
+				other.mouseOn_effectBox = effectBox
+				
+				if (device_mouse_check_button_pressed(0, mb_left) and other.mouseOn_effectBox.isDeletable) {
+					var buttonsArray = [ new dialogueButton("Clear", undefined, { order: i, effectBox: effectBox }), new dialogueButton("Cancel") ]
+					var dialogue_box = show_questionbox(15, 250, other.mouseOn_effectBox.name, "Do you want to clear this effect?", other.id, 1, buttonsArray)
+				}
+			}
+			
+			draw_sprite(sprEffectBoxBackground, -1, xx, yy)
+			draw_sprite(effectBox.sprite, -1, xx, yy)
+
+			if (effectBox.time > 0)
+				draw_sprite_general(sprEffectBoxBackground, 1, 0, 0, sprite_get_width(sprEffectBoxBackground), sprite_get_height(sprEffectBoxBackground)*effectBox.time/effectBox.maxTime, xx-sprite_get_width(sprEffectBoxBackground)/2, 40-sprite_get_height(sprEffectBoxBackground)/2, 1, 1, 0, c_white, c_white, c_white, c_white, image_alpha)
+		}
+		
+		if (!effectBox_is_equal_COMMON(other.mouseOn_effectBox, beforeMouseOn)) {				
+			if (other.mouseOn_effectBox != undefined and beforeMouseOn == undefined) {
+				if (other.effectBox_textbox != undefined)
+					instance_destroy(other.effectBox_textbox)
+				other.effectBox_textbox = create_textbox(other.mouseOn_effectBox.description, contCursor.id)
+			}
+			else if (other.mouseOn_effectBox == undefined and beforeMouseOn != undefined) {
+				if (other.effectBox_textbox != undefined)
+					instance_destroy(other.effectBox_textbox)
+			}
+		}
+	}
+	
 	with (parPlayer) {
 		if (object_index == objPlayer or barVisible) {
 			var secInsideSprite = healthBarP <= hp/maxHp ? sprBarSetInside_hp : sprBarSetInsideRed_hp

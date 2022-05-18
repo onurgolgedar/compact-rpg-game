@@ -1,3 +1,4 @@
+counter = 0
 function main() {
 	function_call_COMMON(main, 1/20, true)
 	
@@ -5,6 +6,9 @@ function main() {
 		// Data Transfer
 		net_client_send(_CODE_PING, current_time, BUFFER_TYPE_INT32, true)
 		net_client_send(_CODE_MOUSE_POSITION, json_stringify({ xx: mouse_x, yy: mouse_y }), BUFFER_TYPE_STRING, true)
+		
+		if (counter mod 2 == 0)
+			net_client_send(_CODE_GET_EFFECTBOXES)
 		
 		// Input - Basic Attack
 		if (device_mouse_check_button(0, mb_left) and anim_end(objPlayer) and get_active_item(ITEMTYPE_SWORD) != undefined and check_gui_to_attack())
@@ -31,6 +35,8 @@ function main() {
 			if (objPlayer.skills[4].code != undefined and objPlayer.skills[4].cooldown == 0 and objPlayer.energy >= objPlayer.skills[4].energy and objPlayer.mana >= objPlayer.skills[4].mana)
 				client_send_skill_cast(objPlayer.skills[4].code, objPlayer.skills[4].index)
 	}
+	
+	counter++
 }
 
 function_call_COMMON(main, 1/20, true)

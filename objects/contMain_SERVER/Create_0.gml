@@ -5,6 +5,7 @@ global.playerBoxes = ds_map_create() // Items
 global.playerQuests = ds_map_create() // Quests
 global.playerSkills = ds_map_create() // Skill Tree
 global.playerSkillBoxes = ds_map_create() // Skill Boxes
+global.playerPermanentEffectBoxes = ds_map_create() // Permanent Effect Boxes
 
 global.locations = ds_map_create() // Locations
 ds_map_add(global.locations, 1, new location("Castle of Tophra", 1, 2200, 1830))

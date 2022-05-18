@@ -34,3 +34,17 @@ function json_write_skillboxes_SERVER(socketID) {
 	
 	return grid_string
 }
+
+/*function json_write_permanentEffectBoxes_SERVER(socketID) {
+	var permanentEffectBoxes_SERVER = global.playerPermanentEffectBoxes[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
+				
+	var _list = ds_list_create()
+	var ds_size = ds_list_size(permanentEffectBoxes_SERVER)
+	for (var i = 0; i < ds_size; i++)
+		ds_list_add(_list, json_stringify(ds_list_find_value(permanentEffectBoxes_SERVER, i)))
+
+	var grid_string = ds_list_write(_list)
+	ds_list_destroy(_list)
+	
+	return grid_string
+}*/

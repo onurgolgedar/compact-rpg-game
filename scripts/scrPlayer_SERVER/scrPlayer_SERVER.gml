@@ -93,6 +93,13 @@ function player_spawn_SERVER(socketID) {
 			}
 		}
 		
+		var playerPermanentEffectBoxes = global.playerPermanentEffectBoxes[? accountID]
+		if (playerPermanentEffectBoxes != undefined) {
+			var ds_size = ds_list_size(playerPermanentEffectBoxes)
+			for (var i = 0; i < ds_size; i++)
+				ds_list_add(effectBoxes, playerPermanentEffectBoxes[| i])
+		}
+		
 		hp = maxHp
 		energy = maxEnergy
 		mana = maxMana

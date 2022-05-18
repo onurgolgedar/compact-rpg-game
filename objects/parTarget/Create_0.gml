@@ -22,6 +22,7 @@ attackSpeed = undefined
 stunned = false
 
 texts = ds_list_create()
+effectBoxes = ds_list_create()
 
 weaponSprite = sprNothingness
 

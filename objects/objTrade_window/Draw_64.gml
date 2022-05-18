@@ -56,7 +56,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 
 	if (!instance_exists(objInventory_window)) {
 		draw_sprite(sprCoin, -1, x+offset+20, y+height-offset-height_ext_bot_more+offset*2+15+2)
-		draw_text(x+offset+20+15, y+height-offset-height_ext_bot_more+offset*2+3, real(global.gold))
+		draw_text(x+offset+20+15, y+height-offset-height_ext_bot_more+offset*2+5, real(global.gold))
 	}
 	
 	for (var i = global.bc_hor_COMMON*(page-1); i < global.bc_hor_COMMON*page; i++) {

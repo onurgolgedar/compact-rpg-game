@@ -11,18 +11,16 @@ function save_SERVER() {
 		var boxes_SERVER = global.playerBoxes[? accountID]
 		var _grid_items = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
 		for (var k = 0; k < global.bc_hor_COMMON*global.pageCount_COMMON; k++) {
-			for (var d = 0; d < global.bc_ver_COMMON+2; d++) {
+			for (var d = 0; d < global.bc_ver_COMMON+2; d++)
 				ds_grid_set(_grid_items, k, d, json_stringify(ds_grid_get(boxes_SERVER, k, d)))
-			}
 		}
 	
 		// Save - Skill Tree
 		var boxes_skill_SERVER = global.playerSkills[? accountID]
 		var _grid_skills = ds_grid_create(global.sc_hor_COMMON*global.pageCount_skill_COMMON, global.sc_ver_COMMON)
 		for (var k = 0; k < global.sc_hor_COMMON*global.pageCount_skill_COMMON; k++) {
-			for (var d = 0; d < global.sc_ver_COMMON; d++) {
+			for (var d = 0; d < global.sc_ver_COMMON; d++)
 				ds_grid_set(_grid_skills, k, d, json_stringify(ds_grid_get(boxes_skill_SERVER, k, d)))
-			}
 		}
 	
 		// Save - Quests
@@ -44,12 +42,20 @@ function save_SERVER() {
 			var key = _skillBoxes_keys[k]
 			ds_map_add(_map_skillBoxes, key, json_stringify(skillBoxes_SERVER[? key]))
 		}
+		
+		// Save - Effect Boxes
+		var permanentEffectBoxes_SERVER = global.playerPermanentEffectBoxes[? accountID]
+		var _list_permanentEffectBoxes = ds_list_create()
+		var ds_size2 = ds_list_size(permanentEffectBoxes_SERVER)
+		for (var k = 0; k < ds_size2; k++)
+			ds_list_add(_list_permanentEffectBoxes, json_stringify(permanentEffectBoxes_SERVER[| k]))
 	
 		// Write
 		ini_open("Boxes.dbfile")
 			ini_write_string("Items", accountID, ds_grid_write(_grid_items))
 			ini_write_string("Skills", accountID, ds_grid_write(_grid_skills))
 			ini_write_string("SkillBoxes", accountID, ds_map_write(_map_skillBoxes))
+			ini_write_string("PermanentEffectBoxes", accountID, ds_list_write(_list_permanentEffectBoxes))
 		ini_close()
 	
 		ini_open("Quests.dbfile")

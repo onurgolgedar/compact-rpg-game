@@ -29,7 +29,8 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 			code != 2000 and code != 2002 and code != 7003 and code != 2007 and
 			code != 2006 and code != 1500 and code != 7001 and code != 5000 and code != 1501 and
 			code != 3004 and code != 5002 and code != 15002 and code != 10302 and code != 4001 and
-			code != 6000 and code != 10300 and code != 10301 and code != 10301)
+			code != 6000 and code != 10300 and code != 10301 and code != 10301 and code != 7010 and
+			code != 17010)
 			if (!is_string(pureData) or string_length(pureData) < 100)
 				//show_messagebox(50, 150, "From: "+string(socketID_sender), "Code: "+string(code)+"\n"+string(data), 7)
 				show_debug_message("From: "+string(socketID_sender)+"\n[ Code: "+string(code)+"\n  Data: "+string(data)+" ]")
@@ -381,6 +382,33 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
+			case CODE_GET_EFFECTBOXES:
+				var target = global.playerInstances[? data.socketID]
+				if (target == undefined)
+					break
+
+				with (target) {
+					var effectBoxes_before = effectBoxes
+					ds_list_read(effectBoxes, data.effectBoxes_str)
+					if (effectBoxes == undefined) {
+						effectBoxes = ds_list_create()
+						ds_list_destroy(effectBoxes_before)
+					}
+					
+					var ds_size = ds_list_size(effectBoxes)
+					for (var i = 0; i < ds_size; i++) {
+						effectBoxes[| i] = json_parse(effectBoxes[| i])
+						
+						var effectBox = effectBoxes[| i]
+						effectBox.sprite = asset_get_index(effectBox.sprite)
+					}
+				}
+			break
+			
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			
 			case CODE_SKILL0:
 				var player = global.playerInstances[? data]
 			
@@ -470,35 +498,6 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 							}
 						}
 					}
-				}
-				break
-				
-			// // // // // // // // // // // // // // // // // // // // // // // //
-			// // // // // // // // // // // // // // // // // // // // // // // //
-			// // // // // // // // // // // // // // // // // // // // // // // //
-			
-			case _CODE_LOCATION:
-				var playersRow = db_get_row(global.DB_SRV_TABLE_players, socketID_sender)
-				var instance = playersRow[? PLAYERS_INSTANCE_SERVER]
-				if (instance == undefined or !instance_exists(instance))
-					break
-				
-				var accountID = playersRow[? PLAYERS_ACCID_SERVER]
-				var locationID =  playersRow[? PLAYERS_LOCATION_SERVER] + (data == 1 ? 1 : -1)
-				
-				var location = ds_map_find_value(global.locations, locationID)
-				if (location != undefined) {
-					var xx = location.spawn_x
-					var yy = location.spawn_y
-				
-					with (instance) {
-						x = xx
-						y = yy
-					}
-				
-					ds_map_set(global.lastPositions_sent, socketID_sender, undefined)
-					db_set_row_value(global.DB_SRV_TABLE_accountInfo, accountID, ACCOUNTINFO_LOCATION_SERVER, locationID)
-					playersRow[? PLAYERS_LOCATION_SERVER] = locationID
 				}
 				break
 				
@@ -632,6 +631,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 							var _str_skillBoxes = ini_read_string("SkillBoxes", global.clientID, "")
 							if (_str_skillBoxes == "")
 								_str_skillBoxes = undefined
+								
+							var _str_permanentEffectBoxes = ini_read_string("PermanentEffectBoxes", global.clientID, "")
+							if (_str_permanentEffectBoxes == "")
+								_str_permanentEffectBoxes = undefined
 						ini_close()
 					
 						ini_open("Quests.dbfile")
@@ -643,7 +646,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 						var accountInfo = db_get_row(global.DB_SRV_TABLE_accountInfo, global.clientID)
 						
 						if (accountInfo != undefined)
-							net_client_send(_CODE_UPLOAD, json_stringify({ accountID: global.clientID, password: global.clientPassword, items: _str_items, skills: _str_skills, quests: _str_quests, gold: accountInfo[? ACCOUNTINFO_GOLD_SERVER], level: accountInfo[? ACCOUNTINFO_LEVEL_SERVER], skillBoxes: _str_skillBoxes,  }), BUFFER_TYPE_STRING)
+							net_client_send(_CODE_UPLOAD, json_stringify({ accountID: global.clientID, password: global.clientPassword, items: _str_items, skills: _str_skills, permanentEffectBoxes: _str_permanentEffectBoxes, quests: _str_quests, gold: accountInfo[? ACCOUNTINFO_GOLD_SERVER], level: accountInfo[? ACCOUNTINFO_LEVEL_SERVER], skillBoxes: _str_skillBoxes,  }), BUFFER_TYPE_STRING)
 						else
 							net_client_send(_CODE_LOGIN, json_stringify({ accountID: global.clientID, password: global.clientPassword }), BUFFER_TYPE_STRING)
 					}
@@ -802,6 +805,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 						var _str_items = ini_read_string("Items", accountName, "")
 						var _str_skills = ini_read_string("Skills", accountName, "")
 						var _str_skillBoxes = ini_read_string("SkillBoxes", accountName, "")
+						var _str_permanentEffectBoxes = ini_read_string("PermanentEffectBoxes", accountName, "")
 					ini_close()
 					
 					ini_open("Quests.dbfile")
@@ -952,6 +956,22 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 						}
 						else
 							global.playerSkillBoxes[? accountName] = ds_map_create()
+					}
+					
+					// Load Permanent Effect Boxes
+					if (global.playerPermanentEffectBoxes[? accountName] == undefined) {
+						if (_str_permanentEffectBoxes != "") {
+							var value = ds_list_create()
+							ds_list_read(value, _str_permanentEffectBoxes)
+						
+							var ds_size = ds_list_size(value)
+							for (var k = 0; k < ds_size; k++)
+								value[| k] = json_parse(value[| k])
+							
+							global.playerPermanentEffectBoxes[? accountName] = value
+						}
+						else
+							global.playerPermanentEffectBoxes[? accountName] = ds_list_create()
 					}
 					
 					// Load Skill Tree
@@ -1141,29 +1161,41 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 					break
 					
 				if (global.playerBoxes[? socketID_sender] != undefined) {
-					if (ds_exists(global.playerBoxes[? socketID_sender], ds_type_grid))
-						ds_grid_destroy(global.playerBoxes[? socketID_sender])
+					var ds = global.playerBoxes[? socketID_sender]
+					if (ds_exists(ds, ds_type_grid))
+						ds_grid_destroy(ds)
 						
 					global.playerBoxes[? socketID_sender] = undefined
 				}
 					
 				if (global.playerSkills[? socketID_sender] != undefined) {
-					if (ds_exists(global.playerSkills[? socketID_sender], ds_type_grid))
-						ds_grid_destroy(global.playerSkills[? socketID_sender])
+					var ds = global.playerSkills[? socketID_sender]
+					if (ds_exists(ds, ds_type_grid))
+						ds_grid_destroy(ds)
 						
 					global.playerSkills[? socketID_sender] = undefined
 				}
 					
 				if (global.playerQuests[? socketID_sender] != undefined) {
-					if (ds_exists(global.playerQuests[? socketID_sender], ds_type_map))
-						ds_map_destroy(global.playerQuests[? socketID_sender])
+					var ds = global.playerQuests[? socketID_sender]
+					if (ds_exists(ds, ds_type_map))
+						ds_map_destroy(ds)
 						
 					global.playerQuests[? socketID_sender] = undefined
 				}
+				
+				if (global.playerPermanentEffectBoxes[? socketID_sender] != undefined) {
+					var ds = global.playerPermanentEffectBoxes[? socketID_sender]
+					if (ds_exists(ds, ds_type_list))
+						ds_list_destroy(ds)
+						
+					global.playerPermanentEffectBoxes[? socketID_sender] = undefined
+				}
 					
 				if (global.playerSkillBoxes[? socketID_sender] != undefined) {
-					if (ds_exists(global.playerSkillBoxes[? socketID_sender], ds_type_map))
-						ds_map_destroy(global.playerSkillBoxes[? socketID_sender])
+					var ds = global.playerSkillBoxes[? socketID_sender]
+					if (ds_exists(ds, ds_type_map))
+						ds_map_destroy(ds)
 						
 					global.playerSkillBoxes[? socketID_sender] = undefined
 				}
@@ -1259,6 +1291,29 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 						ds_map_add(global.playerQuests[? data.accountID], key, quest)
 					}
 					ds_map_destroy(quests_TAKEN)
+				}
+				
+				// Uploaded Permanent Effect Boxes
+				if (data.permanentEffectBoxes != pointer_null) {
+					var permanentEffectBoxes = ds_list_create()
+					ds_list_read(permanentEffectBoxes, data.permanentEffectBoxes)
+					
+					var ds_size = ds_list_size(data.permanentEffectBoxes)
+					for (var i = 0; i < ds_size; i++) {
+						var _data = ds_list_find_value(permanentEffectBoxes, i)
+						
+						var _permanentEffectBox = json_parse(_data)	
+						if (_permanentEffectBox.creator == pointer_null)
+							_permanentEffectBox.creator = undefined
+							
+						ds_list_set(permanentEffectBoxes, i, _permanentEffectBox)
+					}
+				
+					global.playerPermanentEffectBoxes[? data.accountID] = ds_list_create()
+					for (var i = 0; i < ds_size; i++)				
+						ds_list_add(global.playerPermanentEffectBoxes[? data.accountID], ds_list_find_value(permanentEffectBoxes, i))
+						
+					ds_list_destroy(permanentEffectBoxes)
 				}
 				
 				// Uploaded Skill Boxes
@@ -1360,6 +1415,35 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 						net_server_send(SOCKET_ID_ALL, CODE_BASIC_ATTACK, json_stringify({ socketID: socketID_sender, time: 1/attackSpeed }), BUFFER_TYPE_STRING)
 					}
 				break
+				
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			
+			case _CODE_LOCATION:
+				var playersRow = db_get_row(global.DB_SRV_TABLE_players, socketID_sender)
+				var instance = playersRow[? PLAYERS_INSTANCE_SERVER]
+				if (instance == undefined or !instance_exists(instance))
+					break
+				
+				var accountID = playersRow[? PLAYERS_ACCID_SERVER]
+				var locationID =  playersRow[? PLAYERS_LOCATION_SERVER] + (data == 1 ? 1 : -1)
+				
+				var location = ds_map_find_value(global.locations, locationID)
+				if (location != undefined) {
+					var xx = location.spawn_x
+					var yy = location.spawn_y
+				
+					with (instance) {
+						x = xx
+						y = yy
+					}
+				
+					ds_map_set(global.lastPositions_sent, socketID_sender, undefined)
+					db_set_row_value(global.DB_SRV_TABLE_accountInfo, accountID, ACCOUNTINFO_LOCATION_SERVER, locationID)
+					playersRow[? PLAYERS_LOCATION_SERVER] = locationID
+				}
+				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1406,6 +1490,29 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 				}
 				break
 				
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			
+			case _CODE_GET_EFFECTBOXES:
+				var instance = db_get_value_by_key(global.DB_SRV_TABLE_players, socketID_sender, PLAYERS_INSTANCE_SERVER)
+				if (instance == undefined or !instance_exists(instance))
+					break
+			
+				with (instance) {
+					var temp_list = ds_list_create()
+					ds_list_copy(temp_list, effectBoxes)
+					
+					var ds_size = ds_list_size(temp_list)
+					for (var i = 0; i < ds_size; i++)
+						 temp_list[| i] = json_stringify(temp_list[| i])
+						 
+					net_server_send(socketID_sender, CODE_GET_EFFECTBOXES, { socketID: socketID_sender, effectBoxes_str: ds_list_write(temp_list) }, BUFFER_TYPE_STRING)
+					
+					ds_list_destroy(temp_list)
+				}
+			break
+			
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
