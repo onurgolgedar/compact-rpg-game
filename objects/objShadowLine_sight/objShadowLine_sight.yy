@@ -2,6 +2,7 @@
   "spriteId": null,
   "solid": false,
   "visible": false,
+  "managed": true,
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": null,
@@ -50,7 +51,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Sight",
-    "path": "folders/CLIENT/2- Objects/Rigidbodies/Lighting/Sight.yy",
+    "path": "folders/CLIENT/2- Objects/Lighting/Sight.yy",
   },
   "resourceVersion": "1.0",
   "name": "objShadowLine_sight",

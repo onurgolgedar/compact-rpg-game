@@ -24,12 +24,12 @@
   "gridX": 0,
   "gridY": 0,
   "frames": [
-    {"compositeImage":{"FrameId":{"name":"db0ec39c-a9b5-4825-9d6b-81d76bebb89b","path":"sprites/sprInventoryLogo/sprInventoryLogo.yy",},"LayerId":null,"resourceVersion":"1.0","name":"imported","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"db0ec39c-a9b5-4825-9d6b-81d76bebb89b","path":"sprites/sprInventoryLogo/sprInventoryLogo.yy",},"LayerId":{"name":"fb4e5800-7d51-48a0-9d5b-fa51e8f8d936","path":"sprites/sprInventoryLogo/sprInventoryLogo.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"sprInventoryLogo","path":"sprites/sprInventoryLogo/sprInventoryLogo.yy",},"resourceVersion":"1.0","name":"db0ec39c-a9b5-4825-9d6b-81d76bebb89b","tags":[],"resourceType":"GMSpriteFrame",},
+    {"compositeImage":{"FrameId":{"name":"db0ec39c-a9b5-4825-9d6b-81d76bebb89b","path":"sprites/sprinventoryLogo/sprinventoryLogo.yy",},"LayerId":null,"resourceVersion":"1.0","name":"imported","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
+        {"FrameId":{"name":"db0ec39c-a9b5-4825-9d6b-81d76bebb89b","path":"sprites/sprinventoryLogo/sprinventoryLogo.yy",},"LayerId":{"name":"fb4e5800-7d51-48a0-9d5b-fa51e8f8d936","path":"sprites/sprinventoryLogo/sprinventoryLogo.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
+      ],"parent":{"name":"sprinventoryLogo","path":"sprites/sprinventoryLogo/sprinventoryLogo.yy",},"resourceVersion":"1.0","name":"db0ec39c-a9b5-4825-9d6b-81d76bebb89b","tags":[],"resourceType":"GMSpriteFrame",},
   ],
   "sequence": {
-    "spriteId": {"name":"sprInventoryLogo","path":"sprites/sprInventoryLogo/sprInventoryLogo.yy",},
+    "spriteId": {"name":"sprinventoryLogo","path":"sprites/sprinventoryLogo/sprinventoryLogo.yy",},
     "timeUnits": 1,
     "playback": 1,
     "playbackSpeed": 15.0,
@@ -37,12 +37,12 @@
     "autoRecord": true,
     "volume": 1.0,
     "length": 1.0,
-    "events": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MessageEventKeyframe>",},
-    "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MomentsEventKeyframe>",},
+    "events": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore`1","elementType":"MessageEventKeyframe",},
+    "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore`1","elementType":"MomentsEventKeyframe",},
     "tracks": [
       {"name":"frames","spriteId":null,"keyframes":{"Keyframes":[
-            {"id":"1ffbfb61-4bb5-4704-ae18-89876a72f584","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"db0ec39c-a9b5-4825-9d6b-81d76bebb89b","path":"sprites/sprInventoryLogo/sprInventoryLogo.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
-          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack","modifiers":[],},
+            {"id":"1ffbfb61-4bb5-4704-ae18-89876a72f584","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"db0ec39c-a9b5-4825-9d6b-81d76bebb89b","path":"sprites/sprinventoryLogo/sprinventoryLogo.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe`1","elementType":"SpriteFrameKeyframe",},
+          ],"resourceVersion":"1.0","resourceType":"KeyframeStore`1","elementType":"SpriteFrameKeyframe",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack","modifiers":[],},
     ],
     "visibleRange": null,
     "lockOrigin": false,
@@ -58,9 +58,9 @@
     "yorigin": 32,
     "eventToFunction": {},
     "eventStubScript": null,
-    "parent": {"name":"sprInventoryLogo","path":"sprites/sprInventoryLogo/sprInventoryLogo.yy",},
+    "parent": {"name":"sprinventoryLogo","path":"sprites/sprinventoryLogo/sprinventoryLogo.yy",},
     "resourceVersion": "1.4",
-    "name": "sprInventoryLogo",
+    "name": "sprinventoryLogo",
     "tags": [],
     "resourceType": "GMSequence",
   },
@@ -73,7 +73,7 @@
     "path": "folders/CLIENT/1- Sprites/GUI.yy",
   },
   "resourceVersion": "1.0",
-  "name": "sprInventoryLogo",
+  "name": "sprinventoryLogo",
   "tags": [],
   "resourceType": "GMSprite",
 }

@@ -21,6 +21,7 @@
     "path": "texturegroups/Default",
   },
   "ascenderOffset": 0,
+  "ascender": 0,
   "glyphs": {
     "32": {"x":2,"y":2,"w":6,"h":19,"character":32,"shift":6,"offset":0,},
     "33": {"x":220,"y":44,"w":3,"h":19,"character":33,"shift":6,"offset":2,},
@@ -242,7 +243,7 @@
     "path": "folders/CLIENT/Other Assets.yy",
   },
   "resourceVersion": "1.0",
-  "name": "fontGUI_small",
+  "name": "fontGUi_small",
   "tags": [],
   "resourceType": "GMFont",
 }

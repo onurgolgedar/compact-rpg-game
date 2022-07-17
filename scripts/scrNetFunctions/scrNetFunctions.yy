@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "Library",
-    "path": "folders/COMMON/3- Scripts/Net/Library.yy",
+    "path": "folders/COMMON/Net/Library.yy",
   },
   "resourceVersion": "1.0",
   "name": "scrNetFunctions",

@@ -1,6 +1,6 @@
 function save_SERVER() {
 	db_save_table(global.DB_SRV_TABLE_accounts)
-	db_save_table(global.DB_SRV_TABLE_accountInfo)
+	db_save_table(global.DB_SRV_TABLE_accountinfo)
 
 	var ds_size = db_get_table_size(global.DB_SRV_TABLE_players)
 	for (var i = 0; i < ds_size; i++) {

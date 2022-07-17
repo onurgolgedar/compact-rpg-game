@@ -1,4 +1,4 @@
-function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, bufferType, asyncMap) {
+function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, bufferType, asyncMap) {
 	if (global.playerControlMode and instance_exists(global.selectedPlayer)) {
 		if (socketID_sender == global.socketID_player)
 			socketID_sender = global.selectedPlayer.socketID
@@ -64,7 +64,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 				}
 				ds_grid_destroy(boxes_SERVER)
 
-				with (objInventory_window)
+				with (objinventory_window)
 					inventory_refresh()
 					
 				global.gold = data.gold
@@ -102,7 +102,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 				ds_grid_destroy(boxes_skill_SERVER)
 
 				with (objSkills_window)
-					refresh()
+					skills_refresh()
 					
 				break
 				
@@ -643,10 +643,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 								_str_quests = undefined
 						ini_close()
 						
-						var accountInfo = db_get_row(global.DB_SRV_TABLE_accountInfo, global.clientID)
+						var accountinfo = db_get_row(global.DB_SRV_TABLE_accountinfo, global.clientID)
 						
-						if (accountInfo != undefined)
-							net_client_send(_CODE_UPLOAD, json_stringify({ accountID: global.clientID, password: global.clientPassword, items: _str_items, skills: _str_skills, permanentEffectBoxes: _str_permanentEffectBoxes, quests: _str_quests, gold: accountInfo[? ACCOUNTINFO_GOLD_SERVER], level: accountInfo[? ACCOUNTINFO_LEVEL_SERVER], skillBoxes: _str_skillBoxes,  }), BUFFER_TYPE_STRING)
+						if (accountinfo != undefined)
+							net_client_send(_CODE_UPLOAD, json_stringify({ accountID: global.clientID, password: global.clientPassword, items: _str_items, skills: _str_skills, permanentEffectBoxes: _str_permanentEffectBoxes, quests: _str_quests, gold: accountinfo[? ACCOUNTINFO_GOLD_SERVER], level: accountinfo[? ACCOUNTINFO_LEVEL_SERVER], skillBoxes: _str_skillBoxes,  }), BUFFER_TYPE_STRING)
 						else
 							net_client_send(_CODE_LOGIN, json_stringify({ accountID: global.clientID, password: global.clientPassword }), BUFFER_TYPE_STRING)
 					}
@@ -752,23 +752,23 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 				}
 				
 				var account = db_get_row(global.DB_SRV_TABLE_accounts, data.accountID)
-				var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, data.accountID)
-				if (account == undefined and accountInfoRow == undefined and data.password != "" and data.nickname != "") {
+				var accountinfoRow = db_get_row(global.DB_SRV_TABLE_accountinfo, data.accountID)
+				if (account == undefined and accountinfoRow == undefined and data.password != "" and data.nickname != "") {
 					account = db_create_row(data.accountID)
 					account[? ACCOUNTS_PASSWORD_SERVER] = data.password
 					account[? ACCOUNTS_NICKNAME_SERVER] = data.nickname
 						
-					accountInfoRow = db_create_row(data.accountID)
-					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = 5000
-					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = 1
-					accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER] = LOCATION_THE_CASTLE
+					accountinfoRow = db_create_row(data.accountID)
+					accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] = 5000
+					accountinfoRow[? ACCOUNTINFO_LEVEL_SERVER] = 1
+					accountinfoRow[? ACCOUNTINFO_LOCATION_SERVER] = LOCATION_THE_CASTLE
 					if (data.class == CLASS_WARRIOR or data.class == CLASS_ASSASSIN or data.class == CLASS_MAGE)
-						accountInfoRow[? ACCOUNTINFO_CLASS_SERVER] = data.class
+						accountinfoRow[? ACCOUNTINFO_CLASS_SERVER] = data.class
 					else
-						accountInfoRow[? ACCOUNTINFO_CLASS_SERVER] = CLASS_WARRIOR
+						accountinfoRow[? ACCOUNTINFO_CLASS_SERVER] = CLASS_WARRIOR
 
-					db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
-					db_save_table(global.DB_SRV_TABLE_accountInfo)
+					db_add_row(global.DB_SRV_TABLE_accountinfo, accountinfoRow)
+					db_save_table(global.DB_SRV_TABLE_accountinfo)
 						
 					db_add_row(global.DB_SRV_TABLE_accounts, account)
 					db_save_table(global.DB_SRV_TABLE_accounts)
@@ -787,12 +787,12 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 				}
 
 				var account = db_get_row(global.DB_SRV_TABLE_accounts, data.accountID)
-				var accountInfo = db_get_row(global.DB_SRV_TABLE_accountInfo, data.accountID)
-				if (account != undefined and accountInfo != undefined and account[? ACCOUNTS_PASSWORD_SERVER] == data.password) {
+				var accountinfo = db_get_row(global.DB_SRV_TABLE_accountinfo, data.accountID)
+				if (account != undefined and accountinfo != undefined and account[? ACCOUNTS_PASSWORD_SERVER] == data.password) {
 					if (account[? ACCOUNTS_PASSWORD_SERVER] == data.password) {
 						player = db_create_row(socketID_sender)
 						player[? PLAYERS_ACCID_SERVER] = data.accountID
-						player[? PLAYERS_LOCATION_SERVER] = accountInfo[? ACCOUNTINFO_LOCATION_SERVER]
+						player[? PLAYERS_LOCATION_SERVER] = accountinfo[? ACCOUNTINFO_LOCATION_SERVER]
 						db_add_row(global.DB_SRV_TABLE_players, player)
 					}
 					else {
@@ -1036,14 +1036,14 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 					with (objNPC_SERVER)
 						net_server_send(socketID_sender, CODE_SPAWN_NPC, json_stringify({ npcID: id.targetID, xx: round(x), yy: round(y), maxHp: maxHp, maxEnergy: maxEnergy, maxMana: maxMana, name: name, clientObject: object_get_name(clientObject) }), BUFFER_TYPE_STRING)
 	
-					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, accountInfo[? ACCOUNTINFO_CLASS_SERVER], BUFFER_TYPE_STRING,,,bufferInfo)
+					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, accountinfo[? ACCOUNTINFO_CLASS_SERVER], BUFFER_TYPE_STRING,,,bufferinfo)
 					
 					// Spawn Player
 					var instance = player_spawn_SERVER(socketID_sender)
 					
 					// Send Private Data
-					net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: accountInfo[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
-					net_server_send(socketID_sender, CODE_GET_ACCOUNTINFO, accountInfo[? ACCOUNTINFO_GOLD_SERVER], BUFFER_TYPE_INT32)
+					net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: accountinfo[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
+					net_server_send(socketID_sender, CODE_GET_ACCOUNTINFO, accountinfo[? ACCOUNTINFO_GOLD_SERVER], BUFFER_TYPE_INT32)
 				
 					// Send Shared Data
 					tell_all_names(,true)
@@ -1347,21 +1347,21 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 					ds_map_destroy(skillBoxes_TAKEN)
 				}
 				
-				var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, data.accountID)
-				if (accountInfoRow == undefined) {
-					accountInfoRow = db_create_row(data.accountID)
-					db_add_row(global.DB_SRV_TABLE_accountInfo, accountInfoRow)
+				var accountinfoRow = db_get_row(global.DB_SRV_TABLE_accountinfo, data.accountID)
+				if (accountinfoRow == undefined) {
+					accountinfoRow = db_create_row(data.accountID)
+					db_add_row(global.DB_SRV_TABLE_accountinfo, accountinfoRow)
 				}
 				
 				if (data.gold != pointer_null)
-					accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] = data.gold
+					accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] = data.gold
 				if (data.level != pointer_null)
-					accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER] = data.level
-				accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER] = 1
+					accountinfoRow[? ACCOUNTINFO_LEVEL_SERVER] = data.level
+				accountinfoRow[? ACCOUNTINFO_LOCATION_SERVER] = 1
 
-				db_save_table(global.DB_SRV_TABLE_accountInfo)
+				db_save_table(global.DB_SRV_TABLE_accountinfo)
 				
-				_net_receive_packet(_CODE_LOGIN, { accountID: data.accountID, password: data.password }, socketID_sender)
+				_net_receive_packet(_CODE_LOGIN, json_stringify({ accountID: data.accountID, password: data.password }), socketID_sender)
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1440,7 +1440,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 					}
 				
 					ds_map_set(global.lastPositions_sent, socketID_sender, undefined)
-					db_set_row_value(global.DB_SRV_TABLE_accountInfo, accountID, ACCOUNTINFO_LOCATION_SERVER, locationID)
+					db_set_row_value(global.DB_SRV_TABLE_accountinfo, accountID, ACCOUNTINFO_LOCATION_SERVER, locationID)
 					playersRow[? PLAYERS_LOCATION_SERVER] = locationID
 				}
 				break
@@ -1507,7 +1507,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 					for (var i = 0; i < ds_size; i++)
 						 temp_list[| i] = json_stringify(temp_list[| i])
 						 
-					net_server_send(socketID_sender, CODE_GET_EFFECTBOXES, { socketID: socketID_sender, effectBoxes_str: ds_list_write(temp_list) }, BUFFER_TYPE_STRING)
+					net_server_send(socketID_sender, CODE_GET_EFFECTBOXES, json_stringify({ socketID: socketID_sender, effectBoxes_str: ds_list_write(temp_list) }), BUFFER_TYPE_STRING)
 					
 					ds_list_destroy(temp_list)
 				}
@@ -1532,12 +1532,12 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 							item_setup_COMMON(box.item)
 							if (box_get_confirmation_number_COMMON(box) == data.confirmation) {
 								var price = isLoot ? 0 : box.tag.marketPrice
-								if (instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] >= price) {
+								if (instance.accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] >= price) {
 									var itemAdded_info
 									if (data.target_i == pointer_null)
-										itemAdded_info = item_add_SERVER(box, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER])
+										itemAdded_info = item_add_SERVER(box, instance.accountinfoRow[? ACCOUNTINFO_ACCID_SERVER])
 									else
-										itemAdded_info = item_add_SERVER(box, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER], data.i, data.j)
+										itemAdded_info = item_add_SERVER(box, instance.accountinfoRow[? ACCOUNTINFO_ACCID_SERVER], data.i, data.j)
 										
 									if (itemAdded_info.result) {
 										var success = true
@@ -1546,14 +1546,14 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 											
 										if (success) {					
 											if (!isLoot) {
-												instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] -= price
+												instance.accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] -= price
 												net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have purchased "+item_get_title_COMMON(box.item)+".\n[c="+string(c_red)+"]-"+string(price)+"[/c] [img=sprCoin2]", title: "Purchase", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 1, buttons: undefined }), BUFFER_TYPE_STRING)
 											}
 											
-											net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
+											net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
 										}
 										else
-											item_delete_COMMON(box, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER], itemAdded_info.i, itemAdded_info.j)
+											item_delete_COMMON(box, instance.accountinfoRow[? ACCOUNTINFO_ACCID_SERVER], itemAdded_info.i, itemAdded_info.j)
 									}
 								}
 							}
@@ -1573,16 +1573,16 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 				if (instance == undefined or !instance_exists(instance))
 					break
 			
-				var box = ds_grid_get(global.playerBoxes[? instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER]], data.i, data.j)
+				var box = ds_grid_get(global.playerBoxes[? instance.accountinfoRow[? ACCOUNTINFO_ACCID_SERVER]], data.i, data.j)
 						
 				if (box.item != undefined and box.item.type ==  data.type) {
 					item_setup_COMMON(box.item)
 					if (box_get_confirmation_number_COMMON(box) == data.confirmation) {
 						var price = box.item.worth/2
-						if (item_delete_COMMON(box, instance.accountInfoRow[? ACCOUNTINFO_ACCID_SERVER], data.i, data.j)) {
-							instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] += price
+						if (item_delete_COMMON(box, instance.accountinfoRow[? ACCOUNTINFO_ACCID_SERVER], data.i, data.j)) {
+							instance.accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] += price
 									
-							net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
+							net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
 							net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have sold "+item_get_title_COMMON(box.item)+".\n[c="+string(c_lime)+"]"+string(price)+"[/c] [img=sprCoin2]", title: "Sell", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 1, buttons: undefined }), BUFFER_TYPE_STRING)
 						}
 					}
@@ -1644,7 +1644,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferInfo, buffer
 				if (instance == undefined or !instance_exists(instance))
 					break
 			
-				net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountInfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
+				net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //

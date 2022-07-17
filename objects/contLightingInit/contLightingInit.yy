@@ -2,6 +2,7 @@
   "spriteId": null,
   "solid": false,
   "visible": false,
+  "managed": true,
   "spriteMaskId": null,
   "persistent": true,
   "parentObjectId": null,
@@ -27,10 +28,10 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Lighting",
-    "path": "folders/CLIENT/2- Objects/Rigidbodies/Lighting.yy",
+    "path": "folders/CLIENT/2- Objects/Lighting.yy",
   },
   "resourceVersion": "1.0",
-  "name": "contLightingInit",
+  "name": "contLightinginit",
   "tags": [],
   "resourceType": "GMObject",
 }

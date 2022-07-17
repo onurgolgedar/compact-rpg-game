@@ -48,7 +48,7 @@ for (var i = 0; i < pageCount; i++) {
 }
 
 if (prepDone) {
-	draw_set_color(c_white) draw_set_font(fontGUI_small)
+	draw_set_color(c_white) draw_set_font(fontGUi_small)
 	var ds_size = ds_map_size(global.activeQuests_player)
 	var ds_keys = ds_map_keys_to_array(global.activeQuests_player)
 	for (var i = (page-1)*6; i < ds_size and i < page*6; i++) {

@@ -62,7 +62,7 @@ function box_change_active(type, box_i, box_j, box_confirmation_number) {
 	else
 		unequip_item(active_box_before.item)
 			
-	with (objInventory_window)
+	with (objinventory_window)
 		inventory_refresh()
 				
 	net_client_send(_CODE_GET_STATISTICS)
@@ -77,7 +77,7 @@ function box_change_position(box_i, box_j, target_box_i, target_box_j) {
 	ds_grid_set(global.boxes, target_box_i, target_box_j, box)
 	ds_grid_set(global.boxes, box_i, box_j, box_target)
 	
-	with (objInventory_window)
+	with (objinventory_window)
 		inventory_refresh()
 }
 

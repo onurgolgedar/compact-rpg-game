@@ -1,5 +1,34 @@
 event_inherited()
 
+function skills_refresh() {
+	var _depth = depth
+	var _onFront = onFront
+	var window = refresh()
+	if (window != undefined) {
+		window.page = page
+		window.image_alpha = image_alpha
+		window._alpha_factor = _alpha_factor
+	}
+	reload_boxes()
+		
+	return window
+}
+
+function reload_boxes() {
+	if (boxes != undefined)
+		ds_grid_destroy(boxes)
+	boxes = ds_grid_create(global.sc_hor_COMMON*global.pageCount_skill_COMMON, global.sc_ver_COMMON)
+	boxes_alpha = undefined
+	for (var i = 0; i < global.sc_hor_COMMON*global.pageCount_skill_COMMON; i++) {
+		for (var j = 0; j < global.sc_ver_COMMON; j++) {
+			var box = ds_grid_get(global.boxes_skill, i, j)
+			boxes_alpha[i][j] = 1
+		
+			ds_grid_set(boxes, i, j, box)
+		}
+	}
+}
+
 function is_mouse_on_box(i, j) {
 	var box_positions = get_box_positions(i, j)
 	var xx_start = box_positions.xx_start
@@ -72,7 +101,7 @@ page = 1
 
 boxWidth = 60
 boxHeight = 40
-boxBetween = 18
+boxBetween = 18 
 	
 boxFocused = undefined
 boxFocused_textbox = undefined
@@ -87,13 +116,5 @@ height_ext_top = 50
 width = 4*boxWidth+(global.sc_hor_COMMON-1)*boxBetween+offset*4
 height = 4*boxHeight+(global.sc_ver_COMMON-1)*boxBetween+offset*2+height_ext_bot+offset+height_ext_bot_more+offset+height_ext_top+offset
 
-boxes = ds_grid_create(global.sc_hor_COMMON*global.pageCount_skill_COMMON, global.sc_ver_COMMON)
-boxes_alpha = undefined
-for (var i = 0; i < global.sc_hor_COMMON*global.pageCount_skill_COMMON; i++) {
-	for (var j = 0; j < global.sc_ver_COMMON; j++) {
-		var box = ds_grid_get(global.boxes_skill, i, j)
-		boxes_alpha[i][j] = 1
-		
-		ds_grid_set(boxes, i, j, box)
-	}
-}
+boxes = undefined
+reload_boxes()

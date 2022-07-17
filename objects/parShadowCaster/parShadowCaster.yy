@@ -2,6 +2,7 @@
   "spriteId": null,
   "solid": false,
   "visible": true,
+  "managed": true,
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
@@ -40,7 +41,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Lighting",
-    "path": "folders/CLIENT/2- Objects/Rigidbodies/Lighting.yy",
+    "path": "folders/CLIENT/2- Objects/Lighting.yy",
   },
   "resourceVersion": "1.0",
   "name": "parShadowCaster",

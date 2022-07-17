@@ -50,9 +50,9 @@ function player_spawn_SERVER(socketID) {
 	var accountID = db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)
 	if (accountID == undefined)
 		return undefined
-	var accountInfoRow = db_get_row(global.DB_SRV_TABLE_accountInfo, accountID)
+	var accountinfoRow = db_get_row(global.DB_SRV_TABLE_accountinfo, accountID)
 	
-	var _location = global.locations[? accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER]]
+	var _location = global.locations[? accountinfoRow[? ACCOUNTINFO_LOCATION_SERVER]]
 	var xx = _location.spawn_x
 	var yy = _location.spawn_y
 	
@@ -60,13 +60,13 @@ function player_spawn_SERVER(socketID) {
 	newPlayer.socketID = socketID
 	newPlayer.accountID = accountID
 	newPlayer.playerRow = db_get_row(global.DB_SRV_TABLE_players, socketID)
-	newPlayer.accountInfoRow = accountInfoRow
+	newPlayer.accountinfoRow = accountinfoRow
 	
 	var accountRow = db_get_row(global.DB_SRV_TABLE_accounts, db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID))
 	newPlayer.name = accountRow[? ACCOUNTS_NICKNAME_SERVER]
 	
-	newPlayer.class = accountInfoRow[? ACCOUNTINFO_CLASS_SERVER]
-	newPlayer.level = accountInfoRow[? ACCOUNTINFO_LEVEL_SERVER]
+	newPlayer.class = accountinfoRow[? ACCOUNTINFO_CLASS_SERVER]
+	newPlayer.level = accountinfoRow[? ACCOUNTINFO_LEVEL_SERVER]
 	
 	with (newPlayer) {
 		targetID = socketID
@@ -112,7 +112,7 @@ function player_spawn_SERVER(socketID) {
 	newPlayer.playerRow[? PLAYERS_MANA_SERVER] = newPlayer.mana
 	newPlayer.playerRow[? PLAYERS_ENERGY_SERVER] = newPlayer.energy
 	newPlayer.playerRow[? PLAYERS_ANGLE_SERVER] = newPlayer.image_angle
-	newPlayer.playerRow[? PLAYERS_LOCATION_SERVER] = accountInfoRow[? ACCOUNTINFO_LOCATION_SERVER]
+	newPlayer.playerRow[? PLAYERS_LOCATION_SERVER] = accountinfoRow[? ACCOUNTINFO_LOCATION_SERVER]
 	newPlayer.playerRow[? PLAYERS_DEATHTIMER_SERVER] = 0
 	
 	net_server_send(SOCKET_ID_ALL, CODE_SPAWN_PLAYER, json_stringify({ socketID: newPlayer.socketID, xx: round(newPlayer.x), yy: round(newPlayer.y), maxHp: newPlayer.maxHp, maxEnergy: newPlayer.maxEnergy, maxMana: newPlayer.maxMana, class: newPlayer.class, movementSpeed: newPlayer.movementSpeed, physicalPower: newPlayer.physicalPower, magicalPower: newPlayer.magicalPower, attackSpeed: newPlayer.attackSpeed, level: newPlayer.level }), BUFFER_TYPE_STRING)

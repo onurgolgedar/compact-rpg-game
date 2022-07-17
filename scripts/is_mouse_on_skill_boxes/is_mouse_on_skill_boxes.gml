@@ -1,5 +1,5 @@
 function is_mouse_on_skill_boxes() {
-	with (contDrawGUI)
+	with (contDrawGUi)
 		return mouseOnSkillBox != undefined
 
 	return false

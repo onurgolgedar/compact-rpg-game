@@ -46,7 +46,7 @@ for (var i = 0; i < pageCount; i++) {
 	draw_set_center() draw_set_font(fontMain)
 		var txt = ""
 		if (i == 0)
-			txt = "Info"
+			txt = "info"
 		else if (i == 1)
 			txt = "Stats"
 		else if (i == 2)

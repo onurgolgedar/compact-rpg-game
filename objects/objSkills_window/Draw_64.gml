@@ -116,7 +116,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 				draw_set_color(c_black)
 				draw_set_alpha(1*image_alpha)
     
-				draw_set_center() draw_set_font(fontGUI_small)
+				draw_set_center() draw_set_font(fontGUi_small)
 				    draw_text(button_x+buttonWidth/2, button_y+buttonHeight/2+1, "Upgrade")
 				draw_set_default()
 				
@@ -143,7 +143,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 				draw_set_color(c_black)
 				draw_set_alpha(1*image_alpha)
     
-				draw_set_center() draw_set_font(fontGUI_small)
+				draw_set_center() draw_set_font(fontGUi_small)
 				    draw_text(button_x+buttonWidth/2, button_y+buttonHeight/2+1, "Drop")
 				draw_set_default()
 			}

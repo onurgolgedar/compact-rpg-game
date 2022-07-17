@@ -15,7 +15,7 @@ if (!is_click_blocked() and global.held_box != undefined) {
 			}
 		}
 		
-		if (global.held_from_assetName == object_get_name(objInventory_window))
+		if (global.held_from_assetName == object_get_name(objinventory_window))
 			net_client_send(_CODE_SELL, json_stringify({ type: global.held_box.item.type, i: global.held_box_i, j: global.held_box_j, confirmation: box_get_confirmation_number_COMMON(global.held_box) }), BUFFER_TYPE_STRING)
 	}
 }

@@ -110,5 +110,5 @@ height_ext_top = 28
 width = 3*boxWidth+3*boxBetween+offset*2
 height = 3*boxHeight+2*boxBetween+offset*3+height_ext_bot+offset+height_ext_bot_more+offset+height_ext_top
 
-boxes = objInventory_window.boxes
-boxes_alpha = objInventory_window.boxes_alpha
+boxes = objinventory_window.boxes
+boxes_alpha = objinventory_window.boxes_alpha

@@ -1,16 +1,16 @@
-function net_client_send(code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = false, bufferInfo = BUFFER_INFO_DEFAULT, forCOOP = false) {
+function net_client_send(code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = false, bufferinfo = BUFFER_INFO_DEFAULT, forCOOP = false) {
 	if (!is_net_local(global.serverIP, global.coopID) or forCOOP or debug_mode) {
 		isUDP = global.all_tcp_mode ? false : isUDP
 		
-		if (global.coopID != "" and bufferInfo == BUFFER_INFO_DEFAULT)
-			bufferInfo = global.socket_CLIENT
+		if (global.coopID != "" and bufferinfo == BUFFER_INFO_DEFAULT)
+			bufferinfo = global.socket_CLIENT
 
 		var buffer = buffer_create(36, buffer_grow, 1)
 		buffer_seek(buffer, buffer_seek_start, 0)
 		buffer_write(buffer, buffer_u8, bufferType)
 		buffer_write(buffer, buffer_u16, code)
 		buffer_write(buffer, net_buffer_get_type(bufferType), data)
-		buffer_write(buffer, buffer_u16, bufferInfo)
+		buffer_write(buffer, buffer_u16, bufferinfo)
 
 		var socket = net_get_client_socket(forCOOP)
 		if (isUDP)
@@ -24,7 +24,7 @@ function net_client_send(code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = 
 		_net_receive_packet(code, data, global.socketID_player)
 }
 
-function net_server_send(socketID, code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = false, location = 0, bufferInfo = 65535) {
+function net_server_send(socketID, code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = false, location = 0, bufferinfo = 65535) {
 	var buffer = undefined	
 	
 	if (socketID != global.socketID_player) {
@@ -43,7 +43,7 @@ function net_server_send(socketID, code, data = 0, bufferType = BUFFER_TYPE_BOOL
 				
 				if (location == 0 or _location == location) {
 					var _socketID = _playerRow[? PLAYERS_SOCKETID_SERVER]
-					var buffer = net_make_buffer(code, data, bufferType, bufferInfo)
+					var buffer = net_make_buffer(code, data, bufferType, bufferinfo)
 			
 					if (_socketID != global.socketID_player) {
 						if (isUDP) {
@@ -58,7 +58,7 @@ function net_server_send(socketID, code, data = 0, bufferType = BUFFER_TYPE_BOOL
 			}
 		}
 		else {
-			var buffer = net_make_buffer(code, data, bufferType, bufferInfo)
+			var buffer = net_make_buffer(code, data, bufferType, bufferinfo)
 			
 			if (socketID != global.socketID_player) {
 				if (isUDP) {
@@ -99,13 +99,13 @@ function net_buffer_read(buffer) {
 		return undefined
 }
 
-function net_make_buffer(code, data, bufferType, bufferInfo) {
+function net_make_buffer(code, data, bufferType, bufferinfo) {
 	var buffer = buffer_create(36, buffer_grow, 1)
 	buffer_seek(buffer, buffer_seek_start, 0)
 	buffer_write(buffer, buffer_u8, bufferType)
 	buffer_write(buffer, buffer_u16, code)
 	buffer_write(buffer, net_buffer_get_type(bufferType), data)
-	buffer_write(buffer, buffer_u16, bufferInfo)
+	buffer_write(buffer, buffer_u16, bufferinfo)
 	return buffer
 }
 

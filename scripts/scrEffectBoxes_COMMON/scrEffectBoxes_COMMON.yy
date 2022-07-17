@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "3- Scripts",
-    "path": "folders/COMMON/3- Scripts.yy",
+    "name": "COMMON",
+    "path": "folders/COMMON.yy",
   },
   "resourceVersion": "1.0",
   "name": "scrEffectBoxes_COMMON",

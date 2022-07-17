@@ -5,6 +5,7 @@
   },
   "solid": false,
   "visible": false,
+  "managed": true,
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
@@ -34,7 +35,7 @@
   ],
   "parent": {
     "name": "Sight",
-    "path": "folders/CLIENT/2- Objects/Rigidbodies/Lighting/Sight.yy",
+    "path": "folders/CLIENT/2- Objects/Lighting/Sight.yy",
   },
   "resourceVersion": "1.0",
   "name": "objLight_sight",

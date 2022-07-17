@@ -2,6 +2,7 @@
   "spriteId": null,
   "solid": false,
   "visible": true,
+  "managed": true,
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
@@ -35,7 +36,7 @@
     "path": "folders/CLIENT/2- Objects/Windows.yy",
   },
   "resourceVersion": "1.0",
-  "name": "objInventory_window",
+  "name": "objinventory_window",
   "tags": [],
   "resourceType": "GMObject",
 }

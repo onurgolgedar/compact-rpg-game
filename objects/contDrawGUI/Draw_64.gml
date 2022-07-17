@@ -45,27 +45,27 @@ if (is_alive()) {
 	
 	with (parPlayer) {
 		if (object_index == objPlayer or barVisible) {
-			var secInsideSprite = healthBarP <= hp/maxHp ? sprBarSetInside_hp : sprBarSetInsideRed_hp
+			var secinsideSprite = healthBarP <= hp/maxHp ? sprBarSetinside_hp : sprBarSetinsideRed_hp
 			var eneColor = energy == maxEnergy ? c_white : c_ltgray
 	
-			/*draw_sprite_general(sprBarSetInside_hp, -1, 0, 0, 135, 12, sx-135/2, sy-100, 1, 1, 0, c_black, c_black, c_black, c_black, 0.15)
-			draw_sprite_general(sprBarSetInside_mana, -1, 0, 0, 134, 13, sx-67, sy-88, 1, 1, 0, c_black, c_black, c_black, c_black, 0.15)*/
+			/*draw_sprite_general(sprBarSetinside_hp, -1, 0, 0, 135, 12, sx-135/2, sy-100, 1, 1, 0, c_black, c_black, c_black, c_black, 0.15)
+			draw_sprite_general(sprBarSetinside_mana, -1, 0, 0, 134, 13, sx-67, sy-88, 1, 1, 0, c_black, c_black, c_black, c_black, 0.15)*/
 		
-			draw_sprite_general(secInsideSprite, -1, 0, 0, 135*healthBarP, 12, sx-135/2, sy-100, 1, 1, 0, c_white, c_white, c_white, c_white, 0.35)
-			draw_sprite_general(sprBarSetInside_mana, -1, 0, 0, 135*manaBarP, 13, sx-67, sy-88, 1, 1, 0, c_white, c_white, c_white, c_white, 0.35)
+			draw_sprite_general(secinsideSprite, -1, 0, 0, 135*healthBarP, 12, sx-135/2, sy-100, 1, 1, 0, c_white, c_white, c_white, c_white, 0.35)
+			draw_sprite_general(sprBarSetinside_mana, -1, 0, 0, 135*manaBarP, 13, sx-67, sy-88, 1, 1, 0, c_white, c_white, c_white, c_white, 0.35)
 
 			if (healthBarP < 1)
-				draw_sprite_general(sprBarSetInsideRed_hp, -1, 135*healthBarP, 0, 2, 12, sx-135/2+135*healthBarP, sy-100, 1, 1, 0, c_black, c_black, c_black, c_black, 1)
+				draw_sprite_general(sprBarSetinsideRed_hp, -1, 135*healthBarP, 0, 2, 12, sx-135/2+135*healthBarP, sy-100, 1, 1, 0, c_black, c_black, c_black, c_black, 1)
 	
 			if (manaBarP < 1)
-				draw_sprite_general(sprBarSetInside_mana, -1, 135*manaBarP, 0, 2, 13, sx-67+134*manaBarP, sy-88, 1, 1, 0, c_black, c_black, c_black, c_black, 1)
+				draw_sprite_general(sprBarSetinside_mana, -1, 135*manaBarP, 0, 2, 13, sx-67+134*manaBarP, sy-88, 1, 1, 0, c_black, c_black, c_black, c_black, 1)
 	
 			if (energyBarP < 0.98)
-				draw_sprite_general(sprBarSetInside_energy, -1, 130*energy/maxEnergy, 0, 2, 37, sx-65+130*energy/maxEnergy, sy-104, 1, 1, 0, c_black, c_black, c_black, c_black, 1)
+				draw_sprite_general(sprBarSetinside_energy, -1, 130*energy/maxEnergy, 0, 2, 37, sx-65+130*energy/maxEnergy, sy-104, 1, 1, 0, c_black, c_black, c_black, c_black, 1)
 	
-			draw_sprite_general(sprBarSetInside_hp, -1, 0, 0, 135*hp/maxHp, 12, sx-135/2, sy-100, 1, 1, 0, c_white, c_white, c_white, c_white, 0.5)
-			draw_sprite_general(sprBarSetInside_mana, -1, 0, 0, 135*mana/maxMana, 13, sx-67, sy-88, 1, 1, 0, c_white, c_white, c_white, c_white, 0.5)
-			draw_sprite_general(sprBarSetInside_energy, -1, 0, 0, 130*energy/maxEnergy, 37, sx-65, sy-104, 1, 1, 0, eneColor, eneColor, eneColor, eneColor, 0.5)
+			draw_sprite_general(sprBarSetinside_hp, -1, 0, 0, 135*hp/maxHp, 12, sx-135/2, sy-100, 1, 1, 0, c_white, c_white, c_white, c_white, 0.5)
+			draw_sprite_general(sprBarSetinside_mana, -1, 0, 0, 135*mana/maxMana, 13, sx-67, sy-88, 1, 1, 0, c_white, c_white, c_white, c_white, 0.5)
+			draw_sprite_general(sprBarSetinside_energy, -1, 0, 0, 130*energy/maxEnergy, 37, sx-65, sy-104, 1, 1, 0, eneColor, eneColor, eneColor, eneColor, 0.5)
 			draw_sprite_ext(sprBarSet, -1, sx, sy-88, 1, 1, 0, c_white, 1)
 	
 			draw_set_halign(fa_center) draw_set_valign(fa_center) draw_set_font(fontBarText)
@@ -82,13 +82,13 @@ if (is_alive()) {
 		if (barVisible) {
 			var size = 1
 		
-			draw_sprite_general(sprBar2Inside_hp, -1, 0, 0, 110, 9, sx-55, sy-60, size, size, 0, c_black, c_black, c_black, c_black, 0.15)
-			draw_sprite_general(sprBar2InsideRed_hp, -1, 0, 0, 110*healthBarP, 9, sx-55, sy-60, size, size, 0, c_white, c_white, c_white, c_white, 0.35)
+			draw_sprite_general(sprBar2inside_hp, -1, 0, 0, 110, 9, sx-55, sy-60, size, size, 0, c_black, c_black, c_black, c_black, 0.15)
+			draw_sprite_general(sprBar2insideRed_hp, -1, 0, 0, 110*healthBarP, 9, sx-55, sy-60, size, size, 0, c_white, c_white, c_white, c_white, 0.35)
 			
 			if (healthBarP != 1)
-				draw_sprite_general(sprBarSetInside_hp, -1, 110*healthBarP, 0, 2, 9, sx-55+110*healthBarP*size, sy-60, size, size, 0, c_black, c_black, c_black, c_black, 1)
+				draw_sprite_general(sprBarSetinside_hp, -1, 110*healthBarP, 0, 2, 9, sx-55+110*healthBarP*size, sy-60, size, size, 0, c_black, c_black, c_black, c_black, 1)
 	
-			draw_sprite_general(sprBar2Inside_hp, -1, 0, 0, 110*hp/maxHp, 9, sx-55, sy-60, size, size, 0, c_white, c_white, c_white, c_white, 0.5)
+			draw_sprite_general(sprBar2inside_hp, -1, 0, 0, 110*hp/maxHp, 9, sx-55, sy-60, size, size, 0, c_white, c_white, c_white, c_white, 0.5)
 			draw_sprite_ext(sprBar, -1, sx, sy-56, size, size, 0, c_white, 1)
 				
 			draw_set_halign(fa_center) draw_set_valign(fa_center) draw_set_font(fontBarText)
@@ -157,7 +157,7 @@ if (is_alive()) {
 		draw_set_alpha(0.5)
 			//draw_roundrect(xx-24, yy-5, xx+24, yy+3, 0)
 	
-			draw_set_color(c_white) draw_set_center() draw_set_font(fontGUI_small) draw_set_alpha(0.9)
+			draw_set_color(c_white) draw_set_center() draw_set_font(fontGUi_small) draw_set_alpha(0.9)
 				if (i < 2)
 					draw_text_outlined(xx, yy, string(i+1), 3, c_black, 12, 1.05, 1.05, 0)
 				else if (i == 2)
@@ -206,10 +206,10 @@ draw_sprite_ext(sprWindowLogoBack, mouseOnSLogo, logo_skills_x, logo_height, 1, 
 draw_sprite_ext(sprSkillsLogo, -1, logo_skills_x, logo_height, 1, 1, 0, c_white, 1)
 
 draw_sprite_ext(sprWindowLogoBack, mouseOnCLogo, logo_character_x, logo_height, 1, 1, 0, c_white, 1)
-draw_sprite_ext(sprCharInfoLogo, -1, logo_character_x, logo_height, 1, 1, 0, c_white, 1)
+draw_sprite_ext(sprCharinfoLogo, -1, logo_character_x, logo_height, 1, 1, 0, c_white, 1)
 
 draw_sprite_ext(sprWindowLogoBack, mouseOnBLogo, logo_inventory_x, logo_height, 1, 1, 0, c_white, 1)
-draw_sprite_ext(sprInventoryLogo, -1, logo_inventory_x, logo_height, 1, 1, 0, c_white, 1)
+draw_sprite_ext(sprinventoryLogo, -1, logo_inventory_x, logo_height, 1, 1, 0, c_white, 1)
 
 draw_sprite_ext(sprWindowLogoBack, mouseOnQLogo, logo_quest_x, logo_height, 1, 1, 0, c_white, 1)
 draw_sprite_ext(sprQuestLogo, -1, logo_quest_x, logo_height, 1, 1, 0, c_white, 1)

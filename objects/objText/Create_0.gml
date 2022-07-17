@@ -6,7 +6,7 @@ font_before = draw_get_font()
 color_before = draw_get_color()
 
 owner = undefined
-owner_isOnGUI = false
+owner_isOnGUi = false
 text = undefined
 font = fontMain
 font_bold = fontMain_bold

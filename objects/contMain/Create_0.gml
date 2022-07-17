@@ -47,4 +47,4 @@ global.boxes = undefined
 global.boxes_skill = undefined
 
 global.level = 1
-global.skillPoints = 0
+global.skillPoints = 3

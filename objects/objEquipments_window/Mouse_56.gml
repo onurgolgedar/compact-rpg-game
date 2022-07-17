@@ -1,6 +1,6 @@
 if (global.held_box != undefined) {
 	if (is_mouse_on()) {
-		if (global.held_from_assetName == object_get_name(objInventory_window)) {
+		if (global.held_from_assetName == object_get_name(objinventory_window)) {
 			var mouseOn_box_i = undefined
 			var mouseOn_box_j = undefined
 			var mouseOn_box = undefined

@@ -4,9 +4,11 @@ function trade_refresh() {
 	var _depth = depth
 	var _onFront = onFront
 	var window = refresh()
-	window.page = page
-	window.image_alpha = image_alpha
-	window._alpha_factor = _alpha_factor
+	if (window != undefined) {
+		window.page = page
+		window.image_alpha = image_alpha
+		window._alpha_factor = _alpha_factor
+	}
 		
 	return window
 }
@@ -73,7 +75,7 @@ function main_loop() {
 	if (global.held_box != undefined and mouseOnButton < pageCount)
 		page = mouseOnButton+1
 
-	height_ext_bot_more = !instance_exists(objInventory_window)*42
+	height_ext_bot_more = !instance_exists(objinventory_window)*42
 	height = global.bc_ver_COMMON*boxHeight+(global.bc_ver_COMMON-1)*boxBetween+offset*2+height_ext_bot+offset+height_ext_bot_more+offset+height_ext_top+offset
 
 	function_call_COMMON(main_loop, 1/20, true)

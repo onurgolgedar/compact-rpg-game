@@ -2,6 +2,7 @@
   "spriteId": null,
   "solid": false,
   "visible": true,
+  "managed": true,
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": null,
@@ -33,7 +34,7 @@
     "path": "folders/CLIENT/2- Objects/Controls.yy",
   },
   "resourceVersion": "1.0",
-  "name": "contDrawGUI",
+  "name": "contDrawGUi",
   "tags": [],
   "resourceType": "GMObject",
 }

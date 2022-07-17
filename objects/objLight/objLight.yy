@@ -5,6 +5,7 @@
   },
   "solid": false,
   "visible": false,
+  "managed": true,
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": null,
@@ -139,7 +140,7 @@
   "overriddenProperties": [],
   "parent": {
     "name": "Lighting",
-    "path": "folders/CLIENT/2- Objects/Rigidbodies/Lighting.yy",
+    "path": "folders/CLIENT/2- Objects/Lighting.yy",
   },
   "resourceVersion": "1.0",
   "name": "objLight",

@@ -9,8 +9,24 @@ function inventory_refresh() {
 		window.image_alpha = image_alpha
 		window._alpha_factor = _alpha_factor
 	}
+	reload_boxes()
 		
 	return window
+}
+
+function reload_boxes() {
+	if (boxes != undefined)
+		ds_grid_destroy(boxes)
+	boxes = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
+	boxes_alpha = undefined
+	for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++) {
+		for (var j = 0; j < global.bc_ver_COMMON+2; j++) {
+			var box = ds_grid_get(global.boxes, i, j)
+			boxes_alpha[i][j] = 1
+		
+			ds_grid_set(boxes, i, j, box)
+		}
+	}
 }
 
 function is_mouse_on_box(i, j) {
@@ -100,13 +116,5 @@ height_ext_top = 50
 width = global.bc_hor_COMMON*boxWidth+(global.bc_hor_COMMON-1)*boxBetween+offset*4
 height = global.bc_ver_COMMON*boxHeight+(global.bc_ver_COMMON-1)*boxBetween+offset*2+height_ext_bot+offset+height_ext_bot_more+offset+height_ext_top+offset
 
-boxes = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
-boxes_alpha = undefined
-for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++) {
-	for (var j = 0; j < global.bc_ver_COMMON+2; j++) {
-		var box = ds_grid_get(global.boxes, i, j)
-		boxes_alpha[i][j] = 1
-		
-		ds_grid_set(boxes, i, j, box)
-	}
-}
+boxes = undefined
+reload_boxes()
