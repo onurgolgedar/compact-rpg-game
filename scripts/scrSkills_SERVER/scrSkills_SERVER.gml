@@ -4,11 +4,10 @@ function cast_skill(skill_index, instance) {
 	
 	with (instance) {
 		var skill = undefined
-		var _skills = ds_map_values_to_array(skills)
-		var ds_size = array_length(_skills)
+		var ds_size = array_length(skills)
 		for (var i = 0; i < ds_size; i++)
-			if (_skills[i] != undefined and _skills[i].index == skill_index) {
-				skill = _skills[i]
+			if (skills[i] != undefined and skills[i].index == skill_index) {
+				skill = skills[i]
 				break
 			}
 		

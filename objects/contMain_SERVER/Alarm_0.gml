@@ -11,16 +11,13 @@ for (var i = 0; i < ds_size; i++) {
 }
 
 with (objPlayer_SERVER) {
-	var _skills = ds_map_values_to_array(skills)
-	var _skills_keys = ds_map_keys_to_array(skills)
-	var ds_size = array_length(_skills)
-	for (var j = 0; j < ds_size; j++) {
-		var skill = _skills[j]
-		var key = _skills_keys[j]
+	var ds_size = array_length(skills)
+	for (var i = 0; i < ds_size; i++) {
+		var skill = skills[i]
 		if (skill != undefined)
-			net_server_send(socketID, CODE_SKILL_INFO, json_stringify({ index: skill.index, key: key, code: skill.code, cooldownmax: skill.cooldownmax, energy: skill.energy, mana: skill.mana, cooldown: skill.cooldown }), BUFFER_TYPE_STRING, true)
+			net_server_send(socketID, CODE_SKILL_INFO, json_stringify({ index: skill.index, key: i, code: skill.code, cooldownmax: skill.cooldownmax, energy: skill.energy, mana: skill.mana, cooldown: skill.cooldown, upgrade: skill.upgrade }), BUFFER_TYPE_STRING, true)
 		else 
-			net_server_send(socketID, CODE_SKILL_INFO, json_stringify({ index: undefined, key: key }), BUFFER_TYPE_STRING, true)
+			net_server_send(socketID, CODE_SKILL_INFO, json_stringify({ index: undefined, key: i }), BUFFER_TYPE_STRING, true)
 	}
 }
 

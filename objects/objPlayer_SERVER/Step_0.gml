@@ -1,9 +1,8 @@
 event_inherited()
 
-var _skills = ds_map_values_to_array(skills)
-var ds_size = array_length(_skills)
+var ds_size = array_length(skills)
 for (var i = 0; i < ds_size; i++) {
-	var skill = _skills[i]
+	var skill = skills[i]
 	if (skill != undefined) {
 		if (skill.casttime != undefined) {
 			if (skill.casttime+global.delta_COMMON < skill.casttimemax)

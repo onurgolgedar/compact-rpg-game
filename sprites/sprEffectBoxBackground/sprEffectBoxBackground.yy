@@ -78,7 +78,7 @@
   "nineSlice": null,
   "parent": {
     "name": "GUI",
-    "path": "folders/COMMON/Sprites/GUI.yy",
+    "path": "folders/COMMON/1- Sprites/GUI.yy",
   },
   "resourceVersion": "1.0",
   "name": "sprEffectBoxBackground",

@@ -30,7 +30,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			code != 2006 and code != 1500 and code != 7001 and code != 5000 and code != 1501 and
 			code != 3004 and code != 5002 and code != 15002 and code != 10302 and code != 4001 and
 			code != 6000 and code != 10300 and code != 10301 and code != 10301 and code != 7010 and
-			code != 17010)
+			code != 17010 and code != 652)
 			if (!is_string(pureData) or string_length(pureData) < 100)
 				//show_messagebox(50, 150, "From: "+string(socketID_sender), "Code: "+string(code)+"\n"+string(data), 7)
 				show_debug_message("From: "+string(socketID_sender)+"\n[ Code: "+string(code)+"\n  Data: "+string(data)+" ]")
@@ -78,7 +78,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 				ds_grid_destroy(global.boxes_skill)
 				
 				var boxes_skill_SERVER = ds_grid_create(global.sc_hor_COMMON*global.pageCount_skill_COMMON, global.sc_ver_COMMON)
-				ds_grid_read(boxes_skill_SERVER, data)
+				ds_grid_read(boxes_skill_SERVER, data.grid)
 				for (var i = 0; i < global.sc_hor_COMMON*global.pageCount_skill_COMMON; i++) {
 					for (var j = 0; j < global.sc_ver_COMMON; j++) {
 						var _data = ds_grid_get(boxes_skill_SERVER, i, j)
@@ -100,10 +100,11 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					}
 				}
 				ds_grid_destroy(boxes_skill_SERVER)
+				
+				global.skillPoints = data.skillPoints
 
 				with (objSkills_window)
 					skills_refresh()
-					
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -286,10 +287,11 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 						skill.cooldownmax = data.cooldownmax
 						skill.energy = data.energy
 						skill.mana = data.mana
+						skill.upgrade = data.upgrade
 						skill.sprite = get_skill_sprite(data.index)
 					}
 					else
-						skills[data.key] = { index: undefined, cooldown: undefined, mana: undefined, energy: undefined, sprite: sprNothingness, cooldownmax: undefined, code: undefined }
+						skills[data.key] = { index: undefined, cooldown: undefined, mana: undefined, energy: undefined, sprite: sprNothingness, cooldownmax: undefined, code: undefined, upgrade: undefined }
 				}
 				break
 			
@@ -425,10 +427,21 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					}
 				}
 				break
+				
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			
+			case CODE_LOCATION:
+				instance_create_layer(0, 0, "Nirvana", contBlackScreen)
+				net_client_send(_CODE_LOCATION, json_stringify({ set: data.set, value: data.value, xx: data.xx, yy: data.yy }), BUFFER_TYPE_STRING)
+				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
+			
 			
 			case CODE_SKILL1:
 				var player = global.playerInstances[? data.socketID]
@@ -530,6 +543,8 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					global.clientClass = newPlayer.class
 					global.level = newPlayer.level
 					global.clientName = newPlayer.name
+					if (global.selectedPlayer == undefined)
+						global.selectedPlayer = newPlayer
 				}
 				
 				switch (newPlayer.class) {
@@ -761,6 +776,8 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					accountinfoRow = db_create_row(data.accountID)
 					accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] = 5000
 					accountinfoRow[? ACCOUNTINFO_LEVEL_SERVER] = 1
+					accountinfoRow[? ACCOUNTINFO_SKILLPOINTS_SERVER] = 3
+					accountinfoRow[? ACCOUNTINFO_STATPOINTS_SERVER] = 10
 					accountinfoRow[? ACCOUNTINFO_LOCATION_SERVER] = LOCATION_THE_CASTLE
 					if (data.class == CLASS_WARRIOR or data.class == CLASS_ASSASSIN or data.class == CLASS_MAGE)
 						accountinfoRow[? ACCOUNTINFO_CLASS_SERVER] = data.class
@@ -999,10 +1016,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 								for (var z = 0; z < global.sc_ver_COMMON; z++)
 									ds_grid_set(boxes_skill_SERVER, t, z, global.boxEmpty_skill_COMMON)
 	
-							ds_grid_set(boxes_skill_SERVER, 0, 0, {skill: get_skill_COMMON(SKILL_0, 0)})
-							ds_grid_set(boxes_skill_SERVER, 4, 0, {skill: get_skill_COMMON(SKILL_1, 0)})
-							ds_grid_set(boxes_skill_SERVER, 0, 1, {skill: get_skill_COMMON(SKILL_2, 0)})
-							ds_grid_set(boxes_skill_SERVER, 4, 1, {skill: get_skill_COMMON(SKILL_3, 0)})
+							ds_grid_set(boxes_skill_SERVER, 0, 0, { skill: get_skill_COMMON(SKILL_0, 0) })
+							ds_grid_set(boxes_skill_SERVER, 4, 0, { skill: get_skill_COMMON(SKILL_1, 0) })
+							ds_grid_set(boxes_skill_SERVER, 0, 1, { skill: get_skill_COMMON(SKILL_2, 0) })
+							ds_grid_set(boxes_skill_SERVER, 4, 1, { skill: get_skill_COMMON(SKILL_3, 0) })
 						
 							ds_map_add(global.playerSkills, accountName, boxes_skill_SERVER)
 						}
@@ -1069,15 +1086,36 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 				with (instance) {
 					var skill_index = data.index
 					
+					var playerSkill = undefined
+					var playerSkillUpgrade = undefined
+					var playerSkills = global.playerSkills[? accID]
+					var ds_width = ds_grid_width(playerSkills)
+					var ds_height = ds_grid_height(playerSkills)
+					for (var k = 0; k < ds_width; k++) {
+						for (var z = 0; z < ds_height; z++) {
+							var playerSkill = ds_grid_get(playerSkills, k, z)
+							if (playerSkill != undefined and playerSkill.skill != undefined and playerSkill.skill.index == skill_index) {
+								playerSkillUpgrade = playerSkill.skill.upgrade
+								break
+							}
+						}
+						if (playerSkillUpgrade != undefined)
+							break
+					}
+					
+					if (playerSkill == undefined or playerSkillUpgrade == undefined)
+						break
+					
 					var isCancelled = false
 					var foundI = undefined
 					for (var i = 0; i < 5; i++)
-						if (skills[? i] != undefined and skills[? i].index == skill_index) {
+						if (skills[i] != undefined and skills[i].index == skill_index) {
 							foundI = i
-							if (skills[? i].casttime == undefined) {
-								if (data.from != -1 and skills[? data.from] != undefined and skills[? data.to] != undefined) {
-									var other_skill_index = skills[? data.to].index
-									ds_map_set(skills, data.from,
+							if (skills[i].casttime == undefined) {
+								if (data.from != -1 and skills[data.from] != undefined and skills[data.to] != undefined) {
+									var other_skill_index = skills[data.to].index
+									
+									skills[data.from] =
 									{
 										index: other_skill_index,
 										cooldownmax: global.skill_cooldown_max_COMMON[other_skill_index],
@@ -1087,23 +1125,25 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 										casttimemax: global.skill_casttime_max_COMMON[other_skill_index],
 										casttime: undefined,
 										mana: global.skill_mana_COMMON[other_skill_index],
-										energy: global.skill_energy_COMMON[other_skill_index]
-									})
-									ds_map_set(global.playerSkillBoxes[? player], data.from,
+										energy: global.skill_energy_COMMON[other_skill_index],
+										upgrade: playerSkillUpgrade
+									}
+									ds_map_set(global.playerSkillBoxes[? accID], data.from,
 									{
-										index: skills[? data.from].index,
-										cooldownmax: skills[? data.from].cooldownmax,
-										cooldown: skills[? data.from].cooldown,
-										code: skills[? data.from].code,
-										object: skills[? data.from].object,
-										casttimemax: skills[? data.from].casttimemax,
-										casttime: skills[? data.from].casttime,
-										mana: skills[? data.from].mana,
-										energy: skills[? data.from].energy
+										index: skills[data.from].index,
+										cooldownmax: skills[data.from].cooldownmax,
+										cooldown: skills[data.from].cooldown,
+										code: skills[data.from].code,
+										object: skills[data.from].object,
+										casttimemax: skills[data.from].casttimemax,
+										casttime: skills[data.from].casttime,
+										mana: skills[data.from].mana,
+										energy: skills[data.from].energy,
+										upgrade: playerSkillUpgrade
 									})
 								}
 								else {
-									skills[? i] = undefined
+									skills[i] = undefined
 									ds_map_delete(global.playerSkillBoxes[? accID], i)
 								}
 							}
@@ -1116,7 +1156,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					
 					if (data.to != -1) {
 						// ? Duplication
-						ds_map_set(skills, data.to,
+						skills[data.to] =
 						{
 							index: skill_index,
 							cooldownmax: global.skill_cooldown_max_COMMON[skill_index],
@@ -1126,23 +1166,25 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 							casttimemax: global.skill_casttime_max_COMMON[skill_index],
 							casttime: undefined,
 							mana: global.skill_mana_COMMON[skill_index],
-							energy: global.skill_energy_COMMON[skill_index]
-						})
+							energy: global.skill_energy_COMMON[skill_index],
+							upgrade: playerSkillUpgrade
+						}
 						ds_map_set(global.playerSkillBoxes[? accID], data.to,
 						{
-							index: skills[? data.to].index,
-							cooldownmax: skills[? data.to].cooldownmax,
-							cooldown: skills[? data.to].cooldown,
-							code: skills[? data.to].code,
-							object: skills[? data.to].object,
-							casttimemax: skills[? data.to].casttimemax,
-							casttime: skills[? data.to].casttime,
-							mana: skills[? data.to].mana,
-							energy: skills[? data.to].energy
+							index: skills[data.to].index,
+							cooldownmax: skills[data.to].cooldownmax,
+							cooldown: skills[data.to].cooldown,
+							code: skills[data.to].code,
+							object: skills[data.to].object,
+							casttimemax: skills[data.to].casttimemax,
+							casttime: skills[data.to].casttime,
+							mana: skills[data.to].mana,
+							energy: skills[data.to].energy,
+							upgrade: skills[data.to].upgrade,
 						})
 					}
 					else {
-						skills[? foundI] = undefined
+						skills[foundI] = undefined
 						ds_map_delete(global.playerSkillBoxes[? accID], foundI)
 					}
 				}
@@ -1160,44 +1202,44 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 				if (data.accountID == "" or data.accountID == "Local" or data.password == "")
 					break
 					
-				if (global.playerBoxes[? socketID_sender] != undefined) {
-					var ds = global.playerBoxes[? socketID_sender]
+				if (global.playerBoxes[? data.accountID] != undefined) {
+					var ds = global.playerBoxes[? data.accountID]
 					if (ds_exists(ds, ds_type_grid))
 						ds_grid_destroy(ds)
 						
-					global.playerBoxes[? socketID_sender] = undefined
+					global.playerBoxes[? data.accountID] = undefined
 				}
 					
-				if (global.playerSkills[? socketID_sender] != undefined) {
-					var ds = global.playerSkills[? socketID_sender]
+				if (global.playerSkills[? data.accountID] != undefined) {
+					var ds = global.playerSkills[? data.accountID]
 					if (ds_exists(ds, ds_type_grid))
 						ds_grid_destroy(ds)
 						
-					global.playerSkills[? socketID_sender] = undefined
+					global.playerSkills[? data.accountID] = undefined
 				}
 					
-				if (global.playerQuests[? socketID_sender] != undefined) {
-					var ds = global.playerQuests[? socketID_sender]
+				if (global.playerQuests[? data.accountID] != undefined) {
+					var ds = global.playerQuests[? data.accountID]
 					if (ds_exists(ds, ds_type_map))
 						ds_map_destroy(ds)
 						
-					global.playerQuests[? socketID_sender] = undefined
+					global.playerQuests[? data.accountID] = undefined
 				}
 				
-				if (global.playerPermanentEffectBoxes[? socketID_sender] != undefined) {
-					var ds = global.playerPermanentEffectBoxes[? socketID_sender]
+				if (global.playerPermanentEffectBoxes[? data.accountID] != undefined) {
+					var ds = global.playerPermanentEffectBoxes[? data.accountID]
 					if (ds_exists(ds, ds_type_list))
 						ds_list_destroy(ds)
 						
-					global.playerPermanentEffectBoxes[? socketID_sender] = undefined
+					global.playerPermanentEffectBoxes[? data.accountID] = undefined
 				}
 					
-				if (global.playerSkillBoxes[? socketID_sender] != undefined) {
-					var ds = global.playerSkillBoxes[? socketID_sender]
+				if (global.playerSkillBoxes[? data.accountID] != undefined) {
+					var ds = global.playerSkillBoxes[? data.accountID]
 					if (ds_exists(ds, ds_type_map))
 						ds_map_destroy(ds)
 						
-					global.playerSkillBoxes[? socketID_sender] = undefined
+					global.playerSkillBoxes[? data.accountID] = undefined
 				}
 				
 				// Uploaded Items
@@ -1427,7 +1469,11 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					break
 				
 				var accountID = playersRow[? PLAYERS_ACCID_SERVER]
-				var locationID =  playersRow[? PLAYERS_LOCATION_SERVER] + (data == 1 ? 1 : -1)
+				var locationID
+				if (!data.set)
+					locationID =  playersRow[? PLAYERS_LOCATION_SERVER] + (data.value == 1 ? 1 : -1)
+				else
+					locationID = data.value
 				
 				var location = ds_map_find_value(global.locations, locationID)
 				if (location != undefined) {
@@ -1435,8 +1481,15 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					var yy = location.spawn_y
 				
 					with (instance) {
-						x = xx
-						y = yy
+						if (data.xx == -1)
+							x = xx
+						else
+							x = data.xx
+							
+						if (data.yy == -1)
+							y = yy
+						else
+							y = data.yy
 					}
 				
 					ds_map_set(global.lastPositions_sent, socketID_sender, undefined)
@@ -1512,6 +1565,62 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					ds_list_destroy(temp_list)
 				}
 			break
+			
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			
+			case _CODE_UPGRADE_SKILL:
+				var playersRow = db_get_row(global.DB_SRV_TABLE_players, socketID_sender)
+				
+				if (playersRow != undefined) {
+					var accountID = playersRow[? PLAYERS_ACCID_SERVER]
+					var accountinfoRow = db_get_row(global.DB_SRV_TABLE_accountinfo, accountID)
+					
+					var skill = ds_grid_get(global.playerSkills[? accountID], data.ii, data.jj)
+					if (skill == undefined)
+						break
+						
+					/*var skillBoxes = ds_map(global.playerSkillBoxes[? accountID], data.ii, data.jj)
+					if (skillBoxes == undefined)
+						break*/
+						
+					if (data.upgrade and accountinfoRow[? ACCOUNTINFO_SKILLPOINTS_SERVER] > 0) {
+						accountinfoRow[? ACCOUNTINFO_SKILLPOINTS_SERVER]--
+						skill.skill.upgrade++
+						ds_grid_set(global.playerSkills[? accountID], data.ii, data.jj, skill)
+					}
+					else if (!data.upgrade and skill.skill.upgrade > 0) {
+						accountinfoRow[? ACCOUNTINFO_SKILLPOINTS_SERVER]++
+						skill.skill.upgrade--
+						ds_grid_set(global.playerSkills[? accountID], data.ii, data.jj, skill)
+					}
+					else
+						break
+						
+					var skillBoxes = global.playerSkillBoxes[? accountID]
+					if (skillBoxes == undefined)
+						break
+						
+					var instance = playersRow[? PLAYERS_INSTANCE_SERVER]
+						
+					var _skillBoxes_keys = ds_map_keys_to_array(skillBoxes)
+					var ds_size = array_length(_skillBoxes_keys)
+					for (var i = 0; i < ds_size; i++) {
+						var key = _skillBoxes_keys[i]
+						
+						var _skill = skillBoxes[? key]
+						if (_skill.index == skill.skill.index) {
+							skillBoxes[? key].upgrade = skill.skill.upgrade
+							
+							if (instance != undefined)
+								with (instance)
+									skills[key].upgrade = skill.skill.upgrade
+							break
+						}
+					}
+				}
+				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1652,7 +1761,15 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case _CODE_GET_INVENTORY_SKILL:
-				net_server_send(socketID_sender, CODE_GET_INVENTORY_SKILL, json_write_skillboxes_SERVER(socketID_sender), BUFFER_TYPE_STRING)
+				var accID = db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID_sender)
+				if (accID == undefined)
+					break
+					
+				var accountinfoRow = db_get_row(global.DB_SRV_TABLE_accountinfo, accID)
+				if (accountinfoRow == undefined)
+					break
+				
+				net_server_send(socketID_sender, CODE_GET_INVENTORY_SKILL, json_stringify({ grid: json_write_skillboxes_SERVER(socketID_sender), skillPoints: accountinfoRow[? ACCOUNTINFO_SKILLPOINTS_SERVER] }), BUFFER_TYPE_STRING)
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //

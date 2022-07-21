@@ -1,1 +1,1 @@
-net_client_send(_CODE_LOCATION, 2, BUFFER_TYPE_BYTE)
+net_client_send(_CODE_LOCATION, json_stringify({ set: false, value: 2, xx: -1, yy: -1 }), BUFFER_TYPE_STRING)

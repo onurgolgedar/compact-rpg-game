@@ -1,13 +1,13 @@
 function get_skill_COMMON(_index, _upgrade) {
 	switch (_index) {
 		case SKILL_0:
-			return {name: "Skill 0", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade}
+			return { name: "Skill 0", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade }
 		case SKILL_1:
-			return {name: "Skill 1", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade}
+			return { name: "Skill 1", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade }
 		case SKILL_2:
-			return {name: "Skill 2", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade}
+			return { name: "Skill 2", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade }
 		case SKILL_3:
-			return {name: "Skill 3", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade}
+			return { name: "Skill 3", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade }
 	}
 }
 

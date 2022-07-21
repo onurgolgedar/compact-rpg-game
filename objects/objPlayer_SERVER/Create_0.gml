@@ -50,7 +50,12 @@ playerRow = undefined
 accountinfoRow = undefined
 
 class = undefined
-skills = ds_map_create()
+skills = array_create(5)
+skills[0] = undefined
+skills[1] = undefined
+skills[2] = undefined
+skills[3] = undefined
+skills[4] = undefined
 
 movementSpeed_base = 0
 movementSpeed_add = 0

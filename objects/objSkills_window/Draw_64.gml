@@ -68,7 +68,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 		}
 	}
 		
-	for (var i =global.sc_hor_COMMON*(page-1); i < global.sc_hor_COMMON*page; i++) {
+	for (var i = global.sc_hor_COMMON*(page-1); i < global.sc_hor_COMMON*page; i++) {
 		for (var j = 0; j < global.sc_ver_COMMON; j++) {
 			var box_positions = get_box_positions(i, j)
 			var box = ds_grid_get(boxes, i, j)
@@ -92,6 +92,10 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 				//draw_sprite_ext(box.skill.sprite, -1, skill_xx, skill_yy, 0.9, 0.9, 0, c_black, 0.7*image_alpha)
 				if (i != global.held_box_i or j != global.held_box_j or global.held_from_assetName != object_get_name(object_index)) 
 					draw_sprite_ext(box.skill.sprite, -1, skill_xx, skill_yy, 0.8, 0.8, 0, c_white, 1*image_alpha)
+				draw_set_center() draw_set_color(c_ltgreen)
+					if (box.skill.upgrade > 0)
+						draw_text_outlined(skill_xx+boxWidth/2-20, skill_yy, "+"+string(box.skill.upgrade), 1, c_black, 10, 1, 1, 0)
+				draw_set_default()
 				
 				// Button
 				var button_x = skill_xx+30
@@ -101,7 +105,8 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 				if (mouseOnBody and global.dmx > button_x and global.dmx < button_x+buttonWidth and
 					global.dmy > button_y and global.dmy < button_y+buttonHeight and !is_click_blocked()) {
 				    draw_set_color(global.skillPoints == 0 ? c_gray : make_color_rgb(0, 200, 0))
-				    mouseOnButton = 100+i
+					if (global.skillPoints > 0)
+						mouseOnButton = 1000000+i+j/100
 				}
 				else
 					draw_set_color(global.skillPoints == 0 ? c_dkgray : make_color_rgb(0, 110, 0))
@@ -127,11 +132,12 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 				var buttonHeight = 16
 				if (mouseOnBody and global.dmx > button_x and global.dmx < button_x+buttonWidth and
 					global.dmy > button_y and global.dmy < button_y+buttonHeight and !is_click_blocked()) {
-				    draw_set_color(global.skillPoints == 0 ? c_gray : make_color_rgb(200, 0, 0))
-				    mouseOnButton = 200+i
+				    draw_set_color(box.skill.upgrade == 0 ? c_gray : make_color_rgb(200, 0, 0))
+					if (box.skill.upgrade > 0)
+						mouseOnButton = 2000000+i+j/100
 				}
 				else
-					draw_set_color(global.skillPoints == 0 ? c_dkgray : make_color_rgb(110, 0, 0))
+					draw_set_color(box.skill.upgrade == 0 ? c_dkgray : make_color_rgb(110, 0, 0))
      
 				var beforeColor = draw_get_color()
 				draw_set_color(make_color_rgb(50, 50, 50))

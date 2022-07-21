@@ -1,4 +1,3 @@
-ds_map_destroy(skills)
 playerRow[? PLAYERS_INSTANCE_SERVER] = undefined
 with (parSkill_SERVER)
 	if (owner == id)

@@ -1,5 +1,5 @@
 image_angle = irandom(359)
-image_alpha = random_range(0.22, 0.33)
+image_alpha = random_range(0.33, 0.44)
 
 if (abs(abs(image_xscale)-1) < 0.4) {
 	image_xscale = random_range(0.8, 1.4)+0.5

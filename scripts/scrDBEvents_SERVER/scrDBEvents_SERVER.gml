@@ -27,11 +27,14 @@ function _db_event_table_column_names_SERVER() {
 	db_set_column_name(global.DB_SRV_TABLE_accountinfo, ACCOUNTINFO_GOLD_SERVER, "Gold")
 	db_set_column_name(global.DB_SRV_TABLE_accountinfo, ACCOUNTINFO_LEVEL_SERVER, "Level")
 	db_set_column_name(global.DB_SRV_TABLE_accountinfo, ACCOUNTINFO_LOCATION_SERVER, "Location")
+	db_set_column_name(global.DB_SRV_TABLE_accountinfo, ACCOUNTINFO_CLASS_SERVER, "Class")
+	db_set_column_name(global.DB_SRV_TABLE_accountinfo, ACCOUNTINFO_SKILLPOINTS_SERVER, "Skill Points")
+	db_set_column_name(global.DB_SRV_TABLE_accountinfo, ACCOUNTINFO_STATPOINTS_SERVER, "Stat Points")
 }
 
 function _db_event_table_draw_SERVER() {
 	draw_set_font(fontTable_SERVER)
 		db_draw_table(16, 50, global.DB_SRV_TABLE_players, 11)
-		db_draw_table(16, 300, global.DB_SRV_TABLE_accountinfo, 4)
+		db_draw_table(16, 300, global.DB_SRV_TABLE_accountinfo, 7)
 	draw_set_font(fontMain)
 }

@@ -77,7 +77,7 @@ function player_spawn_SERVER(socketID) {
 		if (playerSkillBoxes != undefined) {
 			for (var i = 0; i < 5; i++) {
 				if (playerSkillBoxes[? i] != undefined) {
-					ds_map_set(skills, i,
+					skills[i] =
 					{
 						index: playerSkillBoxes[? i].index,
 						cooldownmax: playerSkillBoxes[? i].cooldownmax,
@@ -87,8 +87,9 @@ function player_spawn_SERVER(socketID) {
 						casttimemax: playerSkillBoxes[? i].casttimemax,
 						casttime: playerSkillBoxes[? i].casttime,
 						mana: playerSkillBoxes[? i].mana,
-						energy: playerSkillBoxes[? i].energy
-					})
+						energy: playerSkillBoxes[? i].energy,
+						upgrade: playerSkillBoxes[? i].upgrade
+					}
 				}
 			}
 		}

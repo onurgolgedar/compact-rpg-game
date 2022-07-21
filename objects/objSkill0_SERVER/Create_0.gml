@@ -14,7 +14,7 @@ function execute() {
 	with (parTarget_SERVER) {
 		if (id != other.owner) {
 			if (place_meeting(x, y, other.id)) {
-				change_hp(-other.owner.magicalPower)
+				change_hp(-other.owner.magicalPower*(100+10*other.skill.upgrade)/100)
 			
 				var pow = 1200+clamp(1200-point_distance(x, y, other.x, other.y)/5*30, 0, 1200)
 				var dir = point_direction(other.x, other.y, x, y)

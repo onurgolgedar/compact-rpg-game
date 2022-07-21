@@ -1,5 +1,5 @@
 function net_client_send(code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = false, bufferinfo = BUFFER_INFO_DEFAULT, forCOOP = false) {
-	if (!is_net_local(global.serverIP, global.coopID) or forCOOP or debug_mode) {
+	if (!is_net_local(global.serverIP, global.coopID) or forCOOP) {
 		isUDP = global.all_tcp_mode ? false : isUDP
 		
 		if (global.coopID != "" and bufferinfo == BUFFER_INFO_DEFAULT)

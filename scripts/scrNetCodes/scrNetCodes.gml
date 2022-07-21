@@ -72,6 +72,8 @@ function codes() {
 	#macro CODE_DROP_COIN 7500
 	#macro CODE_COLLECT_COIN 7501
 	
+	#macro CODE_LOCATION 7800
+	
 	#macro CODE_DIALOGUE 8000
 	#macro CODE_WINDOW 8001
 }
