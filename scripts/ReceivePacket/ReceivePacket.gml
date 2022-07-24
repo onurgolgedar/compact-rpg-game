@@ -790,7 +790,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					db_add_row(global.DB_SRV_TABLE_accounts, account)
 					db_save_table(global.DB_SRV_TABLE_accounts)
 					
-					net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have [c="+string(c_lime)+"]signed up[/c] successfully. ", title: "Success", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 4, buttons: undefined }), BUFFER_TYPE_STRING)
+					net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have [c="+string(c_ltlime)+"]signed up[/c] successfully. ", title: "Success", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 4, buttons: undefined }), BUFFER_TYPE_STRING)
 				}
 				else
 					net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "The account already exists. ", title: "Failed", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 4, buttons: undefined }), BUFFER_TYPE_STRING)
@@ -1017,7 +1017,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 									ds_grid_set(boxes_skill_SERVER, t, z, global.boxEmpty_skill_COMMON)
 	
 							ds_grid_set(boxes_skill_SERVER, 0, 0, { skill: get_skill_COMMON(SKILL_0, 0) })
-							ds_grid_set(boxes_skill_SERVER, 4, 0, { skill: get_skill_COMMON(SKILL_1, 0) })
+							//ds_grid_set(boxes_skill_SERVER, 4, 0, { skill: get_skill_COMMON(SKILL_1, 0) })
 							ds_grid_set(boxes_skill_SERVER, 0, 1, { skill: get_skill_COMMON(SKILL_2, 0) })
 							ds_grid_set(boxes_skill_SERVER, 4, 1, { skill: get_skill_COMMON(SKILL_3, 0) })
 						
@@ -1692,7 +1692,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 							instance.accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] += price
 									
 							net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
-							net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have sold "+item_get_title_COMMON(box.item)+".\n[c="+string(c_lime)+"]"+string(price)+"[/c] [img=sprCoin2]", title: "Sell", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 1, buttons: undefined }), BUFFER_TYPE_STRING)
+							net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have sold "+item_get_title_COMMON(box.item)+".\n[c="+string(c_ltlime)+"]"+string(price)+"[/c] [img=sprCoin2]", title: "Sell", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 1, buttons: undefined }), BUFFER_TYPE_STRING)
 						}
 					}
 				}

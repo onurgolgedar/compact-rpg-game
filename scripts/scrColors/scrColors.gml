@@ -1,7 +1,8 @@
 function Colors() {
 	#region Colors [BLUEGREENRED]
-	#macro c_window make_color_rgb(125, 15, 9)
-	#macro c_windowback make_color_rgb(20, 20, 20)
+	#macro c_window make_color_rgb(100, 15, 9)
+	#macro c_windowback make_color_rgb(55, 5, 5)
+	#macro c_ltlime make_color_rgb(60, 150, 60)
 	#macro c_gold $00D6FE
 	#macro c_ltpink $C1B7FF
 	#macro c_brown $2D5986

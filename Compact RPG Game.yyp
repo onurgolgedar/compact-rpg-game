@@ -516,6 +516,7 @@
     {"id":{"name":"sprClothes9_npc","path":"sprites/sprClothes9_npc/sprClothes9_npc.yy",},"order":8,},
     {"id":{"name":"sprinventoryLogo","path":"sprites/sprinventoryLogo/sprinventoryLogo.yy",},"order":8,},
     {"id":{"name":"sprSword_023","path":"sprites/sprSword_023/sprSword_023.yy",},"order":23,},
+    {"id":{"name":"sprClock","path":"sprites/sprClock/sprClock.yy",},"order":21,},
     {"id":{"name":"sprLaser_SERVER","path":"sprites/sprLaser_SERVER/sprLaser_SERVER.yy",},"order":2,},
     {"id":{"name":"sprTheLetter","path":"sprites/sprTheLetter/sprTheLetter.yy",},"order":2,},
     {"id":{"name":"sprSword_038","path":"sprites/sprSword_038/sprSword_038.yy",},"order":38,},
@@ -752,8 +753,6 @@
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"config.ini","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"Accounts.dbfile","resourceType":"GMIncludedFile",},
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"AccountInfo.dbfile","resourceType":"GMIncludedFile",},
-    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"Quests.dbfile","resourceType":"GMIncludedFile",},
-    {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":"Boxes.dbfile","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
     "IDEVersion": "2022.6.0.23",

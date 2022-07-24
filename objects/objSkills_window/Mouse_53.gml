@@ -24,7 +24,7 @@ if (is_mouse_on() and !is_click_blocked()) {
 		if (mouseOnButton >= 2000000) {
 			var ii = floor(mouseOnButton-2000000)
 			var jj = round((mouseOnButton-2000000-ii)*100)
-			net_client_send(_CODE_UPGRADE_SKILL, json_stringify({ ii: ii, jj: jj, upgrade: false }), BUFFER_TYPE_INT32)
+			net_client_send(_CODE_UPGRADE_SKILL, json_stringify({ ii: ii, jj: jj, upgrade: false }), BUFFER_TYPE_STRING)
 			var box = ds_grid_get(boxes, ii, jj)
 			box.skill.upgrade--
 			global.skillPoints++
@@ -32,7 +32,7 @@ if (is_mouse_on() and !is_click_blocked()) {
 		else if (mouseOnButton >= 1000000) {
 			var ii = floor(mouseOnButton-1000000)
 			var jj = round((mouseOnButton-1000000-ii)*100)
-			net_client_send(_CODE_UPGRADE_SKILL, json_stringify({ ii: ii, jj: jj, upgrade: true }), BUFFER_TYPE_INT32)
+			net_client_send(_CODE_UPGRADE_SKILL, json_stringify({ ii: ii, jj: jj, upgrade: true }), BUFFER_TYPE_STRING)
 			var box = ds_grid_get(boxes, ii, jj)
 			box.skill.upgrade++
 			global.skillPoints--

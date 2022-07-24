@@ -124,7 +124,6 @@ if (is_alive()) {
 				draw_sprite_ext(sprSkillColor, skill.cooldown == 0, xx, yy, 1, 1, 0, c_white, 1)
 		
 			draw_sprite(skill.sprite, -1, xx, yy)
-			draw_text_outlined(xx, yy-20, "+"+string(skill.upgrade), 1, c_black, 10, 1, 1, 0)
 		
 			if (objPlayer.stunned)
 				draw_sprite_ext(sprSkillColor, 4, xx, yy, 1, 1, 0, c_black, 0.7)

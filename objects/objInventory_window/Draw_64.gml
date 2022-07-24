@@ -2,20 +2,20 @@ var mouseOnBody = is_mouse_on()
 
 draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 	draw_set_color(c_windowback)
-		draw_roundrect_ext(x-offset, y-offset, x+width+offset, y+height+offset, 15, 15, 0)
+		draw_roundrect_ext(x-offset, y-offset, x+width+offset, y+height+offset, 17, 17, 0)
 	draw_set_color(onFront ? c_window : c_dkgray) draw_set_alpha(0.38*image_alpha)
-		draw_roundrect_ext(x, y+height_ext_top+offset, x+width, y+height, 15, 15, 0)
-		draw_roundrect_ext(x+offset, y+height_ext_top+offset+offset, x+width-offset, y+height-height_ext_bot-offset-height_ext_bot_more, 15, 15, 0)
+		draw_roundrect_ext(x, y+height_ext_top+offset, x+width, y+height, 17, 17, 0)
+		draw_roundrect_ext(x+offset, y+height_ext_top+offset+offset, x+width-offset, y+height-height_ext_bot-offset-height_ext_bot_more, 17, 17, 0)
 		
-		draw_roundrect_ext(x, y, x+width, y+height_ext_top/2-offset/2, 15, 15, 0)
+		draw_roundrect_ext(x, y, x+width, y+height_ext_top/2-offset/2, 17, 17, 0)
 	draw_set_alpha(1*image_alpha) draw_set_color(c_black)
 	//draw_roundrect(x-offset, y-offset, x+width+offset, y+height+offset, 1)
 		
 	draw_set_color(c_white) draw_set_alpha(0.4*image_alpha)
 		if (height_ext_bot != 0)
-			draw_roundrect_ext(x+offset, y+height-height_ext_bot-height_ext_bot_more, x+width-offset, y+height-offset-height_ext_bot_more, 15, 15, 0)
+			draw_roundrect_ext(x+offset, y+height-height_ext_bot-height_ext_bot_more, x+width-offset, y+height-offset-height_ext_bot_more, 17, 17, 0)
 		if (height_ext_bot_more != 0)
-			draw_roundrect_ext(x+offset, y+height-offset-height_ext_bot_more+offset, x+width-offset, y+height-offset, 15, 15, 0)
+			draw_roundrect_ext(x+offset, y+height-offset-height_ext_bot_more+offset, x+width-offset, y+height-offset, 17, 17, 0)
 	
 	draw_set_color(c_white) draw_set_alpha(1*image_alpha) draw_set_font(fontWindowTitle) draw_set_center()
 		draw_text_outlined(x+width/2, y+(height_ext_top/2-offset/2)/2+2, title, 2, c_black, 10, 1, 1, 0)
@@ -33,7 +33,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
     
 		if (mouseOnBody and global.dmx > pageButton_x[i] and global.dmx < pageButton_x[i]+pageButtonEdge*pageButtonWidthFactor and
 			global.dmy > pageButton_y[i] and global.dmy < pageButton_y[i]+pageButtonEdge and !is_click_blocked()) {
-		    draw_set_color(c_lime)
+		    draw_set_color(c_ltlime)
 		    mouseOnButton = i
 		}
 		else
@@ -61,7 +61,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 	draw_set_alpha(1*image_alpha)
 	if (mouseOnBody and global.dmx > button_x and global.dmx < button_x+button_width and
 		global.dmy > button_y and global.dmy < button_y+button_height and !is_click_blocked()) {
-		draw_set_color(!instance_exists(objEquipments_window) ? c_lime : c_red)
+		draw_set_color(!instance_exists(objEquipments_window) ? c_ltlime : c_red)
 		mouseOnButton = 100
 	}
 	else

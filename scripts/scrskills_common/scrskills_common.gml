@@ -1,13 +1,13 @@
 function get_skill_COMMON(_index, _upgrade) {
 	switch (_index) {
 		case SKILL_0:
-			return { name: "Skill 0", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade }
+			return { name: "Explosion", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade }
 		case SKILL_1:
-			return { name: "Skill 1", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade }
+			return { name: "Arrow", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade }
 		case SKILL_2:
-			return { name: "Skill 2", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade }
+			return { name: "Laser", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade }
 		case SKILL_3:
-			return { name: "Skill 3", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade }
+			return { name: "Speed", index: _index, sprite: get_skill_sprite(_index), upgrade: _upgrade }
 	}
 }
 
@@ -44,13 +44,13 @@ function define_skills_base_COMMON() {
 function get_skill_description_COMMON(skill) {
 	switch (skill.index) {
 		case SKILL_0:
-			return "Explosion"
+			return "[b]"+skill.name+" (+"+string(skill.upgrade)+")[/b]\nDeals [c="+string(c_fuchsia)+"]"+string(round((100+10*skill.upgrade)/100*10*100))+"% Magical[/c]\nCost: [c="+string(c_ltblue)+"]"+string(global.skill_mana_COMMON[skill.index])+" Mana[/c]\n[img="+sprite_get_name(sprClock)+"]"+string(global.skill_cooldown_max_COMMON[skill.index])
 		case SKILL_1:
-			return "Shot"
+			return "[b]"+skill.name+" (+"+string(skill.upgrade)+")[/b]"+string(global.skill_cooldown_max_COMMON[skill.index])+" secs"
 		case SKILL_2:
-			return "Laser"
+			return "[b]"+skill.name+" (+"+string(skill.upgrade)+")[/b]\nDeals [c="+string(c_fuchsia)+"]"+string(round(1/6*(100+10*skill.upgrade)/100*10*100))+"% Magical[/c]/sec\n\n[c="+string(c_grey)+"]Can be reflected[/c]\nCost: [c="+string(c_ltblue)+"]"+string(global.skill_mana_COMMON[skill.index]/global.skill_cooldown_max_COMMON[skill.index])+" Mana[/c]/sec"
 		case SKILL_3:
-			return "Speed"
+			return "[b]"+skill.name+" (+"+string(skill.upgrade)+")[/b]\n[c="+string(c_grey)+"]Be faster for "+string(global.skill_casttime_max_COMMON[SKILL_3])+" secs[/c]\nCost: [c="+string(c_teal)+"]"+string(global.skill_energy_COMMON[skill.index])+" Energy[/c]\n[img="+sprite_get_name(sprClock)+"]"+string(global.skill_cooldown_max_COMMON[skill.index])
 	}
 }
 

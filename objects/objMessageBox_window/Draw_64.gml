@@ -9,9 +9,9 @@ if (onFront and isDialogue) {
 
 draw_set_color(c_white) draw_set_alpha(mainAlpha)
 	draw_set_color(c_windowback)
-		draw_roundrect_ext(x-offset, y-offset, x+width+offset, y+height+offset, 15, 15, 0)
+		draw_roundrect_ext(x-offset, y-offset, x+width+offset, y+height+offset, 17, 17, 0)
 	draw_set_color(onFront ? c_gray : c_dkgray) draw_set_alpha(mainAlpha/9)
-		draw_roundrect_ext(x, y, x+width, y+height, 15, 15, 0)
+		draw_roundrect_ext(x, y, x+width, y+height, 17, 17, 0)
 draw_set_default() draw_set_alpha(mainAlpha)
 
 // Buttons
@@ -64,10 +64,10 @@ if (ds_size_buttons > 0) {
 		else
 			button.hover = false
 		
-		draw_roundrect_ext(buttonLocation.xx-buttonWidth/2, buttonLocation.yy-buttonHeight/2, buttonLocation.xx+buttonWidth/2, buttonLocation.yy+buttonHeight/2, 15, 15, 0)
+		draw_roundrect_ext(buttonLocation.xx-buttonWidth/2, buttonLocation.yy-buttonHeight/2, buttonLocation.xx+buttonWidth/2, buttonLocation.yy+buttonHeight/2, 17, 17, 0)
 		
 		draw_set_color(c_white) draw_set_alpha(mainAlpha)
-			draw_text_outlined(buttonLocation.xx, buttonLocation.yy, button.text, 1, c_black, 0, 0.8, 0.8, 0)
+			draw_text_outlined(buttonLocation.xx, buttonLocation.yy+2, button.text, 1, c_black, 0, 0.8, 0.8, 0)
 		if (button.image != undefined)
 			draw_sprite_ext(button.image, -1, buttonLocation.xx+buttonWidth/2-14, buttonLocation.yy, 1, 1, 0, c_white, mainAlpha)
 	}

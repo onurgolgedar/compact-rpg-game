@@ -2,17 +2,17 @@ var mouseOnBody = is_mouse_on()
 
 draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 	draw_set_color(c_windowback)
-		draw_roundrect_ext(x-offset, y-offset, x+width+offset, y+height+offset, 15, 15, 0)
+		draw_roundrect_ext(x-offset, y-offset, x+width+offset, y+height+offset, 17, 17, 0)
 	draw_set_color(onFront ? c_window : c_dkgray) draw_set_alpha(0.38*image_alpha)
-		draw_roundrect_ext(x, y+height_ext_top+offset, x+width, y+height, 15, 15, 0)
-		draw_roundrect_ext(x+offset, y+height_ext_top+offset+offset, x+width-offset, y+height-height_ext_bot-offset-height_ext_bot_more, 15, 15, 0)
+		draw_roundrect_ext(x, y+height_ext_top+offset, x+width, y+height, 17, 17, 0)
+		draw_roundrect_ext(x+offset, y+height_ext_top+offset+offset, x+width-offset, y+height-height_ext_bot-offset-height_ext_bot_more, 17, 17, 0)
 		
-		draw_roundrect_ext(x, y, x+width, y+height_ext_top/2-offset/2, 15, 15, 0)
+		draw_roundrect_ext(x, y, x+width, y+height_ext_top/2-offset/2, 17, 17, 0)
 	draw_set_alpha(1*image_alpha) draw_set_color(c_black)
 	//draw_roundrect(x-offset, y-offset, x+width+offset, y+height+offset, 1)
 	
 	draw_set_color(c_gray) draw_set_alpha(0.4*image_alpha)
-		draw_roundrect_ext(x+offset, y+height-height_ext_bot-height_ext_bot_more, x+width-offset, y+height-offset-height_ext_bot_more, 15, 15, 0)
+		draw_roundrect_ext(x+offset, y+height-height_ext_bot-height_ext_bot_more, x+width-offset, y+height-offset-height_ext_bot_more, 17, 17, 0)
 	
 	draw_set_color(c_white) draw_set_alpha(1*image_alpha) draw_set_font(fontWindowTitle) draw_set_center()
 		draw_text_outlined(x+width/2, y+(height_ext_top/2-offset/2)/2+2, title, 2, c_black, 10, 1, 1, 0)
@@ -37,7 +37,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
     
 		if (mouseOnBody and global.dmx > pageButton_x[i] and global.dmx < pageButton_x[i]+pageButtonEdge*pageButtonWidthFactor and
 			global.dmy > pageButton_y[i] and global.dmy < pageButton_y[i]+pageButtonEdge and !is_click_blocked()) {
-		    draw_set_color(c_lime)
+		    draw_set_color(c_ltlime)
 		    mouseOnButton = i
 		}
 		else
@@ -92,7 +92,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 				//draw_sprite_ext(box.skill.sprite, -1, skill_xx, skill_yy, 0.9, 0.9, 0, c_black, 0.7*image_alpha)
 				if (i != global.held_box_i or j != global.held_box_j or global.held_from_assetName != object_get_name(object_index)) 
 					draw_sprite_ext(box.skill.sprite, -1, skill_xx, skill_yy, 0.8, 0.8, 0, c_white, 1*image_alpha)
-				draw_set_center() draw_set_color(c_ltgreen)
+				draw_set_center() draw_set_color(c_ltlime)
 					if (box.skill.upgrade > 0)
 						draw_text_outlined(skill_xx+boxWidth/2-20, skill_yy, "+"+string(box.skill.upgrade), 1, c_black, 10, 1, 1, 0)
 				draw_set_default()

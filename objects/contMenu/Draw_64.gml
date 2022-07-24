@@ -9,7 +9,7 @@ draw_set_alpha(1)
 draw_set_color(c_white) draw_set_font(fontMainBold_SERVER) draw_set_alpha(0.6)
 	draw_text(1235, 120, "ACCOUNT CREATION")
 	draw_text(55, 420-300, "ONLINE/COOP PLAY")
-draw_set_color(c_lime)
+draw_set_color(c_ltlime)
 	draw_text(55, 720, "HOST A GAME")
 
 draw_set_alpha(0.35) draw_set_color(c_lime)

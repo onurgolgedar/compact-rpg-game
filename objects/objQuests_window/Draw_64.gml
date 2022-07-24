@@ -2,11 +2,11 @@ var mouseOnBody = is_mouse_on()
 
 draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 	draw_set_color(c_windowback)
-		draw_roundrect_ext(x-offset, y-offset, x+width+offset, y+height+offset, 15, 15, 0)
+		draw_roundrect_ext(x-offset, y-offset, x+width+offset, y+height+offset, 17, 17, 0)
 	draw_set_color(onFront ? c_window : c_dkgray) draw_set_alpha(0.38*image_alpha)
-		draw_roundrect_ext(x, y+height_ext_top+offset, x+width, y+height, 15, 15, 0)
+		draw_roundrect_ext(x, y+height_ext_top+offset, x+width, y+height, 17, 17, 0)
 
-		draw_roundrect_ext(x, y, x+width, y+height_ext_top/2-offset/2, 15, 15, 0)
+		draw_roundrect_ext(x, y, x+width, y+height_ext_top/2-offset/2, 17, 17, 0)
 draw_set_default() draw_set_alpha(1*image_alpha)
 
 draw_set_color(c_white) draw_set_alpha(1*image_alpha) draw_set_font(fontWindowTitle) draw_set_center()
@@ -26,7 +26,7 @@ for (var i = 0; i < pageCount; i++) {
     
 	if (mouseOnBody and global.dmx > pageButton_x[i] and global.dmx < pageButton_x[i]+pageButtonEdge*pageButtonWidthFactor and
 		global.dmy > pageButton_y[i] and global.dmy < pageButton_y[i]+pageButtonEdge and !is_click_blocked()) {
-		draw_set_color(c_lime)
+		draw_set_color(c_ltlime)
 		mouseOnButton = i
 	}
 	else
@@ -62,7 +62,7 @@ if (prepDone) {
 	
 		if (mouseOnBody and global.dmx > xx and global.dmx < xx+_width and
 			global.dmy > yy and global.dmy < yy+_height and !is_click_blocked()) {
-			draw_set_color(c_lime)
+			draw_set_color(c_ltlime)
 			mouseOnButton = 100+i
 		}
 		else
