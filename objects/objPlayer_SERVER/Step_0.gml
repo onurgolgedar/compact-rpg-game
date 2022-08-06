@@ -34,8 +34,9 @@ var r = 1+random(1)/2.5
 movspd_x *= movementSpeed*r
 movspd_y *= movementSpeed*r
 
-movspd_x *= (1-onWater/2)
-movspd_y *= (1-onWater/2)
+var slowFactor = (1-onWater/2)*(1-(attackTimer != 0)/2)
+movspd_x *= slowFactor
+movspd_y *= slowFactor
 	
 x += movspd_x*global.delta_COMMON
 y += movspd_y*global.delta_COMMON

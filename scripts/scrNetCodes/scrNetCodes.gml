@@ -20,6 +20,8 @@ function codes() {
 	#macro CODE_MOUSE_POSITION 302
 	
 	#macro CODE_BASIC_ATTACK 400
+	#macro CODE_DAMAGED 401
+	
 	#macro CODE_SKILL0 500
 	#macro CODE_SKILL1 501
 	#macro CODE_SKILL2 502

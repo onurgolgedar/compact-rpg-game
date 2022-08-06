@@ -466,6 +466,23 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					}
 				}
 				break
+				
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			
+			
+			case CODE_DAMAGED:
+				var player = global.playerInstances[? data.socketID]
+				if (player != undefined) {
+					with (player) {
+						headOffset = 9*data.value
+						var sound = sound_play_at(sndUh, x, y, false)
+						audio_sound_pitch(sound, random_range(0.9, 1.05))
+					}
+				}
+				
+				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1453,7 +1470,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 						change_energy(-15)
 	
 						attackSpeed_rem = 1/attackSpeed
-						attackTimer = attackSpeed_rem*0.6
+						attackTimer = attackSpeed_rem*BASIC_ATTACK_TRIGGER_RATIO
 						net_server_send(SOCKET_ID_ALL, CODE_BASIC_ATTACK, json_stringify({ socketID: socketID_sender, time: 1/attackSpeed }), BUFFER_TYPE_STRING)
 					}
 				break

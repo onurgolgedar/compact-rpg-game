@@ -2,7 +2,7 @@ function player_recalculate_statistics_SERVER() {
 	maxHp = 50
 	maxMana = 100
 	maxEnergy = 100
-	movementSpeed_base = 200
+	movementSpeed_base = 220
 	physicalPower = 0
 	magicalPower = 10
 	attackSpeed = 0

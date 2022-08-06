@@ -346,6 +346,7 @@ animationController = undefined
 rigidbodyParts = undefined
 rigidbodyType = -1
 
+headOffset = 0
 stance = undefined
 noArms = false
 

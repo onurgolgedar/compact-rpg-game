@@ -12,3 +12,5 @@ for (var i = 0; i < 5; i++) {
 			skill.cooldown = 0
 	}
 }
+
+audio_listener_position(x, y, 0)
