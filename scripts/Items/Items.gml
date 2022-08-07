@@ -58,6 +58,7 @@ function box_change_active(type, box_i, box_j, box_confirmation_number) {
 	if (box_i != undefined) {
 		ds_grid_set(global.boxes, type, global.bc_ver_COMMON, box)
 		ds_grid_set(global.boxes, box_i, box_j, active_box_before)
+		audio_play_sound(snditemAdded, 10, false)
 	}
 	else
 		unequip_item(active_box_before.item)
@@ -92,6 +93,7 @@ function unequip_item(item) {
 				var box = ds_grid_get(global.boxes, i, j)
 				if (box.item == undefined) {
 					box_change_position(item.type, global.bc_ver_COMMON, i, j)
+					audio_play_sound(snditemAdded, 10, false)
 					break
 				}
 			}

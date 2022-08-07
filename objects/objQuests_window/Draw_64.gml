@@ -30,7 +30,7 @@ for (var i = 0; i < pageCount; i++) {
 		mouseOnButton = i
 	}
 	else
-		draw_set_color(page-1 == i ? c_ltgray : c_dkgray)
+		draw_set_color(page-1 == i ? c_gray : c_dkgray)
      
 	var beforeColor = draw_get_color()
 	draw_set_color(c_black)
@@ -39,7 +39,7 @@ for (var i = 0; i < pageCount; i++) {
 	draw_set_color(beforeColor)	
 		draw_roundrect(pageButton_x[i], pageButton_y[i],
 		pageButton_x[i]+pageButtonEdge*pageButtonWidthFactor, pageButton_y[i]+pageButtonEdge, 0)
-	draw_set_color(c_black)
+	draw_set_color(c_white)
 	draw_set_alpha(1*image_alpha)
     
 	draw_set_center() draw_set_font(fontMain)
@@ -70,10 +70,12 @@ if (prepDone) {
 	
 		draw_set_alpha(0.4*image_alpha)
 			draw_roundrect(xx-5, yy-5, xx+_width+5, yy+5+_height, 0)
-			draw_roundrect(xx-5+2, yy-5+2, xx+_width+5-2, yy+5+_height-2, 0)
-		draw_set_alpha(1*image_alpha) draw_set_color(c_white)
+			draw_roundrect(xx-5+1, yy-5+1, xx+_width+5-1, yy+5+_height-1, 0)
+		draw_set_alpha(1*image_alpha)
 	
-		draw_text_outlined(xx, yy-2, activeQuest.title, 1, c_black, 14, 1.2, 1.2, 0)
+		draw_set_color(c_white)
+			draw_text_outlined(xx, yy-2, activeQuest.title, 1, c_black, 14, 1.2, 1.2, 0)
+		draw_set_color(c_white)
 		var shortDesc = activeQuest.shortDescription
 		if (shortDesc != undefined)
 			draw_text_outlined(xx, yy+22, shortDesc, 1, c_black, 14, 1, 1, 0)

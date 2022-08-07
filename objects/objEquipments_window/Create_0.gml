@@ -91,7 +91,7 @@ function main_loop() {
 }
 function_call_COMMON(main_loop, 1/20, true)
 
-title = "EQUIPMENTS"
+title = "EQUIPPED"
 
 boxWidth = 50
 boxHeight = 50

@@ -11,8 +11,11 @@ function main() {
 			net_client_send(_CODE_GET_EFFECTBOXES)
 		
 		// Input - Basic Attack
-		if (device_mouse_check_button(0, mb_left) and anim_end(objPlayer) and get_active_item(ITEMTYPE_SWORD) != undefined and check_gui_to_attack())
+		if (device_mouse_check_button(0, mb_left) and anim_end(objPlayer) and get_active_item(ITEMTYPE_SWORD) != undefined and check_gui_to_attack()) {
+			var sound = sound_play_at(sndSwordSwing, objPlayer.x, objPlayer.y, false)
+			audio_sound_pitch(sound, random_range(0.85, 1.05))
 			net_client_send(_CODE_BASIC_ATTACK, json_stringify({ xx: mouse_x, yy: mouse_y }), BUFFER_TYPE_STRING, true)
+		}
 	
 		// Input - Skills
 		if (keyboard_check(ord("1")))

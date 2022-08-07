@@ -37,7 +37,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 		    mouseOnButton = i
 		}
 		else
-			draw_set_color(page-1 == i ? c_ltgray : c_dkgray)
+			draw_set_color(page-1 == i ? c_gray : c_dkgray)
      
 		var beforeColor = draw_get_color()
 		draw_set_color(c_black)
@@ -46,7 +46,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 		draw_set_color(beforeColor)	
 			draw_roundrect(pageButton_x[i], pageButton_y[i],
 			pageButton_x[i]+pageButtonEdge*pageButtonWidthFactor, pageButton_y[i]+pageButtonEdge, 0)
-		draw_set_color(c_black)
+		draw_set_color(c_white)
 		draw_set_alpha(1*image_alpha)
     
 		draw_set_center() draw_set_font(fontMain)
@@ -61,28 +61,32 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 	draw_set_alpha(1*image_alpha)
 	if (mouseOnBody and global.dmx > button_x and global.dmx < button_x+button_width and
 		global.dmy > button_y and global.dmy < button_y+button_height and !is_click_blocked()) {
-		draw_set_color(!instance_exists(objEquipments_window) ? c_ltlime : c_red)
+		draw_set_color(!instance_exists(objEquipments_window) ? make_color_rgb(40, 200, 40) : make_color_rgb(200, 40, 40))
 		mouseOnButton = 100
 	}
 	else
-		draw_set_color(c_dkgray)
-	beforeColor = draw_get_color()
-	draw_set_color(c_black)
-		draw_roundrect(button_x-2, button_y-2,
-		button_x+button_width+2, button_y+button_height+2, 0)
-	draw_set_color(beforeColor)	
-		draw_roundrect(button_x, button_y,
-		button_x+button_width, button_y+button_height, 0)
-	draw_set_color(c_black)
-	draw_set_alpha(1*image_alpha)
+		draw_set_color(make_color_rgb(20, 100, 20))
+		
+	if (!instance_exists(objEquipments_window)) {
+		beforeColor = draw_get_color()
+	
+		draw_set_color(c_black)
+			draw_roundrect(button_x-2, button_y-2,
+			button_x+button_width+2, button_y+button_height+2, 0)
+		draw_set_color(beforeColor)	
+			draw_roundrect(button_x, button_y,
+			button_x+button_width, button_y+button_height, 0)
+		draw_set_color(c_white)
+		draw_set_alpha(1*image_alpha)
 
 	
-	draw_set_center() draw_set_font(fontMain)
-		draw_text(button_x+button_width/2, button_y+button_height/2+2, "Equipments")
-	
-		draw_sprite(sprCoin, -1, x+width-offset-100, button_y+button_height/2+2)
+		draw_set_center() draw_set_font(fontMain)
+			draw_text(button_x+button_width/2, button_y+button_height/2+2, "Equipments")
+	}
 	draw_set_default()
-	draw_text(x+width-offset-85, button_y+3, real(global.gold))
+	
+	draw_sprite(sprCoin, -1, x+width-offset-100, button_y+button_height/2+2)
+	draw_text(x+width-offset-85, button_y+3, global.gold)
 	
 	for (var i = global.bc_hor_COMMON*(page-1); i < global.bc_hor_COMMON*page; i++) {
 		for (var j = 0; j < global.bc_ver_COMMON; j++) {

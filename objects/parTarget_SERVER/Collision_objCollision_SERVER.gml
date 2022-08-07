@@ -22,9 +22,9 @@ if ((spd_res.xx == 0 and spd_res.yy == 0)
 		var dir2 = point_direction(0, 0, other.dir.xx, other.dir.yy)
 		
 		if (abs(angle_difference(dir1, dir2)) > 90) {
-			for (var len = 1; len < 200; len++) {
-				var xx = len*other.dir.xx*14
-				var yy = len*other.dir.yy*14
+			for (var len = 1; len < 500; len++) {
+				var xx = len*other.dir.xx*10
+				var yy = len*other.dir.yy*10
 			
 				var k = _spd.xx+xx
 				var t = _spd.yy+yy
@@ -37,16 +37,16 @@ if ((spd_res.xx == 0 and spd_res.yy == 0)
 			}
 		}
 		else {
-			for (var len = 1; len < 200; len++) {
-				var xx = len*other.dir.xx*14
-				var yy = len*other.dir.yy*14
+			for (var len = 1; len < 500; len++) {
+				var xx = len*other.dir.xx*10
+				var yy = len*other.dir.yy*10
 			
 				var k = _spd.xx-xx
 				var t = _spd.yy-yy
 				var dir3 = point_direction(0, 0, k, t)
 			
 				if (abs(angle_difference(dir2, dir3)) > 90)  {
-					spds[?_spds_keys[i]] = { xx: k+xx, yy: t+yy }	
+					spds[?_spds_keys[i]] = { xx: k+other.dir.xx*5*elasticity, yy: t+other.dir.yy*5*elasticity }	
 					break
 				}
 			}

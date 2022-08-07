@@ -32,7 +32,7 @@ function get_box_positions(i, j) {
 	var _yy_start = 3*offset+height_ext_top+y+j*(boxHeight+boxBetween)
 	var _yy_end = 3*offset+height_ext_top+y+(j+1)*boxHeight+j*boxBetween
 	
-	return {xx_start: _xx_start, yy_start: _yy_start, xx_end: _xx_end, yy_end: _yy_end, xx_center: (_xx_start+_xx_end)/2, yy_center: (_yy_start+_yy_end)/2}
+	return { xx_start: _xx_start, yy_start: _yy_start, xx_end: _xx_end, yy_end: _yy_end, xx_center: (_xx_start+_xx_end)/2, yy_center: (_yy_start+_yy_end)/2 }
 }
 
 function main_loop() {
@@ -72,8 +72,10 @@ function main_loop() {
 		boxFocused_j = undefined
 	}
 	
-	if (global.held_box != undefined and mouseOnButton < pageCount)
+	if (global.held_box != undefined and mouseOnButton < pageCount) {
 		page = mouseOnButton+1
+		audio_play_sound(sndMenuTick, 1, 0)
+	}
 
 	height_ext_bot_more = !instance_exists(objinventory_window)*42
 	height = global.bc_ver_COMMON*boxHeight+(global.bc_ver_COMMON-1)*boxBetween+offset*2+height_ext_bot+offset+height_ext_bot_more+offset+height_ext_top+offset

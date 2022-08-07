@@ -15,11 +15,15 @@ if (is_mouse_on() and !is_click_blocked()) {
 		}
 	}
 	
-	if (global.held_box != undefined)
+	if (global.held_box != undefined) {
+		event_inherited()
 		exit
+	}
 		
-	if (mouseOnButton < pageCount)
+	if (mouseOnButton < pageCount) {
 		page = mouseOnButton+1
+		audio_play_sound(sndMenuTick, 1, 0)
+	}
 	else {
 		if (mouseOnButton >= 2000000) {
 			var ii = floor(mouseOnButton-2000000)
@@ -28,6 +32,7 @@ if (is_mouse_on() and !is_click_blocked()) {
 			var box = ds_grid_get(boxes, ii, jj)
 			box.skill.upgrade--
 			global.skillPoints++
+			audio_play_sound(sndMenuTick, 1, 0)
 		}
 		else if (mouseOnButton >= 1000000) {
 			var ii = floor(mouseOnButton-1000000)
@@ -36,6 +41,7 @@ if (is_mouse_on() and !is_click_blocked()) {
 			var box = ds_grid_get(boxes, ii, jj)
 			box.skill.upgrade++
 			global.skillPoints--
+			audio_play_sound(sndMenuTick, 1, 0)
 		}
 	}
 }

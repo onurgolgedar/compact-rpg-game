@@ -88,20 +88,22 @@ function main_loop() {
 		boxFocused_j = undefined
 	}
 	
-	if (global.held_box != undefined and mouseOnButton < pageCount)
+	if (global.held_box != undefined and mouseOnButton < pageCount) {
 		page = mouseOnButton+1
+		audio_play_sound(sndMenuTick, 1, 0)
+	}
 
 	function_call_COMMON(main_loop, 1/20, true)
 }
 function_call_COMMON(main_loop, 1/20, true)
 
-title = "SKILLS"
+title = "SPECIAL ABILITIES"
 pageCount = global.pageCount_skill_COMMON
 page = 1
 
 boxWidth = 60
-boxHeight = 40
-boxBetween = 18 
+boxHeight = 42
+boxBetween = 19 
 	
 boxFocused = undefined
 boxFocused_textbox = undefined

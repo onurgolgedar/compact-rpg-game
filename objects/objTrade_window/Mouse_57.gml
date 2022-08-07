@@ -23,5 +23,8 @@ if (is_mouse_on() and !is_click_blocked()) {
 	if (!onBox)
 		exit
 		
+	if (global.gold >= onBox_box.item.worth)
+		audio_play_sound(snditemAdded, 10, false)
+		
 	net_client_send(_CODE_BUY, json_stringify({ type: onBox_box.item.type, i: onBox_i, j: onBox_j, confirmation: box_get_confirmation_number_COMMON(onBox_box), npcID: owner.npcID, target_i: undefined, target_j: undefined, isLoot: 0 }), BUFFER_TYPE_STRING)
 }

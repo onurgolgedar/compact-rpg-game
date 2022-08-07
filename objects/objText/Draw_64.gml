@@ -1,6 +1,6 @@
 if (surface != undefined) {
 	if (hasBackground) {
-		draw_set_alpha(0.9) draw_set_color(make_color_rgb(15, 15, 15))
+		draw_set_alpha(0.94) draw_set_color(make_color_rgb(15, 15, 15))
 			draw_roundrect_ext(x, y+2, x+width, y+height, 18, 18, false)
 		draw_set_color(c_black) draw_set_alpha(1)
 	}

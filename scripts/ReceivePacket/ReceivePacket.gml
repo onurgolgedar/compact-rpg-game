@@ -1129,7 +1129,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 						if (skills[i] != undefined and skills[i].index == skill_index) {
 							foundI = i
 							if (skills[i].casttime == undefined) {
-								if (data.from != -1 and skills[data.from] != undefined and skills[data.to] != undefined) {
+								if (data.from != -1 and data.to != -1 and skills[data.from] != undefined and skills[data.to] != undefined) {
 									var other_skill_index = skills[data.to].index
 									
 									skills[data.from] =

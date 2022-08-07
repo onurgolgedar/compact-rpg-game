@@ -17,8 +17,8 @@ function main_loop_t() {
 				continue
 			}
 		    else {
-		        effectBox.stack -= 1
-				effectBox_destroyed_SERVER(effectBox)
+		        effectBox.stackCount -= 1
+				effectBox_destroy_SERVER(effectBox)
 		        effectBox.time = effectBox.maxTime
 		    }
 		}
@@ -42,6 +42,7 @@ level = 1
 attackTimer = 0
 attackSpeed_rem = attackSpeed
 
+elasticity = 0.5
 spds = ds_map_create()
 spd = { xx: 0, yy: 0 }
 spd_res = { xx: 0, yy: 0 }

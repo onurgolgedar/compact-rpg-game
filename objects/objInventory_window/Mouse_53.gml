@@ -18,14 +18,17 @@ if (is_mouse_on() and !is_click_blocked()) {
 	if (global.held_box != undefined)
 		exit
 		
-	if (mouseOnButton < pageCount)
+	if (mouseOnButton < pageCount) {
 		page = mouseOnButton+1
+		audio_play_sound(sndMenuTick, 1, 0)
+	}
 		
 	if (mouseOnButton == 100) {
 		if (!instance_exists(objEquipments_window))
 			instance_create_layer(x+width+20, y+height+30, "Windows", objEquipments_window)
 		else
 			instance_destroy(objEquipments_window)
+		audio_play_sound(sndWindowTick, 0, false)
 	}
 }
 

@@ -30,7 +30,7 @@ for (var i = 0; i < ds_size; i++) {
 	
 	var fric_dir = point_direction(0, 0, _spd.xx, _spd.yy)+180
 	var fric_amb = 60
-	var fric = {xx: lengthdir_x(fric_amb, fric_dir), yy: lengthdir_y(fric_amb, fric_dir)}
+	var fric = { xx: lengthdir_x(fric_amb, fric_dir), yy: lengthdir_y(fric_amb, fric_dir) }
 	_spd.xx = _spd.xx+fric.xx
 	_spd.yy = _spd.yy+fric.yy
 	if (abs(_spd.xx) < fric_amb)

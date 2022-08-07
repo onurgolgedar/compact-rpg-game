@@ -72,8 +72,10 @@ function main_loop() {
 		boxFocused_j = undefined
 	}
 	
-	if (global.held_box != undefined and mouseOnButton < pageCount)
+	if (global.held_box != undefined and mouseOnButton < pageCount) {
 		page = mouseOnButton+1
+		audio_play_sound(sndMenuTick, 1, 0)
+	}
 
 	function_call_COMMON(main_loop, 1/20, true)
 }
