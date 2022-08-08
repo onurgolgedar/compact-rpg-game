@@ -16,7 +16,7 @@ if (is_mouse_on() and !is_click_blocked()) {
 	}
 	
 	if (global.held_box != undefined) {
-		event_inherited()
+		event_perform(ev_other, ev_user0)
 		exit
 	}
 		
