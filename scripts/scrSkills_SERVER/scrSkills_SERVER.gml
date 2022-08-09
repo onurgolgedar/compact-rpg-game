@@ -24,7 +24,7 @@ function cast_skill(skill_index, instance) {
 				change_mana(-skill.mana)
 			
 				if (skill.object != undefined) {
-					skill_object = instance_create_depth(x, y, 0, skill.object)
+					skill_object = instance_create_depth(x, y, 0, asset_get_index(skill.object))
 					skill_object.owner = instance
 					skill_object.skill = skill
 				}

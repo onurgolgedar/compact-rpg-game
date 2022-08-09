@@ -3,5 +3,5 @@ function GameConstants_SERVER() {
 	#macro CLASS_ASSASSIN_SERVER "A"
 	#macro CLASS_MAGE_SERVER "M"
 	
-	#macro BASIC_ATTACK_TRIGGER_RATIO 0.6
+	#macro BASIC_ATTACK_TRIGGER_RATIO 0.4
 }

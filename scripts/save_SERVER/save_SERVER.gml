@@ -40,6 +40,7 @@ function save_SERVER() {
 		var ds_size2 = array_length(_skillBoxes_keys)
 		for (var k = 0; k < ds_size2; k++) {
 			var key = _skillBoxes_keys[k]
+			var skillBox = skillBoxes_SERVER[? key]
 			ds_map_add(_map_skillBoxes, key, json_stringify(skillBoxes_SERVER[? key]))
 		}
 		

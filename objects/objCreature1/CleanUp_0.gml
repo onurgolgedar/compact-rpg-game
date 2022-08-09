@@ -1,3 +1,3 @@
 event_inherited()
 
-ds_map_set(global.creatureInstances, npcID, undefined)
+ds_map_set(global.npcInstances, npcID, undefined)

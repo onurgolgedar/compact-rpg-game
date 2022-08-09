@@ -11,7 +11,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 	draw_set_alpha(1*image_alpha) draw_set_color(c_black)
 	//draw_roundrect(x-offset, y-offset, x+width+offset, y+height+offset, 1)
 		
-	draw_set_color(c_white) draw_set_alpha(0.4*image_alpha)
+	draw_set_color(c_ivory) draw_set_alpha(0.4*image_alpha)
 		if (height_ext_bot != 0)
 			draw_roundrect_ext(x+offset, y+height-height_ext_bot-height_ext_bot_more, x+width-offset, y+height-offset-height_ext_bot_more, 17, 17, 0)
 		if (height_ext_bot_more != 0)
@@ -61,11 +61,11 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 	draw_set_alpha(1*image_alpha)
 	if (mouseOnBody and global.dmx > button_x and global.dmx < button_x+button_width and
 		global.dmy > button_y and global.dmy < button_y+button_height and !is_click_blocked()) {
-		draw_set_color(!instance_exists(objEquipments_window) ? make_color_rgb(40, 200, 40) : make_color_rgb(200, 40, 40))
+		draw_set_color(c_ltlime)
 		mouseOnButton = 100
 	}
 	else
-		draw_set_color(make_color_rgb(20, 100, 20))
+		draw_set_color(c_dkgray)
 		
 	if (!instance_exists(objEquipments_window)) {
 		beforeColor = draw_get_color()
@@ -85,8 +85,11 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 	}
 	draw_set_default()
 	
+	draw_sprite_ext(sprCoin, -1, x+width-offset-100, button_y+button_height/2+2, 1.05, 1.05, 0, c_black, image_alpha)
 	draw_sprite(sprCoin, -1, x+width-offset-100, button_y+button_height/2+2)
-	draw_text(x+width-offset-85, button_y+3, global.gold)
+	draw_set_color(c_gold)
+	draw_text_outlined(x+width-offset-85, button_y+2, global.gold, 2, c_black, 10, 1, 1, 0)
+	draw_set_color(c_black)
 	
 	for (var i = global.bc_hor_COMMON*(page-1); i < global.bc_hor_COMMON*page; i++) {
 		for (var j = 0; j < global.bc_ver_COMMON; j++) {

@@ -42,11 +42,6 @@ level = 1
 attackTimer = 0
 attackSpeed_rem = attackSpeed
 
-elasticity = 0.5
-spds = ds_map_create()
-spd = { xx: 0, yy: 0 }
-spd_res = { xx: 0, yy: 0 }
-
 effectBoxes = ds_list_create()
 
 hp = maxHp
@@ -56,3 +51,5 @@ energy = maxEnergy
 onWater = false
 
 visible = global.drawServer
+
+event_inherited()

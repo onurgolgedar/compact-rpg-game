@@ -232,7 +232,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			case CODE_EFFECT_LASER:
 				var target = global.playerInstances[? data]
 				if (target == undefined)
-					target = global.creatureInstances[? data]
+					target = global.npcInstances[? data]
 		
 				if (target != undefined) {
 					with (target) {
@@ -249,7 +249,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			case CODE_KILL:
 				var target = global.playerInstances[? data]
 				if (target == undefined)
-					target = global.creatureInstances[? data]
+					target = global.npcInstances[? data]
 		
 				if (target != undefined)
 					instance_destroy(target)
@@ -302,7 +302,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			case CODE_SLIDING_TEXT:
 				var target = global.playerInstances[? data.socketID]
 				if (target == undefined)
-					target = global.creatureInstances[? data.socketID]
+					target = global.npcInstances[? data.socketID]
 		
 				if (target != undefined)
 					with (target) {
@@ -473,9 +473,12 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			
 			
 			case CODE_DAMAGED:
-				var player = global.playerInstances[? data.socketID]
-				if (player != undefined) {
-					with (player) {
+				var target = global.playerInstances[? data.targetID]
+				if (target == undefined)
+					target = global.npcInstances[? data.targetID]
+					
+				if (target != undefined) {
+					with (target) {
 						headOffset = 9*data.value
 						var sound = sound_play_at(sndUh, x, y, false)
 						audio_sound_pitch(sound, random_range(0.9, 1.05))
@@ -596,19 +599,19 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			case CODE_SPAWN_NPC:
 				var _npcID = data.npcID
 		
-				var creature = instance_create_layer(data.xx, data.yy, "Normal", asset_get_index(data.clientObject))
-				creature.npcID = _npcID
-				creature.maxHp = data.maxHp
-				creature.maxEnergy = data.maxEnergy
-				creature.maxMana = data.maxMana
+				var target = instance_create_layer(data.xx, data.yy, "Normal", asset_get_index(data.clientObject))
+				target.npcID = _npcID
+				target.maxHp = data.maxHp
+				target.maxEnergy = data.maxEnergy
+				target.maxMana = data.maxMana
 
-				creature.hp = creature.maxHp
-				creature.energy = creature.maxEnergy
-				creature.mana = creature.maxMana
-				creature.rigidbody_set_definedstance(STANCE_NORMAL, 0.5)
-				creature.name = data.name
+				target.hp = target.maxHp
+				target.energy = target.maxEnergy
+				target.mana = target.maxMana
+				target.rigidbody_set_definedstance(STANCE_NORMAL, 0.5)
+				target.name = data.name
 				
-				ds_map_set(global.creatureInstances, _npcID, creature)
+				ds_map_set(global.npcInstances, _npcID, target)
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -982,7 +985,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 									if (value[? keys[k]].casttime == pointer_null)
 										value[? keys[k]].casttime = undefined	
 									if (value[? keys[k]].casttimemax == pointer_null)
-										value[? keys[k]].casttimemax = undefined		
+										value[? keys[k]].casttimemax = undefined	
 								}
 							}
 							
@@ -1970,10 +1973,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			case CODE_TELL_NPC_POSITION:
 				var npcID = data.npcID
 		
-				var creature = global.creatureInstances[? npcID]
-				if (creature != undefined) {
-					creature.x = data.xx
-					creature.y = data.yy
+				var target = global.npcInstances[? npcID]
+				if (target != undefined) {
+					target.x = data.xx
+					target.y = data.yy
 				}
 				break
 		
@@ -2008,10 +2011,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_NPC_HP:
-				var creature = global.creatureInstances[? data.npcID]
+				var target = global.npcInstances[? data.npcID]
 			
-				if (creature != undefined)
-					creature.hp = data.hp
+				if (target != undefined)
+					target.hp = data.hp
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -2030,10 +2033,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_NPC_MANA:
-				var creature = global.creatureInstances[? data.npcID]
+				var target = global.npcInstances[? data.npcID]
 			
-				if (creature != undefined)
-					creature.mana = data.mana
+				if (target != undefined)
+					target.mana = data.mana
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -2068,10 +2071,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_NPC_ENERGY:
-				var creature = global.creatureInstances[? data.npcID]
+				var target = global.npcInstances[? data.npcID]
 			
-				if (creature != undefined)
-					creature.energy = data.energy
+				if (target != undefined)
+					target.energy = data.energy
 				break
 		
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -2090,10 +2093,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_NPC_ROTATION:
-				var creature = global.creatureInstances[? data.npcID]
+				var target = global.npcInstances[? data.npcID]
 			
-				if (creature != undefined)
-					creature.image_angle_target = data.angle
+				if (target != undefined)
+					target.image_angle_target = data.angle
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //

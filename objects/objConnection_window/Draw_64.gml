@@ -58,13 +58,17 @@ for (var i = 0; i < pageCount; i++) {
 if (page == 1) {
 	var between = 30
 	
-	draw_set_alpha(0.2*image_alpha)
+	draw_set_alpha(0.1*image_alpha)
 		draw_roundrect(x+offset+1, y+height_ext_top+offset+offset+18-7, x+width-offset-2, y+height_ext_top+offset+offset+18+10, 0)
 	
 		draw_roundrect(x+offset+2, y+height_ext_top+offset+offset+18-6, x+width-offset-3, y+height_ext_top+offset+offset+18+9, 0)
 	draw_set_alpha(1*image_alpha)
 	
 	draw_set_valign(fa_center)
+	draw_set_alpha(0.15*image_alpha)
+		draw_roundrect(x+offset+1, y+height_ext_top+offset+offset+18-7, x+width-offset-2, y+height_ext_top+offset+offset+18+10, 0)
+	draw_set_alpha(1*image_alpha)
+	
 	draw_set_color(c_white)
 		draw_text_outlined(x+offset+5, y+height_ext_top+offset+offset+18, "CO-OP ID", 1, c_black, 10, 1, 1, 0)
 	draw_set_color(c_ltgray) draw_set_halign(fa_right)

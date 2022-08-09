@@ -1,6 +1,6 @@
 counter = 0
 function main() {
-	function_call_COMMON(main, 1/20, true)
+	function_call_COMMON(main, 1/200, true)
 	
 	if (is_alive() and !objPlayer.stunned and global.socket_CLIENT != undefined) {
 		// Data Transfer
@@ -42,4 +42,4 @@ function main() {
 	counter++
 }
 
-function_call_COMMON(main, 1/20, true)
+function_call_COMMON(main, 1/200, true)

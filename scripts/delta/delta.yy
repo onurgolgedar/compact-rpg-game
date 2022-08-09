@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Basic",
-    "path": "folders/CLIENT/3- Scripts/Basic.yy",
+    "name": "3- Scripts",
+    "path": "folders/COMMON/3- Scripts.yy",
   },
   "resourceVersion": "1.0",
   "name": "delta",

@@ -36,7 +36,7 @@ global.delta_COMMON = delta()
 global.clientName = ""
 global.playerNames = ds_map_create()
 global.playerInstances = ds_map_create()
-global.creatureInstances = ds_map_create()
+global.npcInstances = ds_map_create()
 global.activeQuests_player = ds_map_create()
 
 global.period = 0

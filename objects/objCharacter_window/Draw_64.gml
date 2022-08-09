@@ -62,7 +62,7 @@ for (var i = 0; i < pageCount; i++) {
 if (page == 1) {
 	var between = 30
 	draw_set_valign(fa_center)
-	draw_set_alpha(0.2*image_alpha)
+	draw_set_alpha(0.15*image_alpha)
 		draw_roundrect(x+offset+1, y+height_ext_top+offset+offset+18-7, x+width-offset-2, y+height_ext_top+offset+offset+18+10, 0)
 		draw_roundrect(x+offset+1, y+height_ext_top+offset+offset+18+between-7, x+width-offset-2, y+height_ext_top+offset+offset+between+18+10, 0)
 		draw_roundrect(x+offset+1, y+height_ext_top+offset+offset+18+between*2-7, x+width-offset-2, y+height_ext_top+offset+offset+between*2+18+10, 0)
@@ -93,12 +93,16 @@ if (page == 1) {
 		draw_text_outlined(x+offset+5, y+height_ext_top+offset+offset+18+between*2, "LEVEL", 1, c_black, 10, 0.9, 0.9, 0)
 	
 		with (objPlayer) {
+			draw_sprite(sprPhysicalPowerLogo, -1, other.x+other.width-other.offset-12, other.y+other.height-18-between*4)
 			draw_text_outlined(other.x+other.offset+5, other.y+other.height-18-between*4, "PHY POWER", 1, c_black, 10, 0.9, 0.9, 0)
+			draw_sprite(sprAttackSpeedLogo, -1, other.x+other.width-other.offset-12, other.y+other.height-18-between*3)
 			draw_text_outlined(other.x+other.offset+5, other.y+other.height-18-between*3, "ATTACK SPEED", 1, c_black, 10, 0.9, 0.9, 0)
+			draw_sprite(sprMagicalPowerLogo, -1, other.x+other.width-other.offset-12, other.y+other.height-18-between*2)
 			draw_text_outlined(other.x+other.offset+5, other.y+other.height-18-between*2, "MAG POWER", 1, c_black, 10, 0.9, 0.9, 0)
+			draw_sprite(sprSpeedLogo, -1, other.x+other.width-other.offset-12, other.y+other.height-18-between)
 			draw_text_outlined(other.x+other.offset+5, other.y+other.height-18-between, "MOVEMENT", 1, c_black, 10, 0.9, 0.9, 0)
 		}
-		draw_text_outlined(x+offset+5, y+height-18, "GOLD", 2, c_black, 10, 0.9, 0.9, 0)
+		draw_text_outlined(x+offset+5, y+height-18, "GOLD", 1, c_black, 10, 0.9, 0.9, 0)
 		draw_set_halign(fa_right) draw_set_font(fontMain)
 	
 		if (global.clientName != undefined) {
@@ -108,12 +112,16 @@ if (page == 1) {
 		}
 	
 		with (objPlayer) {
-			draw_text_outlined(other.x+other.width-other.offset-10, other.y+other.height-18-between*4, string(physicalPower), 1, c_black, 10, 0.87, 0.87, 0)
-			draw_text_outlined(other.x+other.width-other.offset-10, other.y+other.height-18-between*3, string(attackSpeed)+"h/s", 1, c_black, 10, 0.87, 0.87, 0)
-			draw_text_outlined(other.x+other.width-other.offset-10, other.y+other.height-18-between*2, string(magicalPower), 1, c_black, 10, 0.87, 0.87, 0)
-			draw_text_outlined(other.x+other.width-other.offset-10, other.y+other.height-18-between, string(movementSpeed/10), 1, c_black, 10, 0.87, 0.87, 0)
+			draw_text_outlined(other.x+other.width-other.offset-10-16, other.y+other.height-18-between*4, string(physicalPower), 1, c_black, 10, 0.87, 0.87, 0)
+			draw_text_outlined(other.x+other.width-other.offset-10-16, other.y+other.height-18-between*3, string(attackSpeed)+"h/s", 1, c_black, 10, 0.87, 0.87, 0)
+			draw_text_outlined(other.x+other.width-other.offset-10-16, other.y+other.height-18-between*2, string(magicalPower), 1, c_black, 10, 0.87, 0.87, 0)
+			draw_text_outlined(other.x+other.width-other.offset-10-16, other.y+other.height-18-between, string(movementSpeed/10), 1, c_black, 10, 0.87, 0.87, 0)
 		}
-		draw_text_outlined(x+width-offset-10, y+height-18, global.gold, 1, c_black, 10, 0.9, 0.9, 0)
+		draw_set_color(c_gold)
+		
+		draw_sprite_ext(sprCoin, -1, x+width-offset-12, y+height-18-1, 1.05, 1.05, 0, c_black, image_alpha)
+		draw_sprite(sprCoin, -1, x+width-offset-12, y+height-18-1)
+		draw_text_outlined(x+width-offset-10-16, y+height-18, global.gold, 2, c_black, 10, 0.87, 0.87, 0)
 	draw_set_default()
 }
 

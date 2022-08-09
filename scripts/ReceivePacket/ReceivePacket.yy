@@ -6,7 +6,7 @@
     "path": "folders/COMMON/3- Scripts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "ReceivePacket",
+  "name": "receivepacket",
   "tags": [],
   "resourceType": "GMScript",
 }

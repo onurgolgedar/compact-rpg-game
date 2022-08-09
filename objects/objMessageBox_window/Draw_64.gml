@@ -67,7 +67,7 @@ if (ds_size_buttons > 0) {
 		draw_roundrect_ext(buttonLocation.xx-buttonWidth/2, buttonLocation.yy-buttonHeight/2, buttonLocation.xx+buttonWidth/2, buttonLocation.yy+buttonHeight/2, 17, 17, 0)
 		
 		draw_set_color(c_white) draw_set_alpha(mainAlpha)
-			draw_text_outlined(buttonLocation.xx, buttonLocation.yy+2, button.text, 1, c_black, 0, 0.8, 0.8, 0)
+			draw_text_outlined(buttonLocation.xx, buttonLocation.yy+2, button.text, 1, c_black, 10, 0.8, 0.8, 0)
 		if (button.image != undefined)
 			draw_sprite_ext(button.image, -1, buttonLocation.xx+buttonWidth/2-14, buttonLocation.yy, 1, 1, 0, c_white, mainAlpha)
 	}

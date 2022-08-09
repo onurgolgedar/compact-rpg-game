@@ -96,7 +96,7 @@ if (is_alive()) {
 			
 			if (name != undefined) {
 				draw_set_font(fontName) draw_set_color(c_ltgray)
-					draw_text_outlined(sx, sy-75, name, 2, c_black, 10, 0.8, 0.8, 0)
+					draw_text_outlined(sx, sy-75, name, 2, c_black, 10, 0.88, 0.88, 0)
 				draw_set_default()
 			}
 			
@@ -214,7 +214,14 @@ draw_sprite_ext(sprinventoryLogo, -1, logo_inventory_x, logo_height, 1, 1, 0, c_
 draw_sprite_ext(sprWindowLogoBack, mouseOnQLogo, logo_quest_x, logo_height, 1, 1, 0, c_white, 1)
 draw_sprite_ext(sprQuestLogo, -1, logo_quest_x, logo_height, 1, 1, 0, c_white, 1)
 	
-draw_set_alpha(0.5) draw_set_color(c_white)
+draw_set_alpha(0.25) draw_set_color(c_dkgray)
+	draw_roundrect_ext(display_get_gui_width()-400, display_get_gui_height()-170, display_get_gui_width()-40, display_get_gui_height()-20, 12, 12, 0)
+draw_set_alpha(1)
+
+draw_set_color(c_white)
+	draw_text_transformed(display_get_gui_width()-400+10, display_get_gui_height()-170+10, "Chat", 1, 1, 0)
+	
+draw_set_alpha(0.5) 
 	draw_text_transformed(76, display_get_gui_height()-28, "FPS: "+string(fps)+"/"+string(room_speed), 0.7, 0.7, 0)
 	draw_text_transformed(76, display_get_gui_height()-48, "Ping: "+string(global.ping_udp), 0.7, 0.7, 0)
 	draw_text_transformed(76, display_get_gui_height()-68, "Received Errors: "+string(global.networkErrors_count), 0.7, 0.7, 0)

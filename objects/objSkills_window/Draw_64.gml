@@ -11,14 +11,16 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 	draw_set_alpha(1*image_alpha) draw_set_color(c_black)
 	//draw_roundrect(x-offset, y-offset, x+width+offset, y+height+offset, 1)
 	
-	draw_set_color(c_white) draw_set_alpha(0.4*image_alpha)
+	draw_set_color(c_ivory) draw_set_alpha(0.4*image_alpha)
 		draw_roundrect_ext(x+offset, y+height-height_ext_bot-height_ext_bot_more, x+width-offset, y+height-offset-height_ext_bot_more, 17, 17, 0)
 	
 	draw_set_color(c_white) draw_set_alpha(1*image_alpha) draw_set_font(fontWindowTitle) draw_set_center()
 		draw_text_outlined(x+width/2, y+(height_ext_top/2-offset/2)/2+2, title, 2, c_black, 10, 1, 1, 0)
 	draw_set_default()
 		
-	draw_text(x+width-offset-35, y+height-offset-height_ext_bot/2+3-13, global.skillPoints)
+	draw_set_color(global.skillPoints > 0 ? c_lime : c_ltgray)
+	draw_sprite_ext(sprSkillPointsLogo, -1, x+width-offset-35-16, y+height-offset-height_ext_bot/2+3-13+13, 1, 1, 0, global.skillPoints > 0 ? c_lime : c_gray, image_alpha)
+	draw_text_outlined(x+width-offset-35, y+height-offset-height_ext_bot/2+3-13, global.skillPoints, 2, c_black, 10, 1, 1, 0)
 	
 	mouseOnButton = undefined
 	
@@ -88,10 +90,10 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 					draw_roundrect(box_positions.xx_start+4, box_positions.yy_start-4,
 					box_positions.xx_end-4, box_positions.yy_end+4, 0)
 				if (!onFront) {
-					draw_set_color(c_black) draw_set_alpha(0.25*image_alpha)
+					draw_set_color(c_black) draw_set_alpha(0.1*image_alpha)
 						draw_roundrect(box_positions.xx_end-2, box_positions.yy_start-4,
 						box_positions.xx_end-4+90, box_positions.yy_end+4, 0)
-					draw_set_color(c_black) draw_set_alpha(0.25*image_alpha)
+					draw_set_color(c_black) draw_set_alpha(0.1*image_alpha)
 						draw_roundrect(box_positions.xx_start+4, box_positions.yy_start-4,
 						box_positions.xx_end-4, box_positions.yy_end+4, 0)
 				}

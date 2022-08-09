@@ -11,7 +11,7 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 	draw_set_alpha(1*image_alpha) draw_set_color(c_black)
 	//draw_roundrect(x-offset, y-offset, x+width+offset, y+height+offset, 1)
 		
-	draw_set_color(c_white) draw_set_alpha(0.4*image_alpha)
+	draw_set_color(c_ivory) draw_set_alpha(0.4*image_alpha)
 		if (height_ext_bot != 0)
 			draw_roundrect_ext(x+offset, y+height-height_ext_bot-height_ext_bot_more, x+width-offset, y+height-offset-height_ext_bot_more, 17, 17, 0)
 		if (height_ext_bot_more != 0)
@@ -55,8 +55,11 @@ draw_set_color(c_white) draw_set_alpha(0.9*image_alpha)
 	}
 
 	if (!instance_exists(objinventory_window)) {
+		draw_sprite_ext(sprCoin, -1, x+offset+20, y+height-offset-height_ext_bot_more+offset*2+15+2, 1.05, 1.05, 0, c_black, image_alpha)
 		draw_sprite(sprCoin, -1, x+offset+20, y+height-offset-height_ext_bot_more+offset*2+15+2)
-		draw_text(x+offset+20+15, y+height-offset-height_ext_bot_more+offset*2+5, real(global.gold))
+		draw_set_color(c_gold)
+			draw_text_outlined(x+offset+20+15, y+height-offset-height_ext_bot_more+offset*2+5, global.gold, 2, c_black, 10, 1, 1, 0)
+		draw_set_color(c_black)
 	}
 	
 	for (var i = global.bc_hor_COMMON*(page-1); i < global.bc_hor_COMMON*page; i++) {
