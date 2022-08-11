@@ -1,7 +1,7 @@
 lighting_global()
 
 global.lighting = false
-global.ambientShadowIntensity = 0.5
+global.ambientShadowIntensity = 0.7
 global.shadowCastersCullByCollisionMask = true
 global.lightMaxUniqueShadowMapSize = 1
 

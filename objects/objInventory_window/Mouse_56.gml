@@ -29,7 +29,7 @@ if (!is_click_blocked() and global.held_box != undefined) {
 			if (mouseOn_box != undefined)
 				net_client_send(_CODE_BUY, json_stringify({ type: global.held_box.item.type, i: global.held_box_i, j: global.held_box_j, confirmation: box_get_confirmation_number_COMMON(global.held_box), npcID: global.held_from.owner.npcID, target_i: mouseOn_box_i, target_j: mouseOn_box_j, isLoot: 0 }), BUFFER_TYPE_STRING)
 			else
-				net_client_send(_CODE_BUY,json_stringify({ type: global.held_box.item.type, i: global.held_box_i, j: global.held_box_j, confirmation: box_get_confirmation_number_COMMON(global.held_box), npcID: global.held_from.owner.npcID, target_i: undefined, target_j: undefined, isLoot: 0 }), BUFFER_TYPE_STRING)
+				net_client_send(_CODE_BUY, json_stringify({ type: global.held_box.item.type, i: global.held_box_i, j: global.held_box_j, confirmation: box_get_confirmation_number_COMMON(global.held_box), npcID: global.held_from.owner.npcID, target_i: undefined, target_j: undefined, isLoot: 0 }), BUFFER_TYPE_STRING)
 		}
 		else if (global.held_from_assetName == object_get_name(objLoot_window)) {
 			if (mouseOn_box != undefined)

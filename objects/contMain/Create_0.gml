@@ -11,18 +11,21 @@ function main_loop() {
 	
 	with (parClickableNPC)
 		hover = is_mouse_on()
+		
+	with (contDrawGUi)
+		isChatSelVisible = abs(global.period-5) > 2
 
 	function_call_COMMON(main_loop, 1/20, true)
 	
-	/*if (instance_exists(objPlayer)) {
+	if (instance_exists(objPlayer)) {
 		var dis = point_distance(objPlayer.x, objPlayer.y, camera_get_view_x(global.camera)+camera_get_view_width(global.camera)/2, camera_get_view_y(global.camera)+camera_get_view_height(global.camera)/2)
-		if (dis < 30)
-			camera_set_view_speed(global.camera, 3.9, 3.9)
+		if (dis < 20)
+			camera_set_view_speed(global.camera, 1.3, 1.3)
 		else {
-			var spd = 2.9+dis/30*dis/30
+			var spd = 1.7+power(dis/20, 2)
 			camera_set_view_speed(global.camera, spd, spd)
 		}
-	}*/
+	}
 }
 function_call_COMMON(main_loop, 1/20, true)
 
@@ -30,7 +33,10 @@ game_set_speed(50, gamespeed_fps) // Max: 240
 audio_listener_orientation(0, 0, 1, 0, -1, 0)
 audio_falloff_set_model(audio_falloff_exponent_distance_clamped)
 
-global.ping_udp = 0
+global.chatActive = false
+global.chatHistory = ds_list_create()
+
+global.ping = 0
 global.networkErrors_count = 0
 global.delta_COMMON = delta()
 global.clientName = ""

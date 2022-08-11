@@ -25,7 +25,9 @@ function recreate_shadow_surface() {
 					var xx = obstacle_width/2+i*width*sign(image_xscale)
 					var yy = obstacle_height/2+j*height*sign(image_yscale)
 				
-					draw_sprite_ext(obstacle_sprite, irandom(sprite_get_number(obstacle_sprite)-1), xx, yy, 1+outlineWidth, 1+outlineWidth, 0, outlineColor, 1)
+					var outside = i == 0 or j == 0 or i == abs(image_xscale)-1 or j == abs(image_yscale)-1
+					if (outside)
+						draw_sprite_ext(obstacle_sprite, irandom(sprite_get_number(obstacle_sprite)-1), xx, yy, 1+outlineWidth, 1+outlineWidth, 0, outlineColor, 1)
 			
 				}
 		surface_reset_target()
@@ -59,8 +61,20 @@ function recreate_obstacle_surface() {
 				for (var j = 0; j < abs(image_yscale); j++) {
 					var xx = obstacle_width/2+i*width*sign(image_xscale)
 					var yy = obstacle_height/2+j*height*sign(image_yscale)
+			
+					var outside = i == 0 or j == 0 or i == abs(image_xscale)-1 or j == abs(image_yscale)-1
+					if (outside)
+						draw_sprite_ext(obstacle_sprite, irandom(sprite_get_number(obstacle_sprite)-1), xx, yy, 1, 1, 0, c_white, 1)
+				}
 				
-					draw_sprite_ext(obstacle_sprite, irandom(sprite_get_number(obstacle_sprite)-1), xx, yy, 1, 1, 0, c_white, 1)
+			for (var i = 0; i < abs(image_xscale); i++)
+				for (var j = 0; j < abs(image_yscale); j++) {
+					var xx = obstacle_width/2+i*width*sign(image_xscale)
+					var yy = obstacle_height/2+j*height*sign(image_yscale)
+			
+					var outside = i == 0 or j == 0 or i == abs(image_xscale)-1 or j == abs(image_yscale)-1
+					if (!outside)
+						draw_sprite_ext(obstacle_sprite, irandom(sprite_get_number(obstacle_sprite)-1), xx, yy, 1, 1, 0, c_white, 1)
 				}
 		surface_reset_target()
 	

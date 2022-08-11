@@ -20,6 +20,7 @@ mouseOnQLogo = false
 mouseOn_effectBox = undefined
 guiWidth = undefined
 guiHeight = undefined
+isChatSelVisible = false
 effectBox_textbox = undefined
 
 windows = ds_list_create()

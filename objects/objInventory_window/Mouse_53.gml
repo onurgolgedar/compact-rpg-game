@@ -25,7 +25,7 @@ if (is_mouse_on() and !is_click_blocked()) {
 		
 	if (mouseOnButton == 100) {
 		if (!instance_exists(objEquipments_window))
-			instance_create_layer(x+width+20, y+height+30, "Windows", objEquipments_window)
+			instance_create_layer(x+width+20, y+height+45, "Windows", objEquipments_window)
 		else
 			instance_destroy(objEquipments_window)
 		audio_play_sound(sndWindowTick, 0, false)

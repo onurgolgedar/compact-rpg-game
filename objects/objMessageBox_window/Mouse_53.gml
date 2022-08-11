@@ -19,6 +19,9 @@ if (is_mouse_on() and !is_click_blocked()) {
 				with (owner)
 					answer(other.answerIndex, dialogue_get_qKey_COMMON(other.messageID, other.dialogueNo), button.value, other.x+50, other.y+50)
 				instance_destroy()
+				
+				with (contDrawGUi)
+					alarm[1] = 10
 				break
 		}
 }

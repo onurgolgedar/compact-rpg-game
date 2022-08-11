@@ -13,7 +13,7 @@
     {"id":{"name":"objTrade_window","path":"objects/objTrade_window/objTrade_window.yy",},"order":8,},
     {"id":{"name":"sprClothesArm","path":"sprites/sprClothesArm/sprClothesArm.yy",},"order":9,},
     {"id":{"name":"lighting_debug_shadow_casters","path":"scripts/lighting_debug_shadow_casters/lighting_debug_shadow_casters.yy",},"order":2,},
-    {"id":{"name":"receivepacket","path":"scripts/receivepacket/receivepacket.yy",},"order":2,},
+    {"id":{"name":"ReceivePacket","path":"scripts/ReceivePacket/ReceivePacket.yy",},"order":2,},
     {"id":{"name":"dialogue_get_qKey_COMMON","path":"scripts/dialogue_get_qKey_COMMON/dialogue_get_qKey_COMMON.yy",},"order":0,},
     {"id":{"name":"objWeaponSeller","path":"objects/objWeaponSeller/objWeaponSeller.yy",},"order":14,},
     {"id":{"name":"contDrawFloor","path":"objects/contDrawFloor/contDrawFloor.yy",},"order":2,},

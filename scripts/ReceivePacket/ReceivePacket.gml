@@ -35,7 +35,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 				//show_messagebox(50, 150, "From: "+string(socketID_sender), "Code: "+string(code)+"\n"+string(data), 7)
 				show_debug_message("From: "+string(socketID_sender)+"\n[ Code: "+string(code)+"\n  Data: "+string(data)+" ]")
 
-	//try {
+	try {
 		switch(code) {										
 			case CODE_GET_INVENTORY:
 				ds_grid_destroy(global.boxes)
@@ -411,6 +411,17 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
+			case CODE_CHAT:
+				ds_list_add(global.chatHistory, { title: data.title, txt: data.txt, color: data.title == global.clientName ? c_ltyellow : c_ltorange })
+				var ds_size = ds_list_size(global.chatHistory)
+				if (ds_size > 5)
+					ds_list_delete(global.chatHistory, 0)
+				break
+			
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			
 			case CODE_SKILL0:
 				var player = global.playerInstances[? data]
 			
@@ -560,6 +571,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 				newPlayer.name = ds_map_find_value(global.playerNames, _socketID)
 					
 				if (newPlayer.object_index == objPlayer) {
+					camera_set_view_size(global.camera, contMain.aspectRatio*768*1.8, 768*1.8)	
+					camera_set_view_border(global.camera, camera_get_view_width(global.camera)/2, camera_get_view_height(global.camera)/2)
+					contMain.alarm[1] = 1
+					
 					global.clientClass = newPlayer.class
 					global.level = newPlayer.level
 					global.clientName = newPlayer.name
@@ -718,7 +733,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_PING:
-				global.ping_udp = current_time-data
+				global.ping = current_time-data
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1482,6 +1497,15 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
+			case _CODE_CHAT:
+				net_server_send(SOCKET_ID_ALL, CODE_CHAT, json_stringify(data), BUFFER_TYPE_STRING)
+				break
+
+
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			
 			case _CODE_LOCATION:
 				var playersRow = db_get_row(global.DB_SRV_TABLE_players, socketID_sender)
 				var instance = playersRow[? PLAYERS_INSTANCE_SERVER]
@@ -1961,8 +1985,15 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 		
 				var player = global.playerInstances[? _socketID]
 				if (player != undefined) {
-					player.x = data.xx
-					player.y = data.yy
+					if (abs(player.x-data.xx) < 2 and abs(player.y-data.yy) < 2 or
+						abs(player.x-data.xx) > 300 or abs(player.y-data.yy) > 300) {
+						player.x = data.xx
+						player.y = data.yy
+					}
+					else {
+						player.x = lerp(player.x, data.xx, 0.5)
+						player.y = lerp(player.y, data.yy, 0.5)
+					}
 				}
 				break
 			
@@ -1975,8 +2006,15 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 		
 				var target = global.npcInstances[? npcID]
 				if (target != undefined) {
-					target.x = data.xx
-					target.y = data.yy
+					if (abs(target.x-data.xx) < 2 and abs(target.y-data.yy) < 2 or
+						abs(target.x-data.xx) > 300 or abs(target.y-data.yy) > 300) {
+						target.x = data.xx
+						target.y = data.yy
+					}
+					else {
+						target.x = lerp(target.x, data.xx, 0.5)
+						target.y = lerp(target.y, data.yy, 0.5)
+					}
 				}
 				break
 		
@@ -2197,9 +2235,9 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 				lake.image_yscale = data.yscale
 				break
 		}
-	/*}
+	}
 	catch (error) {
 		global.networkErrors_count++
 		show_message(error)
-	}*/
+	}
 }

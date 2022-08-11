@@ -83,7 +83,7 @@
         "GMObject",
         "GMRoom",
       ],"resourceVersion":"1.0","name":"height","tags":[],"resourceType":"GMObjectProperty",},
-    {"varType":0,"value":"0.01","rangeEnabled":true,"rangeMin":0.0,"rangeMax":100.0,"listItems":null,"multiselect":false,"filters":[
+    {"varType":0,"value":"0.01","rangeEnabled":true,"rangeMin":0.001,"rangeMax":100.0,"listItems":null,"multiselect":false,"filters":[
         "GMTileSet",
         "GMSprite",
         "GMSound",

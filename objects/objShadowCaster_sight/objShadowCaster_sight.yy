@@ -26,7 +26,10 @@
     {"isDnD":false,"eventNum":10,"eventType":7,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
   ],
   "properties": [],
-  "overriddenProperties": [],
+  "overriddenProperties": [
+    {"propertyId":{"name":"z_top","path":"objects/objShadowLine_sight/objShadowLine_sight.yy",},"objectId":{"name":"objShadowLine_sight","path":"objects/objShadowLine_sight/objShadowLine_sight.yy",},"value":"1","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+    {"propertyId":{"name":"z_bottom","path":"objects/objShadowLine_sight/objShadowLine_sight.yy",},"objectId":{"name":"objShadowLine_sight","path":"objects/objShadowLine_sight/objShadowLine_sight.yy",},"value":"0","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+  ],
   "parent": {
     "name": "Sight",
     "path": "folders/CLIENT/2- Objects/Lighting/Sight.yy",

@@ -40,18 +40,18 @@ function effectBox_created_SERVER(_effectBox) {
 }
 
 function effectBox_create_SERVER(code, owner, creator) {
-	var effectBox = undefined
+	var _effectBox = undefined
 	switch (code) {
 		case EFFECTBOX_BUFF_1:
-			effectBox = new effectBox(code, "Buff 1", owner, creator,, 5,,,,,true, 1, 2, "This is a test.", sprite_get_name(sprMainBS))
+			_effectBox = new effectBox(code, "Buff 1", owner, creator,, 5,,,,,true, 1, 2, "This is a test.", sprite_get_name(sprMainBS))
 			break
 			
 		case EFFECTBOX_PERMANENT_BUFF_1:
-			effectBox = new effectBox(code, "Permanent Buff 1", owner, creator,, 5,,,true,, true, 1, 2, "This is a permanent test.", sprite_get_name(sprMainBS))
+			_effectBox = new effectBox(code, "Permanent Buff 1", owner, creator,, 5,,,true,, true, 1, 2, "This is a permanent test.", sprite_get_name(sprMainBS))
 			break
 	}
 	
-	return effectBox
+	return _effectBox
 }
 
 function effectBox_add_SERVER(code, owner, creator) {

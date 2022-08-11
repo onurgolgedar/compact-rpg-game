@@ -29,9 +29,9 @@
   ],
   "properties": [],
   "overriddenProperties": [
-    {"propertyId":{"name":"width","path":"objects/parLight_sight/parLight_sight.yy",},"objectId":{"name":"parLight_sight","path":"objects/parLight_sight/parLight_sight.yy",},"value":"5000","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
-    {"propertyId":{"name":"height","path":"objects/parLight_sight/parLight_sight.yy",},"objectId":{"name":"parLight_sight","path":"objects/parLight_sight/parLight_sight.yy",},"value":"5000","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
-    {"propertyId":{"name":"radius","path":"objects/parLight_sight/parLight_sight.yy",},"objectId":{"name":"parLight_sight","path":"objects/parLight_sight/parLight_sight.yy",},"value":"-1","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+    {"propertyId":{"name":"width","path":"objects/parLight_sight/parLight_sight.yy",},"objectId":{"name":"parLight_sight","path":"objects/parLight_sight/parLight_sight.yy",},"value":"0","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+    {"propertyId":{"name":"height","path":"objects/parLight_sight/parLight_sight.yy",},"objectId":{"name":"parLight_sight","path":"objects/parLight_sight/parLight_sight.yy",},"value":"0","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+    {"propertyId":{"name":"z","path":"objects/parLight_sight/parLight_sight.yy",},"objectId":{"name":"parLight_sight","path":"objects/parLight_sight/parLight_sight.yy",},"value":"0.001","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
   ],
   "parent": {
     "name": "Sight",

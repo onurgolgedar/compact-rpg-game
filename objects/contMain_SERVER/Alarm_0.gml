@@ -21,7 +21,7 @@ with (objPlayer_SERVER) {
 	}
 }
 
-tell_all_positions_SERVER()
+tell_all_positions_SERVER(irandom(15) == 0)
 tell_all_angles_SERVER()
 
 with (parNPC_SERVER) {

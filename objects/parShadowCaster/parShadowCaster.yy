@@ -25,7 +25,7 @@
     {"isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
   ],
   "properties": [
-    {"varType":1,"value":"3200","rangeEnabled":true,"rangeMin":0.0,"rangeMax":65536.0,"listItems":null,"multiselect":false,"filters":[
+    {"varType":1,"value":"250","rangeEnabled":true,"rangeMin":0.0,"rangeMax":65536.0,"listItems":null,"multiselect":false,"filters":[
         "GMTileSet",
         "GMSprite",
         "GMSound",

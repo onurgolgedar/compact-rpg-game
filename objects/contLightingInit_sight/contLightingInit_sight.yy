@@ -25,7 +25,7 @@
     {"isDnD":false,"eventNum":0,"eventType":12,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
   ],
   "properties": [
-    {"varType":0,"value":"0.5","rangeEnabled":true,"rangeMin":0.05,"rangeMax":1.0,"listItems":null,"multiselect":false,"filters":[
+    {"varType":0,"value":"0.4","rangeEnabled":true,"rangeMin":0.05,"rangeMax":1.0,"listItems":null,"multiselect":false,"filters":[
         "GMTileSet",
         "GMSprite",
         "GMSound",
@@ -49,7 +49,7 @@
         "GMObject",
         "GMRoom",
       ],"resourceVersion":"1.0","name":"blur","tags":[],"resourceType":"GMObjectProperty",},
-    {"varType":0,"value":"0.003","rangeEnabled":false,"rangeMin":0.0,"rangeMax":10.0,"listItems":null,"multiselect":false,"filters":[
+    {"varType":0,"value":"0.0015","rangeEnabled":false,"rangeMin":0.0,"rangeMax":10.0,"listItems":null,"multiselect":false,"filters":[
         "GMTileSet",
         "GMSprite",
         "GMSound",
@@ -61,7 +61,7 @@
         "GMObject",
         "GMRoom",
       ],"resourceVersion":"1.0","name":"blur_strong","tags":[],"resourceType":"GMObjectProperty",},
-    {"varType":0,"value":"2000","rangeEnabled":false,"rangeMin":0.0,"rangeMax":10.0,"listItems":null,"multiselect":false,"filters":[
+    {"varType":0,"value":"1300","rangeEnabled":false,"rangeMin":0.0,"rangeMax":10.0,"listItems":null,"multiselect":false,"filters":[
         "GMTileSet",
         "GMSprite",
         "GMSound",

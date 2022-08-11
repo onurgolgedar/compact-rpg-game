@@ -1,3 +1,6 @@
+if (global.chatActive)
+	exit
+
 if (is_alive()) {
 	if (!instance_exists(objSkills_window)) {
 		instance_create_layer(contDrawGUi.guiWidth-400, 140, "Windows", objSkills_window)

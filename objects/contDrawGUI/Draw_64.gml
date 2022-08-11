@@ -213,16 +213,37 @@ draw_sprite_ext(sprinventoryLogo, -1, logo_inventory_x, logo_height, 1, 1, 0, c_
 
 draw_sprite_ext(sprWindowLogoBack, mouseOnQLogo, logo_quest_x, logo_height, 1, 1, 0, c_white, 1)
 draw_sprite_ext(sprQuestLogo, -1, logo_quest_x, logo_height, 1, 1, 0, c_white, 1)
-	
-draw_set_alpha(0.25) draw_set_color(c_dkgray)
-	draw_roundrect_ext(display_get_gui_width()-400, display_get_gui_height()-170, display_get_gui_width()-40, display_get_gui_height()-20, 12, 12, 0)
+
+draw_set_font(fontGUi_small)
+draw_set_alpha(0.25+global.chatActive*0.35) draw_set_color(c_black)
+	draw_roundrect_ext(display_get_gui_width()-405, display_get_gui_height()-170, display_get_gui_width()-40, display_get_gui_height()-170+125+20, 12, 12, 0)
+	draw_set_color(c_gray)
+	draw_roundrect_ext(display_get_gui_width()-405+6, display_get_gui_height()-170+116-7, display_get_gui_width()-40-6, display_get_gui_height()-170+125+10, 12, 12, 0)
 draw_set_alpha(1)
 
-draw_set_color(c_white)
-	draw_text_transformed(display_get_gui_width()-400+10, display_get_gui_height()-170+10, "Chat", 1, 1, 0)
+var ds_size = ds_list_size(global.chatHistory)
+for (var i = 0; i < ds_size; i++) {
+	var chat_message = global.chatHistory[| i]
+	draw_set_color(chat_message.color)
+		draw_text_transformed(display_get_gui_width()-405+10, display_get_gui_height()-170+10+i*18, chat_message.title, 1, 1, 0)
+	draw_set_color(c_white)
+	draw_text_transformed(display_get_gui_width()-405+10+74, display_get_gui_height()-170+10+i*18, chat_message.txt, 1, 1, 0)
+}
+
+if (global.chatActive) {
+	draw_set_color(c_white)
+			draw_set_color(c_ltyellow)
+				draw_text_transformed(display_get_gui_width()-405+10, display_get_gui_height()-170+113, global.clientName, 1, 1, 0)
+			draw_set_color(c_white)
+			draw_text_transformed(display_get_gui_width()-405+10+74, display_get_gui_height()-170+113, keyboard_string, 1, 1, 0)
+			
+			if (isChatSelVisible)
+				draw_text_transformed(display_get_gui_width()-405+10+string_width(keyboard_string)+74, display_get_gui_height()-170+113, "|", 1, 1, 0)
+}
+draw_set_font(fontMain)
 	
-draw_set_alpha(0.5) 
+draw_set_color(c_white) draw_set_alpha(0.5) 
 	draw_text_transformed(76, display_get_gui_height()-28, "FPS: "+string(fps)+"/"+string(room_speed), 0.7, 0.7, 0)
-	draw_text_transformed(76, display_get_gui_height()-48, "Ping: "+string(global.ping_udp), 0.7, 0.7, 0)
+	draw_text_transformed(76, display_get_gui_height()-48, "Ping: "+string(global.ping), 0.7, 0.7, 0)
 	draw_text_transformed(76, display_get_gui_height()-68, "Received Errors: "+string(global.networkErrors_count), 0.7, 0.7, 0)
 draw_set_alpha(1) draw_set_default()
