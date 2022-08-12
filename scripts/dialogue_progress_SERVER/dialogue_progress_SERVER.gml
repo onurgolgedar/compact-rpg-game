@@ -15,14 +15,14 @@ function dialogue_set_values_SERVER(text, playerInstance) {
 		return text
 }
 
-function dialogue_progress_SERVER(messageID, dialogueNo, owner_assetName, ownerID, answerBefore = -1, socketID_sender = undefined) {
+function dialogue_progress_SERVER(messageID, dialogueNo, owner_assetName, ownerID = undefined, answerBefore = -1, socketID_sender = undefined) {
 	var messageBoxes = [undefined, undefined]
 
 	var text = ""
 	var title = ""
 	var dialogueSize = 0
 	var ans = ["Okay", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
-	var npcName = npc_get_name_COMMON(owner_assetName)
+	var npcName = npc_get_name_COMMON(asset_get_index(owner_assetName))
 	
 	var playerInstance = undefined
 	if (socketID_sender != undefined) {
@@ -44,17 +44,17 @@ function dialogue_progress_SERVER(messageID, dialogueNo, owner_assetName, ownerI
 			actionText =  dialogue_set_values_SERVER(ini_read_string(npcName, string(messageID)+"."+string(dialogueNo-1)+",BA"+string(answerBefore+1), "undefined"), playerInstance)
 			actionRedirect =  ini_read_real(npcName, string(messageID)+"."+string(dialogueNo-1)+",BR"+string(answerBefore+1), -1)
 			if (actionRedirect != -1 and socketID_sender != undefined)
-				_net_receive_packet(_CODE_DIALOGUE, json_stringify({ owner_assetName: object_get_name(owner_assetName), messageID: string(actionRedirect), dialogueNo: 1, answerBefore: -1, owner: ownerID}), socketID_sender)
+				_net_receive_packet(_CODE_DIALOGUE, json_stringify({ owner_assetName: owner_assetName, ownerID: ownerID, messageID: string(actionRedirect), dialogueNo: 1, answerBefore: -1}), socketID_sender)
 		}		
 			
 		if (actionCode != "undefined") {
-			var additional_actionMessageBox = action_SERVER(actionCode, messageBoxes, ownerID, playerInstance, socketID_sender, object_get_name(owner_assetName))
+			var additional_actionMessageBox = action_SERVER(actionCode, messageBoxes, playerInstance, socketID_sender, owner_assetName, ownerID)
 			if (additional_actionMessageBox != undefined)
 				messageBoxes[0] = additional_actionMessageBox
 		}
 			
 		if (actionText != "undefined") {
-			messageBoxes[1] = { xx: 500, yy: 250, title: title, text: actionText, ownerID: undefined, owner: undefined, duration: 5, isDialogueMessage: false, ownerID: ownerID, owner: owner_assetName }
+			messageBoxes[1] = { xx: 500, yy: 250, title: title, text: actionText, owner_assetName: owner_assetName, ownerID: ownerID, duration: 5, isDialogueMessage: false }
 			return messageBoxes
 		}
 		else if (actionRedirect == -1 and text != "undefined") {
@@ -89,7 +89,7 @@ function dialogue_progress_SERVER(messageID, dialogueNo, owner_assetName, ownerI
 								 new dialogueButton(ans[2]), new dialogueButton(ans[3]),
 								 new dialogueButton(ans[4]), new dialogueButton(ans[5]),
 								 new dialogueButton(ans[6]), new dialogueButton(ans[7]) ]
-			messageBoxes[1] = { xx: 250, yy: 250, title: title, text: text, qKey: qKey, buttonsArray: buttonsArray, messageID: messageID, dialogueNo: dialogueNo, dialogueSize: dialogueSize, isDialogueMessage: true, ownerID: ownerID, owner: owner_assetName }
+			messageBoxes[1] = { xx: 250, yy: 250, title: title, text: text, qKey: qKey, buttonsArray: buttonsArray, messageID: messageID, dialogueNo: dialogueNo, dialogueSize: dialogueSize, isDialogueMessage: true, owner_assetName: owner_assetName, ownerID: ownerID }
 		}
 	}
 		

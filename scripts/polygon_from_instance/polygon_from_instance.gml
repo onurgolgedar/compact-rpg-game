@@ -1,5 +1,5 @@
 /// @desc Creates a polygon from an instance
-/// @arg id The instance to create a polygon from
+/// @arg real(id) The instance to create a polygon from
 /// @arg [rotation] The optional rotation of the instance
 /// @returns The polygon for the instance
 function polygon_from_instance() {

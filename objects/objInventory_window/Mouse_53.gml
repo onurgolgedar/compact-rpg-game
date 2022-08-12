@@ -9,7 +9,7 @@ if (is_mouse_on() and !is_click_blocked()) {
 					global.held_box_j = j
 					global.held_box = box
 					global.held_from_assetName = object_get_name(object_index)
-					global.held_from = id
+					global.held_from = real(id)
 				}
 			}
 		}

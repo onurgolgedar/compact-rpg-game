@@ -12,13 +12,13 @@ function execute() {
 	}
 	
 	with (parTarget_SERVER) {
-		if (id != other.owner) {
-			if (place_meeting(x, y, other.id)) {
-				change_hp(-other.owner.magicalPower*(100+10*other.skill.upgrade)/100)
-			
+		if (real(id) != other.owner) {
+			if (place_meeting(x, y, real(other.id))) {
 				var pow = 1200+clamp(1200-point_distance(x, y, other.x, other.y)/5*30, 0, 1200)
 				var dir = point_direction(other.x, other.y, x, y)
 				ds_map_add(spds, irandom(999999), {xx: lengthdir_x(pow, dir), yy: lengthdir_y(pow, dir)})
+				
+				change_hp(-other.owner.magicalPower*(100+10*other.skill.upgrade)/100)
 			}
 		}
 	}

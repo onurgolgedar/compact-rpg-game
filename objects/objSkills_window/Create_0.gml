@@ -70,7 +70,7 @@ function main_loop() {
 					if (boxFocused_textbox != undefined)
 						instance_destroy(boxFocused_textbox)
 					
-					boxFocused_textbox = create_textbox(get_skill_description_COMMON(box.skill), contCursor.id)
+					boxFocused_textbox = create_textbox(get_skill_description_COMMON(box.skill), real(contCursor.id))
 				}
 				
 				break

@@ -26,4 +26,12 @@ function client_coop_connect(ip, port) {
 }
 #endregion
 
+global.ping = 0
+global.ping_check_mode = false
+global.networkErrors_count = 0
+
+ini_open("config.ini")
+	global.ping_check_mode = ini_read_real("NETWORK", "check_ping_mode", 0)
+ini_close()
+
 event_user(0)

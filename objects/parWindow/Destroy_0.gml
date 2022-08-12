@@ -1,6 +1,6 @@
 if (owner != undefined and instance_exists(owner)) {
 	with (owner)
-		ds_list_delete(windows, ds_list_find_index(windows, other.id))
+		ds_list_delete(windows, ds_list_find_index(windows, real(other.id)))
 }
 
 if (!isRefreshing) {
@@ -10,7 +10,7 @@ if (!isRefreshing) {
 	    if (depth < other.depth)
 	        depth += 2
         
-	    if (id != other.id and depth < other.minDepth)
+	    if (real(id) != real(other.id) and depth < other.minDepth)
 	        other.minDepth = depth
 	}
 

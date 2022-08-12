@@ -73,7 +73,7 @@
         "GMObject",
         "GMRoom",
       ],"resourceVersion":"1.0","name":"Light_Range","tags":[],"resourceType":"GMObjectProperty",},
-    {"varType":0,"value":"3","rangeEnabled":true,"rangeMin":0.001,"rangeMax":30.0,"listItems":null,"multiselect":false,"filters":[
+    {"varType":0,"value":"4","rangeEnabled":true,"rangeMin":0.001,"rangeMax":30.0,"listItems":null,"multiselect":false,"filters":[
         "GMTileSet",
         "GMSprite",
         "GMSound",
@@ -85,7 +85,7 @@
         "GMObject",
         "GMRoom",
       ],"resourceVersion":"1.0","name":"Light_Intensity","tags":[],"resourceType":"GMObjectProperty",},
-    {"varType":1,"value":"2500","rangeEnabled":true,"rangeMin":1.0,"rangeMax":5000.0,"listItems":null,"multiselect":false,"filters":[
+    {"varType":1,"value":"600","rangeEnabled":true,"rangeMin":1.0,"rangeMax":5000.0,"listItems":null,"multiselect":false,"filters":[
         "GMTileSet",
         "GMSprite",
         "GMSound",

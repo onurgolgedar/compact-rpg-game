@@ -1,20 +1,20 @@
 counter = 0
+ba_delay = 0
 function main() {
-	function_call_COMMON(main, 1/200, true)
-	
 	if (is_alive() and !objPlayer.stunned and global.socket_CLIENT != undefined) {
-		// Data Transfer
-		net_client_send(_CODE_PING, current_time, BUFFER_TYPE_INT32, true)
-		net_client_send(_CODE_MOUSE_POSITION, json_stringify({ xx: mouse_x, yy: mouse_y }), BUFFER_TYPE_STRING, true)
-		
-		if (counter mod 2 == 0)
+		if (counter mod 2 == 0) {
 			net_client_send(_CODE_GET_EFFECTBOXES)
+			net_client_send(_CODE_MOUSE_POSITION, json_stringify({ x: round(mouse_x), y: round(mouse_y) }), BUFFER_TYPE_STRING, true)
+			if (global.ping_check_mode)
+				net_client_send(_CODE_PING, current_time, BUFFER_TYPE_INT32, true)
+		}
 		
 		// Input - Basic Attack
-		if (device_mouse_check_button(0, mb_left) and anim_end(objPlayer) and get_active_item(ITEMTYPE_SWORD) != undefined and check_gui_to_attack()) {
-			var sound = sound_play_at(sndSwordSwing, objPlayer.x, objPlayer.y, false)
-			audio_sound_pitch(sound, random_range(0.85, 1.05))
+		if (ba_delay > 0)
+			ba_delay -= 1/20
+		if (ba_delay <= 0 and device_mouse_check_button(0, mb_left) and anim_end(objPlayer) and get_active_item(ITEMTYPE_SWORD) != undefined and check_gui_to_attack()) {
 			net_client_send(_CODE_BASIC_ATTACK, json_stringify({ xx: mouse_x, yy: mouse_y }), BUFFER_TYPE_STRING, true)
+			ba_delay = 0.25
 		}
 	
 		if (!global.chatActive) {
@@ -42,6 +42,8 @@ function main() {
 	}
 	
 	counter++
+	
+	function_call_COMMON(main, 1/15, true)
 }
 
-function_call_COMMON(main, 1/200, true)
+function_call_COMMON(main, 1/15, true)

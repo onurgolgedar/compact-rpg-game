@@ -39,12 +39,12 @@ function player_recalculate_statistics_SERVER() {
 	
 	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_MAXHP, json_stringify({ socketID: socketID, maxHp: maxHp }), BUFFER_TYPE_STRING, true)
 	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_MAXMANA, json_stringify({ socketID: socketID, maxMana: maxMana }), BUFFER_TYPE_STRING, true)
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ENERGY, json_stringify({ socketID: socketID, energy: maxEnergy }), BUFFER_TYPE_STRING, true)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ENERGY, json_stringify({ i: socketID, v: maxEnergy }), BUFFER_TYPE_STRING, true)
 }
 
 function player_spawn_SERVER(socketID) {	
 	with (objPlayer)
-		if (id.socketID == socketID)
+		if (real(id).socketID == socketID)
 			instance_destroy()
 			
 	var accountID = db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)
@@ -106,7 +106,7 @@ function player_spawn_SERVER(socketID) {
 		mana = maxMana
 	}
 	
-	newPlayer.playerRow[? PLAYERS_INSTANCE_SERVER] = newPlayer
+	newPlayer.playerRow[? PLAYERS_INSTANCE_SERVER] = real(newPlayer)
 	newPlayer.playerRow[? PLAYERS_X_SERVER] = newPlayer.x
 	newPlayer.playerRow[? PLAYERS_Y_SERVER] = newPlayer.y
 	newPlayer.playerRow[? PLAYERS_HP_SERVER] = newPlayer.hp

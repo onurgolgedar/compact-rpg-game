@@ -1,7 +1,7 @@
 event_inherited()
 
 function animation_000() {
-	var time = id.time*0.3
+	var time = real(id).time*0.3
 	
 	if (style == 0)
 		anim_set_stance(STANCE_BA0_SWORD_001, time/2)
@@ -14,7 +14,7 @@ function animation_000() {
 }
 
 function animation_001() {
-	var time = id.time*0.3
+	var time = real(id).time*0.3
 	
 	if (style == 0)
 		anim_set_stance(STANCE_BA1_SWORD_001, time/2)
@@ -27,7 +27,7 @@ function animation_001() {
 }
 
 function animation_002() {
-	var time = id.time*0.4
+	var time = real(id).time*0.4
 	
 	anim_set_stance(STANCE_NORMAL, time)
 	function_call_COMMON(animation_destroy, time_delayed(time), true)

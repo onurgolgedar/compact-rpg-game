@@ -39,5 +39,5 @@ if (energyBarP-value*2.5 > energy/maxEnergy)
     energyBarP -= value*2.5
 else
     energyBarP = energy/maxEnergy
-	
+
 joint_turn_with_velocity(image_angle_target, 2500)

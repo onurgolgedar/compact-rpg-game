@@ -7,5 +7,5 @@ function npc_get_name_COMMON(owner) {
 			return "Weapon Seller"
 	}
 	
-	return object_get_name(owner.object_index)
+	return object_get_name(owner)
 }

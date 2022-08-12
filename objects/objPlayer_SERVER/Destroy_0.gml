@@ -1,2 +1,2 @@
-if (global.selectedPlayer == id)
+if (global.selectedPlayer == real(id))
 	global.selectedPlayer = undefined

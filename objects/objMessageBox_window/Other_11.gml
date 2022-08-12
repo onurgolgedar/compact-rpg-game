@@ -1,4 +1,4 @@
-textbox_content = create_textbox(text, id, undefined, titleHeight, true)
+textbox_content = create_textbox(text, real(id), undefined, titleHeight, true)
 textbox_content.padding_x = offset-2
 textbox_content.padding_y = offset-2
 textbox_content.hasBackground = false

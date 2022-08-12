@@ -1,4 +1,4 @@
 playerRow[? PLAYERS_INSTANCE_SERVER] = undefined
 with (parSkill_SERVER)
-	if (owner == id)
+	if (owner == real(id))
 		instance_destroy()

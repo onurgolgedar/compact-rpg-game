@@ -19,7 +19,7 @@ if (is_alive()) {
 				
 				if (device_mouse_check_button_pressed(0, mb_left) and other.mouseOn_effectBox.isDeletable) {
 					var buttonsArray = [ new dialogueButton("Clear", undefined, { order: i, effectBox: effectBox }), new dialogueButton("Cancel") ]
-					var dialogue_box = show_questionbox(15, 250, other.mouseOn_effectBox.name, "Do you want to clear this effect?", other.id, 1, buttonsArray)
+					var dialogue_box = show_questionbox(15, 250, other.mouseOn_effectBox.name, "Do you want to clear this effect?", real(other.id), 1, buttonsArray)
 				}
 			}
 			
@@ -34,7 +34,7 @@ if (is_alive()) {
 			if (other.mouseOn_effectBox != undefined and beforeMouseOn == undefined) {
 				if (other.effectBox_textbox != undefined)
 					instance_destroy(other.effectBox_textbox)
-				other.effectBox_textbox = create_textbox(other.mouseOn_effectBox.description, contCursor.id)
+				other.effectBox_textbox = create_textbox(other.mouseOn_effectBox.description, real(contCursor.id))
 			}
 			else if (other.mouseOn_effectBox == undefined and beforeMouseOn != undefined) {
 				if (other.effectBox_textbox != undefined)
@@ -214,36 +214,38 @@ draw_sprite_ext(sprinventoryLogo, -1, logo_inventory_x, logo_height, 1, 1, 0, c_
 draw_sprite_ext(sprWindowLogoBack, mouseOnQLogo, logo_quest_x, logo_height, 1, 1, 0, c_white, 1)
 draw_sprite_ext(sprQuestLogo, -1, logo_quest_x, logo_height, 1, 1, 0, c_white, 1)
 
-draw_set_font(fontGUi_small)
-draw_set_alpha(0.25+global.chatActive*0.35) draw_set_color(c_black)
-	draw_roundrect_ext(display_get_gui_width()-405, display_get_gui_height()-170, display_get_gui_width()-40, display_get_gui_height()-170+125+20, 12, 12, 0)
-	draw_set_color(c_gray)
-	draw_roundrect_ext(display_get_gui_width()-405+6, display_get_gui_height()-170+116-7, display_get_gui_width()-40-6, display_get_gui_height()-170+125+10, 12, 12, 0)
-draw_set_alpha(1)
-
+draw_sprite(sprChat, global.chatActive, display_get_gui_width()-405, display_get_gui_height()-170)
+draw_set_valign(fa_center)
 var ds_size = ds_list_size(global.chatHistory)
 for (var i = 0; i < ds_size; i++) {
 	var chat_message = global.chatHistory[| i]
 	draw_set_color(chat_message.color)
-		draw_text_transformed(display_get_gui_width()-405+10, display_get_gui_height()-170+10+i*18, chat_message.title, 1, 1, 0)
+		draw_set_font(fontGUi_small_b)
+			draw_text_outlined(display_get_gui_width()-405+10, display_get_gui_height()-166+10+i*13.5, chat_message.title, 1, c_black, 10, 0.85, 0.85, 0)
+		draw_set_font(fontGUi_small)
+			draw_text_outlined(display_get_gui_width()-405+10+64, display_get_gui_height()-166+10+i*13.5, "●", 1, c_black, 10, 0.85, 0.85, 0)
 	draw_set_color(c_white)
-	draw_text_transformed(display_get_gui_width()-405+10+74, display_get_gui_height()-170+10+i*18, chat_message.txt, 1, 1, 0)
+	draw_text_outlined(display_get_gui_width()-405+10+74, display_get_gui_height()-166+10+i*13.5, chat_message.txt, 1, c_black, 10, 0.85, 0.85, 0)
 }
 
 if (global.chatActive) {
-	draw_set_color(c_white)
+	draw_set_color(c_white) draw_set_font(fontGUi_small)
 			draw_set_color(c_ltyellow)
-				draw_text_transformed(display_get_gui_width()-405+10, display_get_gui_height()-170+113, global.clientName, 1, 1, 0)
+				draw_set_font(fontGUi_small_b)
+					draw_text_outlined(display_get_gui_width()-405+14, display_get_gui_height()-166+139, global.clientName, 1, c_black, 10, 0.85, 0.85, 0)
+				draw_set_font(fontGUi_small)
+					draw_text_outlined(display_get_gui_width()-405+74, display_get_gui_height()-166+139, "●", 1, c_black, 10, 0.85, 0.85, 0)
 			draw_set_color(c_white)
-			draw_text_transformed(display_get_gui_width()-405+10+74, display_get_gui_height()-170+113, keyboard_string, 1, 1, 0)
+			draw_text_outlined(display_get_gui_width()-405+16+74, display_get_gui_height()-166+139, keyboard_string, 1, c_black, 10, 0.85, 0.85, 0)
 			
 			if (isChatSelVisible)
-				draw_text_transformed(display_get_gui_width()-405+10+string_width(keyboard_string)+74, display_get_gui_height()-170+113, "|", 1, 1, 0)
+				draw_text_outlined(display_get_gui_width()-405+16+string_width(keyboard_string)*0.85+74-3, display_get_gui_height()-166+139, "|", 1, c_black, 10, 0.85, 0.85, 0)
 }
-draw_set_font(fontMain)
+draw_set_font(fontMain) draw_set_valign(fa_top)
 	
 draw_set_color(c_white) draw_set_alpha(0.5) 
 	draw_text_transformed(76, display_get_gui_height()-28, "FPS: "+string(fps)+"/"+string(room_speed), 0.7, 0.7, 0)
-	draw_text_transformed(76, display_get_gui_height()-48, "Ping: "+string(global.ping), 0.7, 0.7, 0)
+	if (global.ping_check_mode)
+		draw_text_transformed(76, display_get_gui_height()-48, "Ping: "+string(global.ping), 0.7, 0.7, 0)
 	draw_text_transformed(76, display_get_gui_height()-68, "Received Errors: "+string(global.networkErrors_count), 0.7, 0.7, 0)
 draw_set_alpha(1) draw_set_default()

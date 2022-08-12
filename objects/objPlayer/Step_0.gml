@@ -1,3 +1,4 @@
+image_angle_target = point_direction(x, y, mouse_x, mouse_y)
 event_inherited()
 
 // Skills Prediction

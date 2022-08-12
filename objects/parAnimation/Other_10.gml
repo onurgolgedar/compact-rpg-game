@@ -1,2 +1,2 @@
 if (owner != undefined)
-	owner.animationController = id
+	owner.animationController = real(id)

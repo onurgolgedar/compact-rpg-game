@@ -1,5 +1,5 @@
 function anim_end(instance) {
-	var ae_obj = instance == undefined ? id : instance
+	var ae_obj = instance == undefined ? real(id) : instance
 
 	with (ae_obj) {
 		if (animationController != undefined)

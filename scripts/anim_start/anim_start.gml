@@ -1,7 +1,7 @@
 /// @function anim_start(anim, time*, instance*, style*)
 function anim_start(anim, time, instance, style) {
 	if (instance == undefined)
-		instance = id
+		instance = real(id)
 	
 	if (style == undefined)
 		style = 0

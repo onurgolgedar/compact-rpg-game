@@ -30,7 +30,7 @@ function tell_all_energies_SERVER() {
 	for (var i = 0; i < ds_size; i++) {
 		var _playerRow = db_get_row_by_index(global.DB_SRV_TABLE_players, i)
 		
-		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ENERGY, json_stringify({ socketID: _playerRow[? PLAYERS_SOCKETID_SERVER], energy: _playerRow[? PLAYERS_ENERGY_SERVER] }), BUFFER_TYPE_STRING, true, _playerRow[? PLAYERS_LOCATION_SERVER])
+		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ENERGY, json_stringify({ i: _playerRow[? PLAYERS_SOCKETID_SERVER], v: round(_playerRow[? PLAYERS_ENERGY_SERVER]) }), BUFFER_TYPE_STRING, true, _playerRow[? PLAYERS_LOCATION_SERVER])
 	}
 }
 
@@ -39,7 +39,7 @@ function tell_all_healths_SERVER() {
 	for (var i = 0; i < ds_size; i++) {
 		var _playerRow = db_get_row_by_index(global.DB_SRV_TABLE_players, i)
 		
-		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_HP, json_stringify({ socketID: _playerRow[? PLAYERS_SOCKETID_SERVER], hp: _playerRow[? PLAYERS_HP_SERVER] }), BUFFER_TYPE_STRING, true, _playerRow[? PLAYERS_LOCATION_SERVER])
+		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_HP, json_stringify({ i: _playerRow[? PLAYERS_SOCKETID_SERVER], v: round(_playerRow[? PLAYERS_HP_SERVER]) }), BUFFER_TYPE_STRING, true, _playerRow[? PLAYERS_LOCATION_SERVER])
 	}
 }
 
@@ -48,7 +48,7 @@ function tell_all_manas_SERVER() {
 	for (var i = 0; i < ds_size; i++) {
 		var _playerRow = db_get_row_by_index(global.DB_SRV_TABLE_players, i)
 		
-		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_MANA, json_stringify({ socketID: _playerRow[? PLAYERS_SOCKETID_SERVER], mana: _playerRow[? PLAYERS_MANA_SERVER] }), BUFFER_TYPE_STRING, true, _playerRow[? PLAYERS_LOCATION_SERVER])
+		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_MANA, json_stringify({ i: _playerRow[? PLAYERS_SOCKETID_SERVER], v: round(_playerRow[? PLAYERS_MANA_SERVER]) }), BUFFER_TYPE_STRING, true, _playerRow[? PLAYERS_LOCATION_SERVER])
 	}
 }
 
@@ -63,34 +63,46 @@ function tell_all_names(socketID, force = false) {
 	}
 }
 
-function tell_all_angles_SERVER() {
-	var ds_size = db_get_table_size(global.DB_SRV_TABLE_players)
-	for (var i = 0; i < ds_size; i++) {
-		var _playerRow = db_get_row_by_index(global.DB_SRV_TABLE_players, i)
-		var _socketID = _playerRow[? PLAYERS_SOCKETID_SERVER] 
-	    var _location = db_find_value(global.DB_SRV_TABLE_players, PLAYERS_LOCATION_SERVER, PLAYERS_SOCKETID_SERVER, _socketID)
+function tell_all_pl_angles_SERVER(force = false) {
+	with (objPlayer_SERVER) {
+		if (playerRow[? PLAYERS_DEATHTIMER_SERVER] == 0) {
+			var _socketID = playerRow[? PLAYERS_SOCKETID_SERVER]
+			var _location = playerRow[? PLAYERS_LOCATION_SERVER]
 		
-		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ROTATION, json_stringify({ socketID: _socketID, angle: _playerRow[? PLAYERS_ANGLE_SERVER] }), BUFFER_TYPE_STRING, true, _location)
+			net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ROTATION, json_stringify({ i: _socketID, v: round(playerRow[? PLAYERS_ANGLE_SERVER]) }), BUFFER_TYPE_STRING, true, force ? 0 : _location)
+		}
 	}
 }
 
-function tell_all_positions_SERVER(force = false) {
-	var ds_size = db_get_table_size(global.DB_SRV_TABLE_players)
-	for (var i = 0; i < ds_size; i++) {
-		var _playerRow = db_get_row_by_index(global.DB_SRV_TABLE_players, i)
-		
-		if (_playerRow[? PLAYERS_DEATHTIMER_SERVER] == 0) {
-			var _socketID = _playerRow[? PLAYERS_SOCKETID_SERVER]
-			var _location = _playerRow[? PLAYERS_LOCATION_SERVER]
+function tell_all_pl_positions_SERVER(force = false) {
+	with (objPlayer_SERVER) {
+		if (playerRow[? PLAYERS_DEATHTIMER_SERVER] == 0) {
+			var _location = playerRow[? PLAYERS_LOCATION_SERVER]
 			
-			var _xx = _playerRow[? PLAYERS_X_SERVER]
-			var _yy = _playerRow[? PLAYERS_Y_SERVER]
+			var _xx = playerRow[? PLAYERS_X_SERVER]
+			var _yy = playerRow[? PLAYERS_Y_SERVER]
 			
-			var lastPosition = ds_map_find_value(global.lastPositions_sent, _socketID)
+			var lastPosition = ds_map_find_value(global.lastPositions_sent, socketID)
 			if (lastPosition == undefined or force or (lastPosition.xx != _xx or lastPosition.yy != _yy)) {
-				net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_POSITION, json_stringify({ socketID: _socketID, xx: _xx, yy: _yy }), BUFFER_TYPE_STRING, true, lastPosition == undefined or force ? 0 : _location)
-				ds_map_set(global.lastPositions_sent, _socketID, {xx: _xx, yy: _yy})
+				net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_POSITION, json_stringify({ i: socketID, x: round(_xx), y: round(_yy) }), BUFFER_TYPE_STRING, true, lastPosition == undefined or force ? 0 : _location)
+				ds_map_set(global.lastPositions_sent, socketID, {xx: _xx, yy: _yy})
 			}
 		}
+	}
+}
+
+function tell_all_npc_positions_SERVER(force = false) {
+	with (parNPC_SERVER) {
+		var lastPosition = ds_map_find_value(global.lastPositions_sent, npcID)
+		if (lastPosition == undefined or force or (lastPosition.xx != x or lastPosition.yy != y)) {
+			net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_POSITION, json_stringify({ i: npcID, x: round(x), y: round(y) }), BUFFER_TYPE_STRING, true, lastPosition == undefined or force ? 0 : real(id).location)
+			ds_map_set(global.lastPositions_sent, npcID, {xx: x, yy: y})
+		}
+	}
+}
+
+function tell_all_npc_angles_SERVER(force = false) {
+	with (parNPC_SERVER) {
+		net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_ROTATION, json_stringify({ i: npcID, v: round(image_angle) }), BUFFER_TYPE_STRING, true, force ? 0 : real(id).location)
 	}
 }

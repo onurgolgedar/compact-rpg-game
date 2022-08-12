@@ -139,20 +139,20 @@ function item_delete_COMMON(box, accountID = undefined, box_i = undefined, box_j
 	if (boxes == undefined)
 		boxes = global.playerBoxes[? accountID]
 	
-	var pageScanning = 1
 	var sameItem_box = item_get_exists_SERVER(box, accountID, boxes)
 
 	if (!box.item.isCollectable or sameItem_box == undefined) {
 		if (box_i == undefined) {
-		    for (var j = 0; j < global.bc_ver_COMMON; j++) {
-		        for (var i = global.bc_hor_COMMON*(pageScanning-1); i < global.bc_hor_COMMON*pageScanning; i++) {
-					var _box = ds_grid_get(boxes, i, j)
-					if (item_get_confirmation_number_COMMON(_box.item) == item_get_confirmation_number_COMMON(box.item) and (!_box.tag.isForQuest or questAuthorization)) {
-						ds_grid_set(boxes, i, j, box_create_COMMON())
-						return true
+			for (var pageScanning = 1; pageScanning <= global.pageCount_COMMON; pageScanning++)
+			    for (var j = 0; j < global.bc_ver_COMMON; j++) {
+			        for (var i = global.bc_hor_COMMON*(pageScanning-1); i < global.bc_hor_COMMON*pageScanning; i++) {
+						var _box = ds_grid_get(boxes, i, j)
+						if (item_get_confirmation_number_COMMON(_box.item) == item_get_confirmation_number_COMMON(box.item) and (!_box.tag.isForQuest or questAuthorization)) {
+							ds_grid_set(boxes, i, j, box_create_COMMON())
+							return true
+						}
 					}
 				}
-			}
 		}
 		else {
 			if (!ds_grid_get(boxes, box_i, box_j).tag.isForQuest or questAuthorization) {

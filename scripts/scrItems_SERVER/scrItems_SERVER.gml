@@ -2,7 +2,6 @@ function item_add_SERVER(box, accountID, box_i = undefined, box_j = undefined, c
 	if (boxes == undefined)
 		boxes = global.playerBoxes[? accountID]
 	
-	var pageScanning = 1
 	var sameItem_box = item_get_exists_SERVER(box, accountID, boxes)
 
 	if (!box.item.isCollectable or sameItem_box == undefined) {
@@ -10,17 +9,18 @@ function item_add_SERVER(box, accountID, box_i = undefined, box_j = undefined, c
 			return false
 		
 		if (box_i == undefined) {
-		    for (var j = 0; j < global.bc_ver_COMMON; j++) {
-		        for (var i = global.bc_hor_COMMON*(pageScanning-1); i < global.bc_hor_COMMON*pageScanning; i++) {
-					var _box = ds_grid_get(boxes, i, j)
+			for (var pageScanning = 1; pageScanning <= global.pageCount_COMMON; pageScanning++)
+			    for (var j = 0; j < global.bc_ver_COMMON; j++) {
+			        for (var i = global.bc_hor_COMMON*(pageScanning-1); i < global.bc_hor_COMMON*pageScanning; i++) {
+						var _box = ds_grid_get(boxes, i, j)
 				
-					if (_box.item == undefined) {
-						_box.item = item_copy_COMMON(box.item)
-						_box.count += count
-						return { result: true, i: i, j: j }
+						if (_box.item == undefined) {
+							_box.item = item_copy_COMMON(box.item)
+							_box.count += count
+							return { result: true, i: i, j: j }
+						}
 					}
 				}
-			}
 		}
 		else {
 			var _box = ds_grid_get(boxes, box_i, box_j)
@@ -30,7 +30,7 @@ function item_add_SERVER(box, accountID, box_i = undefined, box_j = undefined, c
 				return { result: true, i: box_i, j: box_j }
 			}
 			
-			return item_add_SERVER(box.item, accountID, undefined, undefined, count, boxes)
+			return item_add_SERVER(box, accountID, undefined, undefined, count, boxes)
 		}
 	}
 	else if (sameItem_box != undefined) {
@@ -50,7 +50,7 @@ function item_get_exists_SERVER(box, accountID = undefined, boxes = undefined) {
 			var _box = ds_grid_get(boxes, i, j)
 			
 	        if (_box.item != undefined and box_get_confirmation_number_COMMON(_box) == box_get_confirmation_number_COMMON(box))
-	            return {i: i, j: j}
+	            return { i: i, j: j }
 		}
                 
 	return undefined

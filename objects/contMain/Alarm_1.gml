@@ -1,4 +1,4 @@
-if (room == roomMenu)
+if (room == roomMenu or !global.drawEventEnabled)
 	exit
 	
 var zoom = camera_get_view_height(global.camera)

@@ -7,7 +7,3 @@ rigidbody_create(sprCreature1Shoulders,
 set_style(hair, clothes)
 
 image_angle_target = image_angle
-
-barVisible = false
-alarm[2] = room_speed/5
-

@@ -33,7 +33,7 @@ function_call_COMMON(alpha_loop, 1/30, true)
 
 function after_creation() {
 	if (owner != undefined)
-		ds_list_add(owner.windows, id)
+		ds_list_add(owner.windows, real(id))
 	event_user(0)
 	afterCreationTriggered = true
 }

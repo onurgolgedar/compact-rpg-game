@@ -12,7 +12,7 @@ function show_messagebox(xx, yy, title, text, duration = -1) {
 	while (count > 0) {
 		count--
 		with (parWindow) {
-			if (x == messageBox.x and y == messageBox.y and id != messageBox) {
+			if (x == messageBox.x and y == messageBox.y and real(id) != messageBox) {
 				messageBox.x += 10
 				messageBox.y += 10
 				

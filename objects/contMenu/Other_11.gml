@@ -16,6 +16,9 @@ ini_open("config.ini")
 	
 	with (tteCOOP_signup)
 		global.coopID = tte_ext_input_get_text()
+	if (global.coopID == "")
+		with (tteCOOP)
+			global.coopID = tte_ext_input_get_text()
 			
 	with (ttePassword_signup)
 		global.clientPassword_signup = tte_ext_input_get_text()

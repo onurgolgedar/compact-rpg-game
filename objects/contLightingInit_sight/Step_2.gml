@@ -55,7 +55,7 @@ if update {
 		} 
 		else
 			qs[i] = [0, 0, 0, 0]
-		tid[i] = id
+		tid[i] = real(id)
 		i++
 		
 		if i == 4 or ii == n {

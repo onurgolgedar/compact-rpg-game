@@ -1,13 +1,13 @@
 #region FUNCTION DECLARATIONS
 function joint_initiate(owner, x, y, side) {
-	id.owner = owner
-	id.side = side
+	real(id).owner = owner
+	real(id).side = side
 	lock_dis = point_distance(owner.x, owner.y, x, y)
 	lock_dir = point_direction(owner.x, owner.y, x, y)
 }
 function joint_animate(animTarget, animTime) {
-	id.animTarget = animTarget
-	id.animSpeed = abs(angle_difference(target, animTarget))/animTime
+	real(id).animTarget = animTarget
+	real(id).animSpeed = abs(angle_difference(target, animTarget))/animTime
 }
 function joint_turn_with_velocity(angle, velocity) {
 	var turn_ad = angle_difference(image_angle, angle)

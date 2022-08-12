@@ -33,7 +33,7 @@ else if (attackTimer != 0) {
 	attackTimer = 0
 	
 	with (parTarget_SERVER) {
-		if (id != other.id) {
+		if (real(id) != real(other.id)) {
 			var attack_x = lengthdir_x(115, other.image_angle)
 			var attack_y = lengthdir_y(115, other.image_angle)
 			

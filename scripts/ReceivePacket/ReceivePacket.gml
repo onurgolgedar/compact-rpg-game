@@ -10,7 +10,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 	#region PARSE PARAMETERS
 	var parameterCount = 0
 	if (is_string(pureData)) {
-		if (string_char_at(pureData, 0) == "{" or string_char_at(pureData, 0) == "[")
+		if (string_char_at(pureData, 1) == "{" or string_char_at(pureData, 1) == "[")
 			data = json_parse(pureData)
 		else {
 			parameterCount = 1
@@ -23,19 +23,24 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 	}
 	#endregion
 	
-		if (code != 2002 and code != 2001 and code != 2005 and code != 2003 and code != 2004 and
-			code != 3005 and code != 3000 and code != 3001 and code != 3002 and code != 3003 and
-			code != 1000 and code != 1001 and code != 1002 and code != 1003 and code != 1004 and
-			code != 2000 and code != 2002 and code != 7003 and code != 2007 and
-			code != 2006 and code != 1500 and code != 7001 and code != 5000 and code != 1501 and
-			code != 3004 and code != 5002 and code != 15002 and code != 10302 and code != 4001 and
-			code != 6000 and code != 10300 and code != 10301 and code != 10301 and code != 7010 and
-			code != 17010 and code != 652)
-			if (!is_string(pureData) or string_length(pureData) < 100)
-				//show_messagebox(50, 150, "From: "+string(socketID_sender), "Code: "+string(code)+"\n"+string(data), 7)
-				show_debug_message("From: "+string(socketID_sender)+"\n[ Code: "+string(code)+"\n  Data: "+string(data)+" ]")
+	if (code != 2002 and code != 2001 and code != 2005 and code != 2003 and code != 2004 and
+		code != 3005 and code != 3000 and code != 3001 and code != 3002 and code != 3003 and
+		code != 1000 and code != 1001 and code != 1002 and code != 1003 and code != 1004 and
+		code != 2000 and code != 2002 and code != 7003 and code != 2007 and
+		code != 2006 and code != 1500 and code != 7001 and code != 5000 and code != 1501 and
+		code != 3004 and code != 5002 and code != 15002 and code != 10302 and code != 4001 and
+		code != 6000 and code != 10300 and code != 10301 and code != 10301 and code != 7010 and
+		code != 17010 and code != 652)
+		//if (!is_string(pureData) or string_length(pureData) < 100)
+			//show_messagebox(50, 150, "From: "+string(socketID_sender), "Code: "+string(code)+"\n"+string(data), 7)
+			show_debug_message("From: "+string(socketID_sender)+"\n[ Code: "+string(code)+"\n  Data: "+string(data)+" ]")
+			
+		if (!global.drawEventEnabled and (code == CODE_TELL_NPC_ENERGY or code == CODE_TELL_NPC_HP or code == CODE_TELL_NPC_MANA or
+			code == CODE_TELL_NPC_POSITION or code == CODE_TELL_NPC_ROTATION or code == CODE_TELL_PLAYER_ENERGY or code == CODE_TELL_PLAYER_HP or
+			code == CODE_TELL_PLAYER_MANA or code == CODE_TELL_PLAYER_POSITION or code == CODE_TELL_PLAYER_ROTATION))
+			 exit
 
-	try {
+	//try {
 		switch(code) {										
 			case CODE_GET_INVENTORY:
 				ds_grid_destroy(global.boxes)
@@ -116,7 +121,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 				
 				if (player != undefined)
 					with (player) {
-						id.weaponSprite = asset_get_index(data.weapon)
+						real(id).weaponSprite = asset_get_index(data.weapon)
 						shoulders.sprite_index = asset_get_index(data.shoulders)
 					}
 				break
@@ -126,8 +131,11 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_WINDOW:
+				if (data.ownerID == pointer_null or data.ownerID == undefined or !instance_exists(data.ownerID))
+					break
+			
 				var trade_window = instance_create_layer(450, 140, "Windows", asset_get_index(data.window))
-				trade_window.owner = data.owner
+				trade_window.owner = data.ownerID
 			
 				var boxes = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
 				ds_grid_read(boxes, data.json)
@@ -237,7 +245,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 				if (target != undefined) {
 					with (target) {
 						var effect = instance_create_layer(x, y, "Top", objEffect_laser)
-						effect.target = id
+						effect.target = real(id)
 					}
 				}
 				break
@@ -262,15 +270,22 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			case CODE_BASIC_ATTACK:
 				var player = global.playerInstances[? data.socketID]
 		
-				if (player != undefined)
+				if (player != undefined) {
+					with (contGameController)
+						ba_delay = 0
+					
 					with (player) {
-						anim_start(animSwingASword, data.time, id, animSwingASword_style)
+						var sound = sound_play_at(sndSwordSwing, x, y, false)
+						audio_sound_pitch(sound, random_range(0.85, 1.05))
+						
+						anim_start(animSwingASword, data.time, real(id), animSwingASword_style)
 
 						if (animSwingASword_style < 2)
 							animSwingASword_style++
 						else
 							animSwingASword_style = 0
 					}
+				}
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -316,7 +331,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 				
 			case CODE_DIALOGUE:
-				if (!is_array(data)) {
+				if (!is_array(data)) {					
 					var buttonsArray = undefined
 					if (data.buttons != pointer_null) {
 						buttonsArray = data.buttons
@@ -324,14 +339,16 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 							buttonsArray[i].image = asset_get_index(buttonsArray[i].image)
 					}
 				
-					if (data.ownerAssetName == pointer_null)
-						data.ownerAssetName = undefined
+					if (data.owner_assetName == pointer_null)
+						data.owner_assetName = undefined
+					if (data.ownerID == pointer_null)
+						data.ownerID = undefined
 					if (data.messageID == pointer_null)
 						data.messageID = undefined
 					if (data.duration == pointer_null)
 						data.duration = undefined
 					
-					show_questionbox(450, 550, data.title, data.text, data.ownerAssetName != undefined ? asset_get_index(data.ownerAssetName) : data.ownerAssetName, data.messageID, buttonsArray, data.duration)
+					show_questionbox(450, 550, data.title, data.text, data.ownerID, data.messageID, buttonsArray, data.duration)
 				}
 				else {
 					var messageBoxes = data
@@ -414,7 +431,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			case CODE_CHAT:
 				ds_list_add(global.chatHistory, { title: data.title, txt: data.txt, color: data.title == global.clientName ? c_ltyellow : c_ltorange })
 				var ds_size = ds_list_size(global.chatHistory)
-				if (ds_size > 5)
+				if (ds_size > 9)
 					ds_list_delete(global.chatHistory, 0)
 				break
 			
@@ -579,7 +596,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					global.level = newPlayer.level
 					global.clientName = newPlayer.name
 					if (global.selectedPlayer == undefined)
-						global.selectedPlayer = newPlayer
+						global.selectedPlayer = real(newPlayer)
 				}
 				
 				switch (newPlayer.class) {
@@ -825,10 +842,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					db_add_row(global.DB_SRV_TABLE_accounts, account)
 					db_save_table(global.DB_SRV_TABLE_accounts)
 					
-					net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have [c="+string(c_ltlime)+"]signed up[/c] successfully. ", title: "Success", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 4, buttons: undefined }), BUFFER_TYPE_STRING)
+					net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have [c="+string(c_ltlime)+"]signed up[/c] successfully. ", title: "Success", messageID: undefined, owner_assetName: undefined, duration: 4, buttons: undefined, ownerID: undefined }), BUFFER_TYPE_STRING)
 				}
 				else
-					net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "The account already exists. ", title: "Failed", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 4, buttons: undefined }), BUFFER_TYPE_STRING)
+					net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "The account already exists. ", title: "Failed", messageID: undefined, owner_assetName: undefined, duration: 4, buttons: undefined, ownerID: undefined }), BUFFER_TYPE_STRING)
 				break
 			
 			case _CODE_LOGIN:
@@ -1077,16 +1094,16 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 						net_server_send(socketID_sender, CODE_PLACE_LAKES, json_stringify({ type: 2, xx: round(x), yy: round(y), xscale: image_xscale, yscale: image_yscale, angle: round(image_angle) }), BUFFER_TYPE_STRING)
 				
 					with (objPlayer_SERVER)
-						if (id.socketID != socketID_sender) {
-							net_server_send(socketID_sender, CODE_SPAWN_PLAYER, json_stringify({ socketID: id.socketID, xx: round(x), yy: round(y), maxHp: maxHp, maxEnergy: maxEnergy, maxMana: maxMana, class: class, movementSpeed: movementSpeed, physicalPower: physicalPower, magicalPower: magicalPower, attackSpeed: attackSpeed, level: level }), BUFFER_TYPE_STRING)
-							tell_appearence_SERVER(id.socketID, socketID_sender)
+						if (real(id).socketID != socketID_sender) {
+							net_server_send(socketID_sender, CODE_SPAWN_PLAYER, json_stringify({ socketID: real(id).socketID, xx: round(x), yy: round(y), maxHp: maxHp, maxEnergy: maxEnergy, maxMana: maxMana, class: class, movementSpeed: movementSpeed, physicalPower: physicalPower, magicalPower: magicalPower, attackSpeed: attackSpeed, level: level }), BUFFER_TYPE_STRING)
+							tell_appearence_SERVER(real(id).socketID, socketID_sender)
 						}
 				
 					with (objCreature1_SERVER)
-						net_server_send(socketID_sender, CODE_SPAWN_NPC, json_stringify({ npcID: id.targetID, xx: round(x), yy: round(y), maxHp: maxHp, maxEnergy: maxEnergy, maxMana: maxMana, name: name, clientObject: object_get_name(clientObject) }), BUFFER_TYPE_STRING)
+						net_server_send(socketID_sender, CODE_SPAWN_NPC, json_stringify({ npcID: real(id).targetID, xx: round(x), yy: round(y), maxHp: maxHp, maxEnergy: maxEnergy, maxMana: maxMana, name: name, clientObject: object_get_name(clientObject) }), BUFFER_TYPE_STRING)
 						
 					with (objNPC_SERVER)
-						net_server_send(socketID_sender, CODE_SPAWN_NPC, json_stringify({ npcID: id.targetID, xx: round(x), yy: round(y), maxHp: maxHp, maxEnergy: maxEnergy, maxMana: maxMana, name: name, clientObject: object_get_name(clientObject) }), BUFFER_TYPE_STRING)
+						net_server_send(socketID_sender, CODE_SPAWN_NPC, json_stringify({ npcID: real(id).targetID, xx: round(x), yy: round(y), maxHp: maxHp, maxEnergy: maxEnergy, maxMana: maxMana, name: name, clientObject: object_get_name(clientObject) }), BUFFER_TYPE_STRING)
 	
 					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, accountinfo[? ACCOUNTINFO_CLASS_SERVER], BUFFER_TYPE_STRING,,,bufferinfo)
 					
@@ -1099,7 +1116,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 				
 					// Send Shared Data
 					tell_all_names(,true)
-					tell_all_positions_SERVER(true)
+					tell_all_pl_positions_SERVER(true)
 				}
 				else
 					net_server_send(socketID_sender, CODE_LOGIN_FAIL)
@@ -1676,9 +1693,9 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					break
 			
 				with (parNPC_SERVER) {
-					if (id.npcID == data.npcID) {
+					if (real(id).npcID == data.npcID) {
 						var isLoot = data.isLoot
-						var boxes = isLoot == false ? id.boxes : id.lootBoxes
+						var boxes = isLoot == false ? real(id).boxes : real(id).lootBoxes
 						
 						var box = ds_grid_get(boxes, data.i, data.j)
 						if (box.item != undefined and box.item.type == data.type) {
@@ -1700,7 +1717,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 										if (success) {					
 											if (!isLoot) {
 												instance.accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] -= price
-												net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have purchased "+item_get_title_COMMON(box.item)+".\n[c="+string(c_red)+"]-"+string(price)+"[/c] [img=sprCoin2]", title: "Purchase", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 1, buttons: undefined }), BUFFER_TYPE_STRING)
+												net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have purchased "+item_get_title_COMMON(box.item)+".\n[c="+string(c_red)+"]-"+string(price)+"[/c] [img=sprCoin2]", title: "Purchase", messageID: undefined, owner_assetName: undefined, ownerID: undefined, duration: 1, buttons: undefined }), BUFFER_TYPE_STRING)
 											}
 											
 											net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
@@ -1736,7 +1753,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 							instance.accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] += price
 									
 							net_server_send(socketID_sender, CODE_GET_INVENTORY, json_stringify({ boxes: json_write_boxes_SERVER(socketID_sender), gold: instance.accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
-							net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have sold "+item_get_title_COMMON(box.item)+".\n[c="+string(c_ltlime)+"]"+string(price)+"[/c] [img=sprCoin2]", title: "Sell", messageID: undefined, owner: undefined, ownerAssetName: undefined, duration: 1, buttons: undefined }), BUFFER_TYPE_STRING)
+							net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: "You have sold "+item_get_title_COMMON(box.item)+".\n[c="+string(c_ltlime)+"]"+string(price)+"[/c] [img=sprCoin2]", title: "Sell", messageID: undefined, owner_assetName: undefined, ownerID: undefined, duration: 1, buttons: undefined }), BUFFER_TYPE_STRING)
 						}
 					}
 				}
@@ -1780,10 +1797,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 				}
 				
 				if (title != undefined)
-					net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: text, title: title , messageID: data.messageID, ownerAssetName: data.ownerAssetName, duration: data.time, buttons: data.buttons }), BUFFER_TYPE_STRING)
+					net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify({ text: text, title: title , messageID: data.messageID, owner_assetName: data.owner_assetName, ownerID: data.ownerID, duration: data.time, buttons: data.buttons }), BUFFER_TYPE_STRING)
 				else {
-					var dialogueBox = dialogue_progress_SERVER(data.messageID, data.dialogueNo, asset_get_index(data.owner_assetName), data.owner, data.answerBefore, socketID_sender)
-					if (dialogueBox != undefined)
+					var dialogueBox = dialogue_progress_SERVER(data.messageID, data.dialogueNo, data.owner_assetName, data.ownerID, data.answerBefore, socketID_sender)
+					if (dialogueBox != [undefined, undefined])
 						net_server_send(socketID_sender, CODE_DIALOGUE, json_stringify(dialogueBox), BUFFER_TYPE_STRING)
 				}
 				break
@@ -1923,7 +1940,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					break
 			
 				with (instance) {
-					var dir = point_direction(x, y, data.xx, data.yy)
+					var dir = point_direction(x, y, data.x, data.y)
 					image_angle = dir
 				}
 				break
@@ -1981,19 +1998,12 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // // */
 			
 			case CODE_TELL_PLAYER_POSITION:
-				var _socketID = data.socketID
+				var _socketID = data.i
 		
 				var player = global.playerInstances[? _socketID]
 				if (player != undefined) {
-					if (abs(player.x-data.xx) < 2 and abs(player.y-data.yy) < 2 or
-						abs(player.x-data.xx) > 300 or abs(player.y-data.yy) > 300) {
-						player.x = data.xx
-						player.y = data.yy
-					}
-					else {
-						player.x = lerp(player.x, data.xx, 0.5)
-						player.y = lerp(player.y, data.yy, 0.5)
-					}
+					player.xx = data.x
+					player.yy = data.y
 				}
 				break
 			
@@ -2002,19 +2012,12 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_NPC_POSITION:
-				var npcID = data.npcID
+				var npcID = data.i
 		
 				var target = global.npcInstances[? npcID]
 				if (target != undefined) {
-					if (abs(target.x-data.xx) < 2 and abs(target.y-data.yy) < 2 or
-						abs(target.x-data.xx) > 300 or abs(target.y-data.yy) > 300) {
-						target.x = data.xx
-						target.y = data.yy
-					}
-					else {
-						target.x = lerp(target.x, data.xx, 0.5)
-						target.y = lerp(target.y, data.yy, 0.5)
-					}
+					target.xx = data.x
+					target.yy = data.y
 				}
 				break
 		
@@ -2038,10 +2041,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_PLAYER_HP:
-				var player = global.playerInstances[? data.socketID]
+				var player = global.playerInstances[? data.i]
 			
 				if (player != undefined)
-					player.hp = data.hp
+					player.hp = data.v
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -2049,10 +2052,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_NPC_HP:
-				var target = global.npcInstances[? data.npcID]
+				var target = global.npcInstances[? data.i]
 			
 				if (target != undefined)
-					target.hp = data.hp
+					target.hp = data.v
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -2060,10 +2063,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_PLAYER_MANA:
-				var player = global.playerInstances[? data.socketID]
+				var player = global.playerInstances[? data.i]
 			
 				if (player != undefined)
-					player.mana = data.mana
+					player.mana = data.v
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -2071,10 +2074,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_NPC_MANA:
-				var target = global.npcInstances[? data.npcID]
+				var target = global.npcInstances[? data.i]
 			
 				if (target != undefined)
-					target.mana = data.mana
+					target.mana = data.v
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -2109,10 +2112,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_NPC_ENERGY:
-				var target = global.npcInstances[? data.npcID]
+				var target = global.npcInstances[? data.i]
 			
 				if (target != undefined)
-					target.energy = data.energy
+					target.energy = data.v
 				break
 		
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -2120,10 +2123,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_PLAYER_ROTATION:
-				var player = global.playerInstances[? data.socketID]
+				var player = global.playerInstances[? data.i]
 			
 				if (player != undefined)
-					player.image_angle_target = data.angle
+					player.image_angle_target = data.v
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -2131,10 +2134,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_NPC_ROTATION:
-				var target = global.npcInstances[? data.npcID]
+				var target = global.npcInstances[? data.i]
 			
 				if (target != undefined)
-					target.image_angle_target = data.angle
+					target.image_angle_target = data.v
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -2142,10 +2145,10 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			
 			case CODE_TELL_PLAYER_ENERGY:
-				var player = global.playerInstances[? data.socketID]
+				var player = global.playerInstances[? data.i]
 			
 				if (player != undefined)
-					player.energy = data.energy
+					player.energy = data.v
 				break
 				
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -2235,9 +2238,9 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 				lake.image_yscale = data.yscale
 				break
 		}
-	}
+	/*}
 	catch (error) {
 		global.networkErrors_count++
 		show_message(error)
-	}
+	}*/
 }

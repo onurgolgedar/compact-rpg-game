@@ -2,7 +2,7 @@ if (!isRefreshing) {
 	minDepth = depth
 	with (parWindow) {
 		onFront = false
-		if (depth <= other.depth and id != other.id) {    
+		if (depth <= other.depth and real(id) != real(other.id)) {    
 			if (depth < other.minDepth)
 			    other.minDepth = depth;
             

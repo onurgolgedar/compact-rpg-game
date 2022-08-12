@@ -118,7 +118,7 @@ function light_update(argument0) {
 			// NOTE: While mostly identical, there are some differences between this code and that of the else-statement
 			with(ds_list_find_value(list, caster_index)) {
 				// Is the light ignoring this shadow caster?
-				if(has_ignore_set && ds_map_exists(ignore_set, id)) {
+				if(has_ignore_set && ds_map_exists(ignore_set, real(id))) {
 					// Yes, skip it
 					continue
 				}
@@ -131,13 +131,13 @@ function light_update(argument0) {
 				if(shadow_caster_static && !shadow_caster_dirty) {
 					// Is this shadow caster known to be out of range of this light?
 					// Directional lights are infinite so exclude those
-					if(has_out_of_range_map && light_type != eLightType.Directional && ds_map_exists(out_of_range_map, id)) {
+					if(has_out_of_range_map && light_type != eLightType.Directional && ds_map_exists(out_of_range_map, real(id))) {
 						// It is out of range
 						continue
 					}
 	
 					// Check if it has been culled against this light
-					if(has_culled_shadow_casters && ds_map_exists(culled_shadow_casters, id)) {
+					if(has_culled_shadow_casters && ds_map_exists(culled_shadow_casters, real(id))) {
 						// This shadow caster has been culled -- it does not affect this light
 						continue
 					}
@@ -172,12 +172,12 @@ function light_update(argument0) {
 							culled_shadow_casters = ds_map_create()
 							light[| eLight.CulledShadowCasters] = culled_shadow_casters
 						}
-						ds_map_add(culled_shadow_casters, id, 0)
+						ds_map_add(culled_shadow_casters, real(id), 0)
 						continue
 					}
 					else if(has_culled_shadow_casters) {
 						// This light is not culled
-						ds_map_delete(culled_shadow_casters, id)
+						ds_map_delete(culled_shadow_casters, real(id))
 					}
 				}
 	
@@ -189,12 +189,12 @@ function light_update(argument0) {
 					// The shadow caster is static
 					if(!dirty && !shadow_caster_dirty) {
 						// Neither the light nor shadow caster is dirty
-						shadow = light_static_get_array(light, id)
+						shadow = light_static_get_array(light, real(id))
 					}
 					else if(shadow_caster_dirty && (flags & eShadowCasterFlags.MarkedForCleanup) == 0) {
 						// The shadow caster is dirty, mark it to get cleaned after the lighting pass
 						// This will unset the dirty flag on it
-						ds_list_add(global.worldDirtyShadowCasters, id)
+						ds_list_add(global.worldDirtyShadowCasters, real(id))
 						flags |= eShadowCasterFlags.MarkedForCleanup
 					}
 				}
@@ -204,7 +204,7 @@ function light_update(argument0) {
 					++global.worldActiveShadowCasters
 		
 					// Trace a shadow for this object
-					shadow = light_trace_polygon(id, light)
+					shadow = light_trace_polygon(real(id), light)
 		
 					// Did it cast a shadow?
 					if(shadow == undefined) {
@@ -216,7 +216,7 @@ function light_update(argument0) {
 						// Save the array we copy it because the returned array is reused
 						var copy = array_create(array_length_1d(shadow))
 						array_copy(copy, 0, shadow, 0, array_length_1d(shadow))
-						light_static_set_array(light, id, copy)
+						light_static_set_array(light, real(id), copy)
 					}
 				}
 	
@@ -252,7 +252,7 @@ function light_update(argument0) {
 		// Iterate over all shadow casters and trace shadows
 		with(parShadowCaster) {
 			// Is the light ignoring this shadow caster?
-			if(has_ignore_set && ds_map_exists(ignore_set, id)) {
+			if(has_ignore_set && ds_map_exists(ignore_set, real(id))) {
 				// Yes, skip it
 				continue
 			}
@@ -265,13 +265,13 @@ function light_update(argument0) {
 			if(shadow_caster_static && !shadow_caster_dirty) {
 				// Is this shadow caster known to be out of range of this light?
 				// Directional lights are infinite so exclude those
-				if(has_out_of_range_map && light_type != eLightType.Directional && ds_map_exists(out_of_range_map, id)) {
+				if(has_out_of_range_map && light_type != eLightType.Directional && ds_map_exists(out_of_range_map, real(id))) {
 					// It is out of range
 					continue
 				}
 	
 				// Check if it has been culled against this light
-				if(has_culled_shadow_casters && ds_map_exists(culled_shadow_casters, id)) {
+				if(has_culled_shadow_casters && ds_map_exists(culled_shadow_casters, real(id))) {
 					// This shadow caster has been culled -- it does not affect this light
 					continue
 				}
@@ -288,12 +288,12 @@ function light_update(argument0) {
 						out_of_range_map = ds_map_create()
 						light[| eLight.ShadowCastersOutOfRange] = out_of_range_map
 					}
-					ds_map_add(out_of_range_map, id, 0)
+					ds_map_add(out_of_range_map, real(id), 0)
 					continue
 				}
 				else if(has_out_of_range_map) { 
 					// This shadow caster is not out of range
-					ds_map_delete(out_of_range_map, id)
+					ds_map_delete(out_of_range_map, real(id))
 				}
 			}
 	
@@ -326,12 +326,12 @@ function light_update(argument0) {
 						culled_shadow_casters = ds_map_create()
 						light[| eLight.CulledShadowCasters] = culled_shadow_casters
 					}
-					ds_map_add(culled_shadow_casters, id, 0)
+					ds_map_add(culled_shadow_casters, real(id), 0)
 					continue
 				}
 				else if(has_culled_shadow_casters) {
 					// This light is not culled
-					ds_map_delete(culled_shadow_casters, id)
+					ds_map_delete(culled_shadow_casters, real(id))
 				}
 			}
 	
@@ -343,12 +343,12 @@ function light_update(argument0) {
 				// The shadow caster is static
 				if(!dirty && !shadow_caster_dirty) {
 					// Neither the light nor shadow caster is dirty
-					shadow = light_static_get_array(light, id)
+					shadow = light_static_get_array(light, real(id))
 				}
 				else if(shadow_caster_dirty && (flags & eShadowCasterFlags.MarkedForCleanup) == 0) {
 					// The shadow caster is dirty, mark it to get cleaned after the lighting pass
 					// This will unset the dirty flag on it
-					ds_list_add(global.worldDirtyShadowCasters, id)
+					ds_list_add(global.worldDirtyShadowCasters, real(id))
 					flags |= eShadowCasterFlags.MarkedForCleanup
 				}
 			}
@@ -358,7 +358,7 @@ function light_update(argument0) {
 				++global.worldActiveShadowCasters
 		
 				// Trace a shadow for this object
-				shadow = light_trace_polygon(id, light)
+				shadow = light_trace_polygon(real(id), light)
 		
 				// Did it cast a shadow?
 				if(shadow == undefined) {
@@ -370,7 +370,7 @@ function light_update(argument0) {
 					// Save the array we copy it because the returned array is reused
 					var copy = array_create(array_length_1d(shadow))
 					array_copy(copy, 0, shadow, 0, array_length_1d(shadow))
-					light_static_set_array(light, id, copy)
+					light_static_set_array(light, real(id), copy)
 				}
 			}
 	

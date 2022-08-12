@@ -6,7 +6,7 @@ function change_hp(value) {
 		hp += value
 	else
 		hp = maxHp
-	
+		
 	if (hp <= 0) {
 		hp = 0
 		playerRow[? PLAYERS_DEATHTIMER_SERVER] = 2

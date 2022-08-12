@@ -6,7 +6,7 @@
     "path": "folders/SERVER/3- Scripts.yy",
   },
   "resourceVersion": "1.0",
-  "name": "scrTell_SERVER",
+  "name": "scrtell_server",
   "tags": [],
   "resourceType": "GMScript",
 }

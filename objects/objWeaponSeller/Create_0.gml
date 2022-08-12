@@ -19,5 +19,3 @@ set_style(hair, clothes)
 
 animSwingASword_style = 0
 
-barVisible = false
-alarm[2] = room_speed/5

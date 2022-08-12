@@ -18,7 +18,7 @@ function rigidbody_list_destroy() {
 }
 function stop_animations() {
 	with (parAnimation) {
-		if (owner == other.id) {
+		if (owner == real(other.id)) {
 			event_perform(ev_other, ev_user5)
 		
 			instance_destroy()
@@ -59,11 +59,11 @@ function rigidbody_noarms() {
 	}
 }
 function rigidbody_set_definedstance(stance, duration) {
-	if (id.stance != stance) {
+	if (real(id).stance != stance) {
 		duration = duration == undefined ? 0.25 : duration
-		id.stance = stance
+		real(id).stance = stance
 		
-		if (id.stance != STANCE_POSE and noArms) {		
+		if (real(id).stance != STANCE_POSE and noArms) {		
 			#region Reset Scales		
 			if (leftArm[0] != undefined) {
 				with (leftArm[0]) {
@@ -252,16 +252,16 @@ function rigidbody_create() {
 	shoulders.sprite_index = argument[0]
 	shoulders.depth = depth+2
 	shoulders.image_angle = image_angle
-	shoulders.root = id
+	shoulders.root = real(id)
 	shoulders.image_blend = image_blend
 	shoulders.name = "Shoulders"
-	shoulders.joint_initiate(id, shoulders.x, shoulders.y, 1)
+	shoulders.joint_initiate(real(id), shoulders.x, shoulders.y, 1)
 
 	leftArm[0] = instance_create(x+lengthdir_x(argument[2], 90-image_angle), y+lengthdir_y(argument[2], 90-image_angle), objJoint)
 	leftArm[0].sprite_index = argument[1]
 	leftArm[0].depth = depth+3
 	leftArm[0].image_angle = image_angle
-	leftArm[0].root = id
+	leftArm[0].root = real(id)
 	leftArm[0].image_blend = image_blend
 	leftArm[0].name = "Left Arm"
 	leftArm[0].joint_initiate(shoulders, leftArm[0].x, leftArm[0].y, 1)
@@ -270,7 +270,7 @@ function rigidbody_create() {
 	rightArm[0].sprite_index = argument[1]
 	rightArm[0].depth = depth+3
 	rightArm[0].image_angle = image_angle
-	rightArm[0].root = id
+	rightArm[0].root = real(id)
 	rightArm[0].image_blend = image_blend
 	rightArm[0].name = "Right Arm"
 	rightArm[0].joint_initiate(shoulders, rightArm[0].x, rightArm[0].y, -1)
@@ -279,7 +279,7 @@ function rigidbody_create() {
 	leftArm[1].sprite_index = argument[3]
 	leftArm[1].depth = depth+4
 	leftArm[1].image_angle = image_angle
-	leftArm[1].root = id
+	leftArm[1].root = real(id)
 	leftArm[1].image_blend = image_blend
 	leftArm[1].name = "Left Front Arm"
 	leftArm[1].joint_initiate(leftArm[0], leftArm[1].x, leftArm[1].y, 1)
@@ -288,7 +288,7 @@ function rigidbody_create() {
 	rightArm[1].sprite_index = argument[3]
 	rightArm[1].depth = depth+4
 	rightArm[1].image_angle = image_angle
-	rightArm[1].root = id
+	rightArm[1].root = real(id)
 	rightArm[1].image_blend = image_blend
 	rightArm[1].name = "Right Front Arm"
 	rightArm[1].joint_initiate(rightArm[0], rightArm[1].x, rightArm[1].y, -1)
@@ -297,7 +297,7 @@ function rigidbody_create() {
 	leftHand.sprite_index = argument[5]
 	leftHand.depth = depth-1
 	leftHand.image_angle = image_angle
-	leftHand.root = id
+	leftHand.root = real(id)
 	leftHand.image_blend = image_blend
 	leftHand.name = "Left Hand"
 	leftHand.joint_initiate(leftArm[1], leftHand.x, leftHand.y, 1)
@@ -306,7 +306,7 @@ function rigidbody_create() {
 	rightHand.sprite_index = argument[5]
 	rightHand.depth = depth-1
 	rightHand.image_angle = image_angle
-	rightHand.root = id
+	rightHand.root = real(id)
 	rightHand.image_blend = image_blend
 	rightHand.name = "Right Hand"
 	rightHand.joint_initiate(rightArm[1], rightHand.x, rightHand.y, -1)

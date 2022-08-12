@@ -1,1 +1,1 @@
-destroy_effect(id, room_speed)
+destroy_effect(real(id), room_speed)
