@@ -52,7 +52,8 @@ function player_spawn_SERVER(socketID) {
 		return undefined
 	var accountinfoRow = db_get_row(global.DB_SRV_TABLE_accountinfo, accountID)
 	
-	var _location = global.locations[? accountinfoRow[? ACCOUNTINFO_LOCATION_SERVER]]
+	var _locationIndex = accountinfoRow[? ACCOUNTINFO_LOCATION_SERVER]
+	var _location = global.locations_SERVER[? _locationIndex]
 	var xx = _location.spawn_x
 	var yy = _location.spawn_y
 	
@@ -60,7 +61,9 @@ function player_spawn_SERVER(socketID) {
 	newPlayer.socketID = socketID
 	newPlayer.accountID = accountID
 	newPlayer.playerRow = db_get_row(global.DB_SRV_TABLE_players, socketID)
+	newPlayer.playerRow[? PLAYERS_INSTANCE_SERVER] = real(newPlayer)
 	newPlayer.accountinfoRow = accountinfoRow
+	newPlayer.location = _locationIndex
 	
 	var accountRow = db_get_row(global.DB_SRV_TABLE_accounts, db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID))
 	newPlayer.name = accountRow[? ACCOUNTS_NICKNAME_SERVER]
@@ -73,7 +76,7 @@ function player_spawn_SERVER(socketID) {
 		
 		player_recalculate_statistics_SERVER()
 		
-		var playerSkillBoxes = global.playerSkillBoxes[? accountID]
+		var playerSkillBoxes = global.playerSkillBoxes_SERVER[? accountID]
 		if (playerSkillBoxes != undefined) {
 			for (var i = 0; i < 5; i++) {
 				if (playerSkillBoxes[? i] != undefined) {
@@ -94,7 +97,7 @@ function player_spawn_SERVER(socketID) {
 			}
 		}
 		
-		var playerPermanentEffectBoxes = global.playerPermanentEffectBoxes[? accountID]
+		var playerPermanentEffectBoxes = global.playerPermanentEffectBoxes_SERVER[? accountID]
 		if (playerPermanentEffectBoxes != undefined) {
 			var ds_size = ds_list_size(playerPermanentEffectBoxes)
 			for (var i = 0; i < ds_size; i++)
@@ -106,7 +109,6 @@ function player_spawn_SERVER(socketID) {
 		mana = maxMana
 	}
 	
-	newPlayer.playerRow[? PLAYERS_INSTANCE_SERVER] = real(newPlayer)
 	newPlayer.playerRow[? PLAYERS_X_SERVER] = newPlayer.x
 	newPlayer.playerRow[? PLAYERS_Y_SERVER] = newPlayer.y
 	newPlayer.playerRow[? PLAYERS_HP_SERVER] = newPlayer.hp

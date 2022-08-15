@@ -1,4 +1,4 @@
 // ?
-db_set_row_value(global.DB_SRV_TABLE_players, socketID, PLAYERS_X_SERVER, x)
-db_set_row_value(global.DB_SRV_TABLE_players, socketID, PLAYERS_Y_SERVER, y)
-db_set_row_value(global.DB_SRV_TABLE_players, socketID, PLAYERS_ANGLE_SERVER, round(image_angle))
+playerRow[? PLAYERS_X_SERVER] = round(x)
+playerRow[? PLAYERS_Y_SERVER] = round(y)
+playerRow[? PLAYERS_ANGLE_SERVER] = round(image_angle)

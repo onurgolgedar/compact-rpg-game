@@ -1,1 +1,1 @@
-visible = global.drawServer
+visible = global.drawServer_SERVER

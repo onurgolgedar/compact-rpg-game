@@ -1,7 +1,7 @@
 function quests_set_SERVER(accountName) {
 	var socketID = db_find_value(global.DB_SRV_TABLE_players, PLAYERS_SOCKETID_SERVER, PLAYERS_ACCID_SERVER, accountName)
 	var accountinfo = db_find_row(global.DB_SRV_TABLE_accountinfo, ACCOUNTINFO_ACCID_SERVER, accountName)
-	var quests = global.playerQuests[? accountName]
+	var quests = global.playerQuests_SERVER[? accountName]
 	
 	var level = accountinfo[? ACCOUNTINFO_LEVEL_SERVER]
 	

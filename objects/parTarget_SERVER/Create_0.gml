@@ -48,8 +48,8 @@ hp = maxHp
 mana = maxMana
 energy = maxEnergy
 
-onWater = false
+lastPosition = undefined
 
-visible = global.drawServer
+visible = global.drawServer_SERVER
 
 event_inherited()

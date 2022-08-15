@@ -1,4 +1,4 @@
 var player = instance_nearest(mouse_x, mouse_y, objPlayer_SERVER)
-global.selectedPlayer = player
-if (global.selectedPlayer == noone)
-	global.selectedPlayer = undefined
+global.selectedPlayer_SERVER = player
+if (global.selectedPlayer_SERVER == noone)
+	global.selectedPlayer_SERVER = undefined

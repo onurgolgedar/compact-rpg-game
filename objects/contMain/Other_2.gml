@@ -1,1 +1,0 @@
-function_call_COMMON(function() { window_center() }, 2, false)

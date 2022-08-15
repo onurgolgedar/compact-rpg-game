@@ -1,6 +1,6 @@
 function json_write_boxes_SERVER(socketID, boxes = undefined) {
 	if (boxes = undefined)
-		boxes = global.playerBoxes[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
+		boxes = global.playerBoxes_SERVER[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
 				
 	var _grid = ds_grid_create(global.bc_hor_COMMON*global.pageCount_COMMON, global.bc_ver_COMMON+2)
 	for (var k = 0; k < global.bc_hor_COMMON*global.pageCount_COMMON; k++) {
@@ -18,7 +18,7 @@ function json_write_boxes_SERVER(socketID, boxes = undefined) {
 }
 
 function json_write_skillboxes_SERVER(socketID) {
-	var boxes_skill_SERVER = global.playerSkills[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
+	var boxes_skill_SERVER = global.playerSkills_SERVER[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
 				
 	var _grid = ds_grid_create(global.sc_hor_COMMON*global.pageCount_skill_COMMON, global.sc_ver_COMMON)
 	for (var k = 0; k < global.sc_hor_COMMON*global.pageCount_skill_COMMON; k++) {
@@ -35,8 +35,22 @@ function json_write_skillboxes_SERVER(socketID) {
 	return grid_string
 }
 
+function json_write_effectBoxes_SERVER(effectBoxes) {
+	var temp_list = ds_list_create()
+	ds_list_copy(temp_list, effectBoxes)
+					
+	var ds_size = ds_list_size(temp_list)
+	for (var i = 0; i < ds_size; i++)
+			temp_list[| i] = json_stringify(temp_list[| i])
+						 
+	var list_string = ds_list_write(temp_list)
+	ds_list_destroy(temp_list)
+					
+	return list_string
+}				
+
 /*function json_write_permanentEffectBoxes_SERVER(socketID) {
-	var permanentEffectBoxes_SERVER = global.playerPermanentEffectBoxes[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
+	var permanentEffectBoxes_SERVER = global.playerPermanentEffectBoxes_SERVER[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
 				
 	var _list = ds_list_create()
 	var ds_size = ds_list_size(permanentEffectBoxes_SERVER)

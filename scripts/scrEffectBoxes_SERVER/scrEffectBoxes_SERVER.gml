@@ -19,10 +19,11 @@ function effectBox_destroy_SERVER(effectBox, trigger = true) {
 	
 	ds_list_delete(effectBox.owner.effectBoxes, pos)
 	if (effectBox.owner.object_index == objPlayer_SERVER and effectBox.isPermanent) {
-		var globalEffectBoxes = global.playerPermanentEffectBoxes[? accountID]
+		var globalEffectBoxes = global.playerPermanentEffectBoxes_SERVER[? accountID]
 		pos = ds_list_find_index(globalEffectBoxes, effectBox)
 		ds_list_delete(globalEffectBoxes, effectBox)
 	}
+	delete effectBox
 		
 	return true
 }
@@ -43,11 +44,11 @@ function effectBox_create_SERVER(code, owner, creator) {
 	var _effectBox = undefined
 	switch (code) {
 		case EFFECTBOX_BUFF_1:
-			_effectBox = new effectBox(code, "Buff 1", owner, creator,, 5,,,,,true, 1, 2, "This is a test.", sprite_get_name(sprMainBS))
+			_effectBox = new st_effectBox(code, "Buff 1", owner, creator,, 5,,,,,true, 1, 2, "This is a test.", sprite_get_name(sprMainBS))
 			break
 			
 		case EFFECTBOX_PERMANENT_BUFF_1:
-			_effectBox = new effectBox(code, "Permanent Buff 1", owner, creator,, 5,,,true,, true, 1, 2, "This is a permanent test.", sprite_get_name(sprMainBS))
+			_effectBox = new st_effectBox(code, "Permanent Buff 1", owner, creator,, 5,,,true,, true, 1, 2, "This is a permanent test.", sprite_get_name(sprMainBS))
 			break
 	}
 	
@@ -73,7 +74,7 @@ function effectBox_add_SERVER(code, owner, creator) {
 		if (existingEffectBox == false) {
 			ds_list_add(effectBoxes, effectBox)
 			if (object_index == objPlayer_SERVER and effectBox.isPermanent)
-				ds_list_add(global.playerPermanentEffectBoxes[? accountID], effectBox)
+				ds_list_add(global.playerPermanentEffectBoxes_SERVER[? accountID], effectBox)
 		}
 		else {
 			existingEffectBox.time =  max(existingEffectBox.maxTime, effectBox.maxTime)

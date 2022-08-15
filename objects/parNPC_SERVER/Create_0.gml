@@ -51,4 +51,4 @@ lootBoxes = undefined
 target = undefined
 function_call_COMMON(choose_target, 1, true)
 
-visible = global.drawServer
+visible = global.drawServer_SERVER

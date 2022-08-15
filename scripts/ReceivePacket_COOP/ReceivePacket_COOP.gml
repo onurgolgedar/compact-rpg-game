@@ -19,7 +19,7 @@ function _net_receive_packet_COOP(code, pureData, socketID_sender) {
 	show_debug_message("(COOP) "+string(code)+": "+string(data))
 
 	try {
-		switch(code) {										
+		switch(code) {						
 			case CODE_CONNECT_COOP:
 				if (global.socketID_COOP_player == undefined)
 					global.socketID_COOP_player = data

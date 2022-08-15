@@ -1,6 +1,4 @@
-// Update the shadow map
-
-if (global.lighting) {
+if (global.lighting/* and image_alpha > 0.1*/) {
 	var exists
 
 	if (dirty or tick >= global.lightUpdateFrameDelay or global.worldShadowMap == undefined or !surface_exists(global.worldShadowMap)) {

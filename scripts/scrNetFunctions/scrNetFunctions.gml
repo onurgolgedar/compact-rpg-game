@@ -5,12 +5,7 @@ function net_client_send(code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = 
 		if (global.coopID != "" and bufferinfo == BUFFER_INFO_DEFAULT)
 			bufferinfo = global.socket_CLIENT
 
-		var buffer = buffer_create(36, buffer_grow, 1)
-		buffer_seek(buffer, buffer_seek_start, 0)
-		buffer_write(buffer, buffer_u8, bufferType)
-		buffer_write(buffer, buffer_u16, code)
-		buffer_write(buffer, net_buffer_get_type(bufferType), data)
-		buffer_write(buffer, buffer_u16, bufferinfo)
+		var buffer = net_make_buffer(code, data, bufferType, bufferinfo)
 
 		var socket = net_get_client_socket(forCOOP)
 		if (isUDP)
@@ -21,7 +16,7 @@ function net_client_send(code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = 
 		buffer_delete(buffer)
 	}
 	else
-		_net_receive_packet(code, data, global.socketID_player)
+		_net_receive_packet(code, data, global.socketID_player, bufferinfo)
 }
 
 function net_server_send(socketID, code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = false, location = 0, bufferinfo = 65535) {
@@ -53,7 +48,7 @@ function net_server_send(socketID, code, data = 0, bufferType = BUFFER_TYPE_BOOL
 							network_send_packet(_socketID, buffer, buffer_tell(buffer))
 					}
 					else
-						_net_receive_packet(code, data, _socketID)
+						_net_receive_packet(code, data, _socketID, bufferinfo)
 				}
 			}
 		}
@@ -71,14 +66,14 @@ function net_server_send(socketID, code, data = 0, bufferType = BUFFER_TYPE_BOOL
 					network_send_packet(socketID, buffer, buffer_tell(buffer))
 			}
 			else
-				_net_receive_packet(code, data, socketID)
+				_net_receive_packet(code, data, socketID, bufferinfo)
 		}
 
 		if (buffer != undefined)
 			buffer_delete(buffer)
 	}
 	else
-		_net_receive_packet(code, data, socketID)
+		_net_receive_packet(code, data, socketID, bufferinfo)
 }
 
 function net_buffer_read(buffer) {

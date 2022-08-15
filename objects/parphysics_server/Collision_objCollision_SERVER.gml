@@ -31,7 +31,8 @@ if ((spd_res.xx == 0 and spd_res.yy == 0)
 				var dir3 = point_direction(0, 0, k, t)
 			
 				if (abs(angle_difference(dir2, dir3)) <= 90)  {
-					spds[?_spds_keys[i]] = { xx: k, yy: t }					
+					delete spds[? _spds_keys[i]]
+					spds[? _spds_keys[i]] = { xx: k, yy: t }					
 					break
 				}
 			}
@@ -46,7 +47,8 @@ if ((spd_res.xx == 0 and spd_res.yy == 0)
 				var dir3 = point_direction(0, 0, k, t)
 			
 				if (abs(angle_difference(dir2, dir3)) > 90)  {
-					spds[?_spds_keys[i]] = { xx: k+other.dir.xx*5*elasticity, yy: t+other.dir.yy*5*elasticity }	
+					delete spds[? _spds_keys[i]]
+					spds[? _spds_keys[i]] = { xx: k+other.dir.xx*5*elasticity, yy: t+other.dir.yy*5*elasticity }	
 					break
 				}
 			}

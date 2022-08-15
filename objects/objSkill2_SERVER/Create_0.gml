@@ -1,7 +1,3 @@
-event_inherited()
-skill_index = SKILL_2
-laser_index = 0
-
 function execute() {
 	if (instance_exists(owner))
 		with (parTarget_SERVER) {
@@ -20,5 +16,8 @@ function execute() {
 	
 	instance_destroy()
 }
-
 function_call_COMMON(execute, 0.1, true)
+
+event_inherited()
+skill_index = SKILL_2
+laser_index = 0

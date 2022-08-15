@@ -3,13 +3,13 @@ if (collector == undefined) {
 		if (point_distance(x, y, other.x, other.y) < 180) {
 			other.collector = real(id)
 			
-			var playerRow = db_get_row(global.DB_SRV_TABLE_accountinfo, accountID)
-			playerRow[? ACCOUNTINFO_GOLD_SERVER] += other.value
+			var accountinfoRow = db_get_row(global.DB_SRV_TABLE_accountinfo, accountID)
+			accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] += other.value
 			
-			net_server_send(SOCKET_ID_ALL, CODE_COLLECT_COIN, json_stringify({ socketID: socketID, coinID: real(other.id), value: playerRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
+			net_server_send(SOCKET_ID_ALL, CODE_COLLECT_COIN, json_stringify({ socketID: socketID, coinID: real(other.id), value: accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] }), BUFFER_TYPE_STRING)
 			break
 		}
 	}
 
-	alarm[0] = room_speed/3
+	alarm[0] = SEC/3
 }

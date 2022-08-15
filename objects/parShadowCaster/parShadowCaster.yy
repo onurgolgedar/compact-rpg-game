@@ -6,8 +6,8 @@
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
-    "name": "objShadowCaster_sight",
-    "path": "objects/objShadowCaster_sight/objShadowCaster_sight.yy",
+    "name": "parShadowCaster_sight",
+    "path": "objects/parShadowCaster_sight/parShadowCaster_sight.yy",
   },
   "physicsObject": false,
   "physicsSensor": false,

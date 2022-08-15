@@ -5,7 +5,7 @@ text_width = 0
 text_height = 0
 
 var subtexts = ds_list_create()
-var PADDING = {left: 0, top: 0}
+var PADDING = { left: 0, top: 0 }
 var OFFSET = 0
 draw_set_font(font_bold)
 draw_set_color(font_color)
@@ -159,3 +159,4 @@ ds_list_destroy(subtexts)
 
 width = text_width+padding_x*2+2
 height = -padding_y*2-text_height
+var k = 4

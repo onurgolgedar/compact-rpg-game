@@ -27,4 +27,4 @@ collision.image_yscale = image_yscale*(sprite_height-edgeDiff)/sprite_height
 collision.image_angle = image_angle
 collision.dir = { xx: lengthdir_x(1, image_angle), yy: lengthdir_y(1, image_angle) }
 
-visible = global.drawServer
+visible = global.drawServer_SERVER

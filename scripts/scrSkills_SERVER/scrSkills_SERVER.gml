@@ -1,4 +1,4 @@
-function cast_skill(skill_index, instance) {
+function cast_skill_SERVER(skill_index, instance) {
 	var success = false
 	var skill_object = undefined
 	
@@ -33,4 +33,11 @@ function cast_skill(skill_index, instance) {
 	}
 		
 	return skill.object != undefined ? skill_object : success
+}
+
+function define_skills_base_SERVER() {
+	global.skill_object_SERVER[SKILL_0] = object_get_name(objSkill0_SERVER)
+	global.skill_object_SERVER[SKILL_1] = object_get_name(objArrow_SERVER)
+	global.skill_object_SERVER[SKILL_2] = object_get_name(objSkill2_SERVER)
+	global.skill_object_SERVER[SKILL_3] = object_get_name(objSkill3_SERVER)
 }

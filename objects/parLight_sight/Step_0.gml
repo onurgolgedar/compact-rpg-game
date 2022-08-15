@@ -1,26 +1,25 @@
-if behavior != noone {
+if (behavior != noone)
 	script_execute(behavior)
-}
 
 color = Color mod (256*256*256)
 c[0] = (color mod 256) / 255; color = color div 256
 c[1] = (color mod 256) / 255; color = color div 256
 c[2] =  color          / 255
 
-if width != -1
+if (width != -1
 or height != -1
 or radius != -1 
 or mask != index
 or angle != image_angle
 or x!=xprevious
-or y!=yprevious
+or y!=yprevious)
 	update = 1
 
-if update {
+if (update) {
 	var w = sprite_get_width(mask),
 		h = sprite_get_height(mask);
 		
-	if width==-1 or height==-1 {
+	if (width==-1 or height==-1) {
 		if radius == -1 {
 			xscale = 1
 			yscale = 1

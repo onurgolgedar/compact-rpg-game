@@ -1,24 +1,10 @@
-function box_create_COMMON(item = undefined, isForQuest = false, count = 1) {
-	if (item == undefined)
-		return { item: undefined, tag: { isForQuest: false }, count: 0 }
-	else
-		return { item: item_copy_COMMON(item), tag: { isForQuest: isForQuest }, count: count }
-}
-
-function box_get_confirmation_number_COMMON(box) {
-	if (box == undefined)
-		return "--"
-	else
-		return string(box.tag.isForQuest)+string(item_get_confirmation_number_COMMON(box.item))
-}
-
 function box_get_active_SERVER(socketID, type) {
-	var boxes_SERVER = global.playerBoxes[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
+	var boxes_SERVER = global.playerBoxes_SERVER[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
 	return ds_grid_get(boxes_SERVER, type, global.bc_ver_COMMON)
 }
 
 function box_change_active_SERVER(socketID, type, box_i, box_j, box_confirmation_number) {
-	var boxes_SERVER = global.playerBoxes[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
+	var boxes_SERVER = global.playerBoxes_SERVER[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
 	
 	var box
 	if (box_i != undefined and box_i != undefined)
@@ -63,7 +49,7 @@ function box_change_active_SERVER(socketID, type, box_i, box_j, box_confirmation
 
 function box_change_position_SERVER(socketID, box_i, box_j, target_box_i, target_box_j, boxes_SERVER = undefined) {
 	if (boxes_SERVER == undefined)
-		boxes_SERVER = global.playerBoxes[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
+		boxes_SERVER = global.playerBoxes_SERVER[? db_find_value(global.DB_SRV_TABLE_players, PLAYERS_ACCID_SERVER, PLAYERS_SOCKETID_SERVER, socketID)]
 	
 	var box = ds_grid_get(boxes_SERVER, box_i, box_j)
 	var box_target = ds_grid_get(boxes_SERVER, target_box_i, target_box_j)

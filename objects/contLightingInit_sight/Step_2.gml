@@ -1,9 +1,9 @@
-#region setup
-var cam = view_camera[0];
+#region SETUP
+var cam = view_camera[0]
 var x0 = camera_get_view_x(cam), y0 = camera_get_view_y(cam),
-	cw = camera_get_view_width(cam), ch = camera_get_view_height(cam);
+	cw = camera_get_view_width(cam), ch = camera_get_view_height(cam)
 	
-var w = ceil(cw * quality), h = ceil(ch * quality);
+var w = ceil(cw * quality), h = ceil(ch * quality)
 
 if surface_exists(surf_light) {
 	if surface_get_width(surf_light) != w
@@ -28,7 +28,7 @@ var mt = matrix_get(matrix_world);
 matrix_set(matrix_world, matrix_build(-x0*quality, -y0*quality, 0, 0, 0, camera_get_view_angle(cam), quality, quality, 1))
 
 
-#region render shadows and lights
+#region RENDER
 if update {
 	
 	draw_set_color(c_white)
@@ -38,7 +38,7 @@ if update {
 	
 	var q =  [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
 		qs = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-		i = 0, ii = 0, n = instance_number(parLight_sight), tid = [];
+		i = 0, ii = 0, n = instance_number(parLight_sight), tid = []
 	with parLight_sight {
 		ii++
 		
@@ -62,7 +62,7 @@ if update {
 			
 			surface_set_target(other.surf_shadow)
 			draw_clear(c_white)
-			gpu_set_blendmode_ext ( bm_zero, bm_inv_src_color )
+			gpu_set_blendmode_ext (bm_zero, bm_inv_src_color)
 			shader_set(sh_shadow_renderer)
 			
 			shader_set_uniform_f(global.u_maxlength, other.MaxShadowLength)
@@ -71,7 +71,7 @@ if update {
 			shader_set_uniform_f_array(global.FG_su_lp2, q[2]);		shader_set_uniform_f_array(global.FG_su_lps2, qs[2])
 			shader_set_uniform_f_array(global.FG_su_lp3, q[3]);		shader_set_uniform_f_array(global.FG_su_lps3, qs[3])
 			
-			with objShadowLine_sight {
+			with parShadowLine_sight {
 				shader_set_uniform_matrix_array(global.u_mat, matrix_build(x, y, z, 0, 0, image_angle, 1, 1, 1))
 				shader_set_uniform_f(global.u_alpha, image_alpha)
 				vertex_submit(mymask, pr_trianglelist, -1)

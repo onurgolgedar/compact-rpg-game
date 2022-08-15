@@ -1,10 +1,11 @@
 function action_SERVER(rewardCode, messageBoxes, playerInstance, socketID_sender, owner_assetName, ownerID = undefined) {
 	switch (rewardCode) {
 		case "{Rew1}":
-			return { xx: 700, yy: 250, title: "#Rew1", text: "{Rew1} has been earned.", duration: 1, isDialogueMessage: false, owner_assetName: owner_assetName, ownerID: ownerID }
+			return new st_dialoguebox(700, 250, "#Rew1", "{Rew1} has been earned.", owner_assetName, ownerID)
+			
 			
 		case "{Rew2}":
-			return { xx: 700, yy: 250, title: "#Rew2", text: "{Rew2} has been earned.", duration: 1, isDialogueMessage: false, owner_assetName: owner_assetName, ownerID: ownerID }
+			return new st_dialoguebox(700, 250, "#Rew2", "{Rew2} has been earned.", owner_assetName, ownerID)
 			
 		case "{Trade-Weapon}":		
 			with (objNPC_SERVER)

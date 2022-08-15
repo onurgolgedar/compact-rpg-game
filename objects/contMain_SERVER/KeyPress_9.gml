@@ -1,4 +1,4 @@
-if (global.selectedPlayer != undefined)
-	global.playerControlMode = !global.playerControlMode
+if (global.selectedPlayer_SERVER != undefined)
+	global.playerControlMode_SERVER = !global.playerControlMode_SERVER
 else
-	global.playerControlMode = false
+	global.playerControlMode_SERVER = false

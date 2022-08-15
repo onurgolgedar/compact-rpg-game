@@ -1,4 +1,4 @@
 if (real(other.id) != owner) {
-	other.change_hp(-30*(100+10*skill.upgrade)/100)
+	other.change_hp(get_damage())
 	instance_destroy()
 }

@@ -12,3 +12,5 @@ if (!is_click_blocked() and global.held_box != undefined) {
 
 if (!done)
 	alarm[0] = 1
+	
+alarm[1] = 2

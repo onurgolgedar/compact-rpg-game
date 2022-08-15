@@ -5,4 +5,4 @@ textbox_content.hasBackground = false
 textbox_content.outlineWidth = 1
 textbox_content.outlineFidelity = 15
 textbox_content.font_color = c_ltgray
-alarm[0] = 1
+alarm[0] = 2

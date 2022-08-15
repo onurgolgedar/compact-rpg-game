@@ -1,2 +1,2 @@
-if (global.selectedPlayer == real(id))
-	global.selectedPlayer = undefined
+if (global.selectedPlayer_SERVER == real(id))
+	global.selectedPlayer_SERVER = undefined

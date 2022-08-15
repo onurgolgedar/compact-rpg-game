@@ -71,6 +71,4 @@ function FG_light_SM_end() {
 	vertex_end(vb)
 	vertex_freeze(vb)
 	return vb
-
-
 }

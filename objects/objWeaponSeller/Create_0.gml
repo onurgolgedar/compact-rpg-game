@@ -8,9 +8,9 @@ function answer(buttonIndex, qKey, value = undefined, xx = 250, yy = 250) {
 }
 
 event_inherited()
+
 hair = sprHair_001
 clothes = sprClothes_009
-
 rigidbody_create(sprHumanisticShoulders,
 				 sprHumanisticArm, 27,
 				 sprHumanisticFrontArm, 25,
@@ -18,4 +18,3 @@ rigidbody_create(sprHumanisticShoulders,
 set_style(hair, clothes)
 
 animSwingASword_style = 0
-

@@ -28,8 +28,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "GUI Elements",
-    "path": "folders/CLIENT/2- Objects/Environment/GUI Elements.yy",
+    "name": "2- Objects",
+    "path": "folders/CLIENT/2- Objects.yy",
   },
   "resourceVersion": "1.0",
   "name": "objText",

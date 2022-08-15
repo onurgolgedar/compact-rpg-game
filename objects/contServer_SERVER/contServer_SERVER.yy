@@ -1,7 +1,7 @@
 {
   "spriteId": null,
   "solid": false,
-  "visible": true,
+  "visible": false,
   "managed": true,
   "spriteMaskId": null,
   "persistent": true,
@@ -27,8 +27,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Networking",
-    "path": "folders/SERVER/2- Objects/Controls/Networking.yy",
+    "name": "2- Objects",
+    "path": "folders/SERVER/2- Objects.yy",
   },
   "resourceVersion": "1.0",
   "name": "contServer_SERVER",

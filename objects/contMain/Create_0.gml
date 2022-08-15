@@ -1,5 +1,3 @@
-function_call_init_COMMON()
-
 function main_loop() {
 	var _period = floor(global.gameTime*100)/10
 	if (_period mod 20 >= 10)
@@ -14,23 +12,8 @@ function main_loop() {
 		
 	with (contDrawGUi)
 		isChatSelVisible = abs(global.period-5) > 2
-
-	function_call_COMMON(main_loop, 1/10, true)
 	
-	if (instance_exists(objPlayer) and global.drawEventEnabled and room != roomMenu) {
-		var dis = point_distance(objPlayer.xx, objPlayer.yy, camera_get_view_x(global.camera)+camera_get_view_width(global.camera)/2, camera_get_view_y(global.camera)+camera_get_view_height(global.camera)/2)
-		if (dis > 300 and !global.drawServer)
-			camera_set_view_pos(global.camera, objPlayer.xx-camera_get_view_width(global.camera)/2, objPlayer.yy-camera_get_view_height(global.camera)/2)
-		else {
-			var cam_spd_target = min(1.5+power(dis/20, 2), 12)*60/room_speed
-			if (abs(cam_spd_target-cam_spd) > 0.2)
-				cam_spd = lerp(cam_spd, cam_spd_target, 0.33)
-			else
-				cam_spd = cam_spd_target
-				
-			camera_set_view_speed(global.camera, cam_spd, cam_spd)
-		}
-	}
+	function_call_COMMON(main_loop, 1/10, true)
 }
 function_call_COMMON(main_loop, 1/10, true)
 
@@ -47,8 +30,13 @@ global.playerNames = ds_map_create()
 global.playerInstances = ds_map_create()
 global.npcInstances = ds_map_create()
 global.activeQuests_player = ds_map_create()
+
+global.held_box_i = undefined
+global.held_box_j = undefined
+global.held_box = undefined
+global.held_from_assetName = undefined
+global.held_from = undefined
 	
-cam_spd = 1
 global.period = 0
 global.gameTime = 0
 

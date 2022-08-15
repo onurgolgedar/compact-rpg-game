@@ -1,7 +1,7 @@
 {
   "spriteId": {
-    "name": "sprSquare_SERVER",
-    "path": "sprites/sprSquare_SERVER/sprSquare_SERVER.yy",
+    "name": "sprSquare",
+    "path": "sprites/sprSquare/sprSquare.yy",
   },
   "solid": false,
   "visible": false,

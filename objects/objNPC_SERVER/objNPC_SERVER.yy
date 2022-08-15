@@ -1,7 +1,7 @@
 {
   "spriteId": {
-    "name": "sprPlayer_SERVER",
-    "path": "sprites/sprPlayer_SERVER/sprPlayer_SERVER.yy",
+    "name": "sprNPC_SERVER",
+    "path": "sprites/sprNPC_SERVER/sprNPC_SERVER.yy",
   },
   "solid": false,
   "visible": false,

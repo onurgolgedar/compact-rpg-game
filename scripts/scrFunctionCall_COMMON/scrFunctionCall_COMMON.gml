@@ -3,7 +3,7 @@ function function_call_COMMON(_method, time, useDelta) {
 		(method(real(id), _method))()
 	}
 	else {
-		var data = {func: method(real(id), _method)}
+		var data = { func: method(real(id), _method) }
 		var ds = useDelta ? global.functionsTimed_delta : global.functionsTimed
 		if (ds_exists(ds, ds_type_map))
 			ds_map_add(ds, data, time)
@@ -22,6 +22,7 @@ function function_call_begin_step_COMMON() {
 			if (instance_exists(method_get_self(functionsTimed_array[i].func)))
 				functionsTimed_array[i].func()
 			ds_map_delete(global.functionsTimed, functionsTimed_array[i])
+			delete functionsTimed_array[i]
 		}
 	}
 
@@ -36,12 +37,22 @@ function function_call_begin_step_COMMON() {
 			if (instance_exists(method_get_self(functionsTimed_delta_array[i].func)))
 				functionsTimed_delta_array[i].func()
 			ds_map_delete(global.functionsTimed_delta, functionsTimed_delta_array[i])
+			delete functionsTimed_delta_array[i]
 		}
 	}
 }
 
 function function_call_cleanup_COMMON() {
+	var functionsTimed_array = ds_map_keys_to_array(global.functionsTimed)
+	var ds_size = array_length(functionsTimed_array)
+	for (var i = 0; i < ds_size; i++)
+		delete global.functionsTimed[? functionsTimed_array[i]]
 	ds_map_destroy(global.functionsTimed)
+
+	var functionsTimed_delta_array = ds_map_keys_to_array(global.functionsTimed_delta)
+	var ds_size = array_length(functionsTimed_delta_array)
+	for (var i = 0; i < ds_size; i++)
+		delete global.functionsTimed_delta[? functionsTimed_delta_array[i]]
 	ds_map_destroy(global.functionsTimed_delta)
 }
 

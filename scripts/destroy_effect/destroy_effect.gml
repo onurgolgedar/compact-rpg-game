@@ -1,7 +1,5 @@
-/// @param id
-/// @param time
-function destroy_effect(_id, time) {
-	with (_id) {
+function destroy_effect(effect, time) {
+	with (effect) {
 		stop = true
 		part_emitter_destroy_all(ps)
 		alarm[11] = time // ? delta

@@ -1,6 +1,6 @@
 function item_add_SERVER(box, accountID, box_i = undefined, box_j = undefined, count = 1, boxes = undefined) {
 	if (boxes == undefined)
-		boxes = global.playerBoxes[? accountID]
+		boxes = global.playerBoxes_SERVER[? accountID]
 	
 	var sameItem_box = item_get_exists_SERVER(box, accountID, boxes)
 
@@ -43,7 +43,7 @@ function item_add_SERVER(box, accountID, box_i = undefined, box_j = undefined, c
 
 function item_get_exists_SERVER(box, accountID = undefined, boxes = undefined) {
 	if (boxes == undefined)
-		boxes = global.playerBoxes[? accountID]
+		boxes = global.playerBoxes_SERVER[? accountID]
 	
 	for (var j = 0; j < global.bc_ver_COMMON; j++)
 	    for (var i = 0; i < global.bc_hor_COMMON*global.pageCount_COMMON; i++) {

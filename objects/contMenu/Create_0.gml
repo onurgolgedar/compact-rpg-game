@@ -33,7 +33,7 @@ with (tteIP) {
 tteIP_COOP = instance_create(room_width-330, room_height-170, objTTEinput)
 with (tteIP_COOP) {
 	visible = false
-	title = "Co-op Server"
+	title = "CO-OP Server"
 	tte_ext_input_set_text("TR")
 }
 
@@ -61,7 +61,7 @@ with (tteName_signup) {
 
 tteCOOP_signup = instance_create(1245, 520, objTTEinput)
 with (tteCOOP_signup) {
-	title = "Coop ID (optional)"
+	title = "COOP ID (optional)"
 }
 
 /*tteClass_signup = instance_create(1245, 580, objTTEinput)

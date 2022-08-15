@@ -3,7 +3,7 @@ function text_shorten_oneline(text, width, font) {
 	if (font != undefined)
 		draw_set_font(font)
 
-	var shortDesc
+	var shortDesc = undefined
 	for (var i = 1; i <= string_length(text); i++) {
 		var lineSkip = string_count("\n", string_copy(text, 0, i))
 	    if (string_width(string_copy(text, 0, i)) > width or lineSkip) {

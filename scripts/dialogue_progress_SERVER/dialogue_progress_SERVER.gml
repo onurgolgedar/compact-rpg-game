@@ -54,7 +54,7 @@ function dialogue_progress_SERVER(messageID, dialogueNo, owner_assetName, ownerI
 		}
 			
 		if (actionText != "undefined") {
-			messageBoxes[1] = { xx: 500, yy: 250, title: title, text: actionText, owner_assetName: owner_assetName, ownerID: ownerID, duration: 5, isDialogueMessage: false }
+			messageBoxes[1] = new st_dialoguebox(500, 250, title, actionText, owner_assetName, ownerID, messageID, 5)
 			return messageBoxes
 		}
 		else if (actionRedirect == -1 and text != "undefined") {
@@ -85,11 +85,11 @@ function dialogue_progress_SERVER(messageID, dialogueNo, owner_assetName, ownerI
 	if (actionRedirect == -1 and text != "undefined") {
 		var qKey = dialogue_get_qKey_COMMON(messageID, dialogueNo)
 		if (text != "") {
-			var buttonsArray = [ new dialogueButton(ans[0]), new dialogueButton(ans[1]),
-								 new dialogueButton(ans[2]), new dialogueButton(ans[3]),
-								 new dialogueButton(ans[4]), new dialogueButton(ans[5]),
-								 new dialogueButton(ans[6]), new dialogueButton(ans[7]) ]
-			messageBoxes[1] = { xx: 250, yy: 250, title: title, text: text, qKey: qKey, buttonsArray: buttonsArray, messageID: messageID, dialogueNo: dialogueNo, dialogueSize: dialogueSize, isDialogueMessage: true, owner_assetName: owner_assetName, ownerID: ownerID }
+			var buttonsArray = [ new st_dialogueButton(ans[0]), new st_dialogueButton(ans[1]),
+								 new st_dialogueButton(ans[2]), new st_dialogueButton(ans[3]),
+								 new st_dialogueButton(ans[4]), new st_dialogueButton(ans[5]),
+								 new st_dialogueButton(ans[6]), new st_dialogueButton(ans[7]) ]
+			messageBoxes[1] = new st_dialoguebox(250, 250, title, text, owner_assetName, ownerID, messageID, 5, true, dialogueNo, dialogueSize, qKey, buttonsArray)
 		}
 	}
 		

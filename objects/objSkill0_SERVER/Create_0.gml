@@ -1,6 +1,3 @@
-event_inherited()
-skill_index = SKILL_0
-
 function execute() {
 	if (instance_exists(owner)) {
 		var casttime = skill.casttime
@@ -16,7 +13,7 @@ function execute() {
 			if (place_meeting(x, y, real(other.id))) {
 				var pow = 1200+clamp(1200-point_distance(x, y, other.x, other.y)/5*30, 0, 1200)
 				var dir = point_direction(other.x, other.y, x, y)
-				ds_map_add(spds, irandom(999999), {xx: lengthdir_x(pow, dir), yy: lengthdir_y(pow, dir)})
+				ds_map_add(spds, irandom(999999), { xx: lengthdir_x(pow, dir), yy: lengthdir_y(pow, dir) })
 				
 				change_hp(-other.owner.magicalPower*(100+10*other.skill.upgrade)/100)
 			}
@@ -25,3 +22,6 @@ function execute() {
 
 	instance_destroy()
 }
+
+event_inherited()
+skill_index = SKILL_0

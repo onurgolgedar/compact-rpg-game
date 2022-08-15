@@ -1,3 +1,6 @@
+if (!is_in_game_room_COMMON())
+	exit
+
 if (is_alive()) {
 	with (objPlayer) {
 		var ds_size = ds_list_size(effectBoxes)
@@ -18,7 +21,7 @@ if (is_alive()) {
 				other.mouseOn_effectBox = effectBox
 				
 				if (device_mouse_check_button_pressed(0, mb_left) and other.mouseOn_effectBox.isDeletable) {
-					var buttonsArray = [ new dialogueButton("Clear", undefined, { order: i, effectBox: effectBox }), new dialogueButton("Cancel") ]
+					var buttonsArray = [ new st_dialogueButton("Clear", undefined, { order: i, effectBox: effectBox }), new st_dialogueButton("Cancel") ]
 					var dialogue_box = show_questionbox(15, 250, other.mouseOn_effectBox.name, "Do you want to clear this effect?", real(other.id), 1, buttonsArray)
 				}
 			}
@@ -246,6 +249,6 @@ draw_set_font(fontMain) draw_set_valign(fa_top)
 draw_set_color(c_white) draw_set_alpha(0.5) 
 	draw_text_transformed(76, display_get_gui_height()-28, "FPS: "+string(fps)+"/"+string(room_speed), 0.7, 0.7, 0)
 	if (global.ping_check_mode)
-		draw_text_transformed(76, display_get_gui_height()-48, "Ping: "+string(global.ping), 0.7, 0.7, 0)
-	draw_text_transformed(76, display_get_gui_height()-68, "Received Errors: "+string(global.networkErrors_count), 0.7, 0.7, 0)
+		draw_text_transformed(76, display_get_gui_height()-68, "Ping: "+string(global.ping), 0.7, 0.7, 0)
+	draw_text_transformed(76, display_get_gui_height()-48, "Received Errors: "+string(global.networkErrors_count), 0.7, 0.7, 0)
 draw_set_alpha(1) draw_set_default()
