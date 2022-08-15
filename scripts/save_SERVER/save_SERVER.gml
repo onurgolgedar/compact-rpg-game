@@ -47,6 +47,7 @@ function save_SERVER(socketID) {
 			var key = _quests_keys[k]
 			ds_map_add(_map_quests, key, json_stringify(quests_SERVER[? key]))
 		}
+		delete _quests_keys
 		
 		// Save - Skill Boxes
 		var skillBoxes_SERVER = global.playerSkillBoxes_SERVER[? accountID]
@@ -58,6 +59,7 @@ function save_SERVER(socketID) {
 			var skillBox = skillBoxes_SERVER[? key]
 			ds_map_add(_map_skillBoxes, key, json_stringify(skillBoxes_SERVER[? key]))
 		}
+		delete _skillBoxes_keys
 		
 		// Save - Effect Boxes
 		var permanentEffectBoxes_SERVER = global.playerPermanentEffectBoxes_SERVER[? accountID]

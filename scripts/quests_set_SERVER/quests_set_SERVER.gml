@@ -14,6 +14,7 @@ function quests_set_SERVER(accountName) {
 		if (quest.isCompleted)
 			ds_list_add(completedQuests, quest.index)
 	}
+	delete ds_keys
 	
 	var ds_size = ds_map_size(quests)
 	var ds_keys = ds_map_keys_to_array(quests)
@@ -60,6 +61,7 @@ function quests_set_SERVER(accountName) {
 		else
 			quest.isAvailable = false
 	}
+	delete ds_keys
 	
 	ds_list_destroy(completedQuests)
 }

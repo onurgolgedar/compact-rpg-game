@@ -30,6 +30,8 @@ for (var i = 0; i < ds_size; i++) {
 	if (abs(_spd.yy) < fric_amb)
 		_spd.yy = 0
 }
+delete _spds_keys
+delete _spds
 
 spd_res.xx = spd.xx
 spd_res.yy = spd.yy

@@ -80,6 +80,7 @@ if (prepDone) {
 		if (shortDesc != undefined)
 			draw_text_outlined(xx, yy+22, shortDesc, 1, c_black, 14, 1, 1, 0)
 	}
+	delete ds_keys
 	draw_set_color(c_black) draw_set_font(fontMain)
 }
 	

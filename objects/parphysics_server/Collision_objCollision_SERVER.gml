@@ -54,4 +54,7 @@ if ((spd_res.xx == 0 and spd_res.yy == 0)
 			}
 		}
 	}
+	
+	delete _spds_keys
+	delete _spds
 }

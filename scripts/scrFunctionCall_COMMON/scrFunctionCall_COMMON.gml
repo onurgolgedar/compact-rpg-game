@@ -25,6 +25,7 @@ function function_call_begin_step_COMMON() {
 			delete functionsTimed_array[i]
 		}
 	}
+	delete functionsTimed_array
 
 	var functionsTimed_delta_array = ds_map_keys_to_array(global.functionsTimed_delta)
 	var ds_size = array_length(functionsTimed_delta_array)
@@ -40,6 +41,7 @@ function function_call_begin_step_COMMON() {
 			delete functionsTimed_delta_array[i]
 		}
 	}
+	delete functionsTimed_delta_array
 }
 
 function function_call_cleanup_COMMON() {
@@ -54,6 +56,7 @@ function function_call_cleanup_COMMON() {
 	for (var i = 0; i < ds_size; i++)
 		delete global.functionsTimed_delta[? functionsTimed_delta_array[i]]
 	ds_map_destroy(global.functionsTimed_delta)
+	delete functionsTimed_array
 }
 
 function function_call_init_COMMON() {

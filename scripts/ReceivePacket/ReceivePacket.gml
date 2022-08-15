@@ -678,6 +678,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					if (is_struct(quest))
 						delete quest
 				}
+				delete keys
 			
 				ds_map_read(global.activeQuests_player, data)
 				
@@ -696,6 +697,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					if (quest.requiredQuests == pointer_null)
 						quest.requiredQuests = undefined
 				}
+				delete keys
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -915,6 +917,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 							if (quest.requiredQuests == pointer_null)
 								quest.requiredQuests = undefined
 						}
+						delete keys
 							
 						global.playerQuests_SERVER[? data.accountID] = value
 							
@@ -955,6 +958,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 									value[? keys[k]].casttimemax = undefined	
 							}
 						}
+						delete keys
 							
 						global.playerSkillBoxes_SERVER[? data.accountID] = value
 					}
@@ -1204,7 +1208,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					break
 					
 				if (data.accountID == "" or data.accountID == "Local" or data.password == "")
-				break
+					break
 					
 				cleanup_player_ds_SERVER(data.accountID)
 				
@@ -1350,8 +1354,9 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 						var key = _skillBoxes_keys[i]
 						var skillBox = ds_map_find_value(skillBoxes_TAKEN, key)
 		
-						ds_map_add(global.playerSkillBoxes_SERVER[? data.skillBoxes], key, skillBox)
+						ds_map_add(global.playerSkillBoxes_SERVER[? data.accountID], key, skillBox)
 					}
+					delete _skillBoxes_keys
 					ds_map_destroy(skillBoxes_TAKEN)
 				}
 				
@@ -1365,8 +1370,12 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					accountinfoRow[? ACCOUNTINFO_GOLD_SERVER] = data.gold
 				if (data.level != pointer_null)
 					accountinfoRow[? ACCOUNTINFO_LEVEL_SERVER] = data.level
+				if (data.statPoints != pointer_null)
+					accountinfoRow[? ACCOUNTINFO_STATPOINTS_SERVER] = data.statPoints
 				if (data.skillPoints != pointer_null)
 					accountinfoRow[? ACCOUNTINFO_SKILLPOINTS_SERVER] = data.skillPoints
+				if (data.skillPoints != pointer_null)
+					accountinfoRow[? ACCOUNTINFO_CLASS_SERVER] = data.class
 				accountinfoRow[? ACCOUNTINFO_LOCATION_SERVER] = 1
 
 				save_SERVER(data.accountID)
@@ -1499,6 +1508,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 							y = data.yy
 							
 						lastPosition = undefined
+						lastRotation = undefined
 					}
 			
 					db_set_row_value(global.DB_SRV_TABLE_accountinfo, accountID, ACCOUNTINFO_LOCATION_SERVER, locationID)
@@ -1616,6 +1626,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 						break
 					}
 				}
+				delete _skillBoxes_keys
 				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1944,6 +1955,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					player.xx = floor(data/100000)
 					player.yy = data mod 100000
 				}
+				break
 			
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //

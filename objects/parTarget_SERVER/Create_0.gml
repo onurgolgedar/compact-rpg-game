@@ -49,6 +49,7 @@ mana = maxMana
 energy = maxEnergy
 
 lastPosition = undefined
+lastRotation = undefined
 
 visible = global.drawServer_SERVER
 

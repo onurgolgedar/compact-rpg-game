@@ -4,6 +4,7 @@ for (var i = (page-1)*6; i < ds_size and i < page*6; i++) {
 	var activeQuest = global.activeQuests_player[? ds_keys[i]]
 	activeQuest.shortDescription = text_shorten_oneline(activeQuest.description, width-33, fontGUi_small)
 }
+delete ds_keys
 
 alarm[0] = SEC/4
 prepDone = true

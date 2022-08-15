@@ -11,6 +11,7 @@ function tell_active_quests_SERVER(socketID) {
 		if (quest.isActive)
 			ds_map_add(activeQuests, quest.code, json_stringify(quest))
 	}
+	delete ds_keys
 	
 	net_server_send(socketID, CODE_GET_ACTIVE_QUESTS, ds_map_write(activeQuests), BUFFER_TYPE_STRING)
 }
@@ -66,7 +67,12 @@ function tell_all_names(target = objPlayer_SERVER, socketID = SOCKET_ID_ALL, for
 
 function tell_all_pl_angles_SERVER(target = objPlayer_SERVER, force = false) {
 	with (target) {
-		net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ROTATION, round(image_angle), BUFFER_TYPE_INT32, true, force ? 0 : location, socketID)
+		var ang = round(image_angle)
+		
+		if (lastRotation == undefined or force or lastRotation != ang) {
+			net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ROTATION, ang, BUFFER_TYPE_INT32, true, lastRotation == undefined or force ? 0 : location, socketID)
+			lastRotation = ang
+		}
 	}
 }
 
@@ -86,6 +92,8 @@ function tell_all_npc_positions_SERVER(target = parNPC_SERVER, force = false) {
 		var loc = round(x)*100000+round(y)
 		
 		if (lastPosition == undefined or force or lastPosition != loc) {
+			show_debug_message(npcID)
+			show_debug_message(loc)
 			net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_POSITION, string(loc), BUFFER_TYPE_STRING, true, lastPosition == undefined or force ? 0 : location, npcID)
 			lastPosition = loc
 		}
@@ -93,6 +101,12 @@ function tell_all_npc_positions_SERVER(target = parNPC_SERVER, force = false) {
 }
 
 function tell_all_npc_angles_SERVER(target = parNPC_SERVER, force = false) {
-	with (target)
-		net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_ROTATION, round(image_angle), BUFFER_TYPE_INT32, true, force ? 0 : location, npcID)
+	with (target) {
+		var ang = round(image_angle)
+		
+		if (lastRotation == undefined or force or lastRotation != ang) {
+			net_server_send(SOCKET_ID_ALL, CODE_TELL_NPC_ROTATION, ang, BUFFER_TYPE_INT32, true, lastRotation == undefined or force ? 0 : location, npcID)
+			lastRotation = ang
+		}
+	}
 }

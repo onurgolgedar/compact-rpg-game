@@ -42,7 +42,24 @@ event_inherited()
 if (name == "" and clientObject != noone)
 	name = npc_get_name_COMMON(clientObject)
 
-npcID = x*10000+y
+npcID = 0
+for (var i = instance_number(parNPC_SERVER); i >= 1; i--) {
+	var _continue = false
+	with (parNPC_SERVER) {
+		if (npcID == i) {
+			_continue = true
+			break
+		}
+	}
+	
+	if (!_continue) {
+		npcID = i
+		break
+	}
+}
+if (npcID == 0)
+	show_debug_message("Warning: NPC limit reached")
+
 targetID = npcID
 
 boxes = undefined

@@ -1,1 +1,1 @@
-net_client_send(CODE_JOIN_COOP, global.coopID, BUFFER_TYPE_FLOAT64)
+net_client_send(CODE_JOIN_COOP, string(global.coopID), BUFFER_TYPE_FLOAT64)

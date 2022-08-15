@@ -29,3 +29,4 @@ draw_set_color(c_white)
 for (var i = 0; i < ds_size; i++)
 	draw_arrow(xx, yy, xx+spds[? _spds_keys[i]].xx/8, yy+spds[? _spds_keys[i]].yy/8, 10)
 draw_set_color(c_black)
+delete _spds_keys
