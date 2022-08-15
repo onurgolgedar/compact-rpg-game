@@ -1,4 +1,4 @@
-function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, bufferType, asyncMap) {
+function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, bufferType, asyncMap, coopInfo) {
 	if (global.playerControlMode_SERVER and instance_exists(global.selectedPlayer_SERVER)) {
 		if (socketID_sender == global.socketID_player)
 			socketID_sender = global.selectedPlayer_SERVER.socketID
@@ -722,6 +722,19 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					}
 				}
 				break
+				
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+			// // // // // // // // // // // // // // // // // // // // // // // //
+				
+			case CODE_CONNECT_COOP:
+				if (global.socketID_COOP_player == undefined)
+					global.socketID_COOP_player = data
+			
+				if (global.clientID != "Local" and global.coopID != "")	
+					with (contClient)
+						alarm[3] = 1
+				break
 		
 			// // // // // // // // // // // // // // // // // // // // // // // //
 			// // // // // // // // // // // // // // // // // // // // // // // //
@@ -1022,7 +1035,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					with (objNPC_SERVER)
 						net_server_send(socketID_sender, CODE_SPAWN_NPC, json_stringify({ npcID: real(id).targetID, xx: round(x), yy: round(y), maxHp: maxHp, maxEnergy: maxEnergy, maxMana: maxMana, name: name, clientObject: object_get_name(clientObject) }), BUFFER_TYPE_STRING)
 	
-					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, accountinfoRow[? ACCOUNTINFO_CLASS_SERVER], BUFFER_TYPE_STRING,,,bufferinfo)
+					net_server_send(socketID_sender, CODE_LOGIN_SUCCESS, accountinfoRow[? ACCOUNTINFO_CLASS_SERVER], BUFFER_TYPE_STRING,,,)
 					
 					// Spawn Player
 					var instance = player_spawn_SERVER(socketID_sender)
@@ -1295,7 +1308,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					
 					var ds_size = ds_list_size(data.permanentEffectBoxes)
 					for (var i = 0; i < ds_size; i++) {
-						var _data = ds_list_find_value(permanentEffectBoxes, i)
+						var _data = ds_list_find_value(data.permanentEffectBoxes, i)
 						
 						var _permanentEffectBox = json_parse(_data)	
 						if (_permanentEffectBox.creator == pointer_null)
@@ -1342,6 +1355,7 @@ function _net_receive_packet(code, pureData, socketID_sender, bufferinfo, buffer
 					ds_map_destroy(skillBoxes_TAKEN)
 				}
 				
+				var accountinfoRow = db_get_row(global.DB_SRV_TABLE_accountinfo, data.accountID)
 				if (accountinfoRow == undefined) {
 					accountinfoRow = db_create_row(data.accountID)
 					db_add_row(global.DB_SRV_TABLE_accountinfo, accountinfoRow)

@@ -17,7 +17,7 @@ camera_set_view_speed(global.camera, -1, -1)
 targetZoom = cameraHeight
 targetZoom_default = targetZoom
 
-var quality = 1.35
+var quality = 1//1.35
 var gui_scale = room == roomGame ? 1.25 : 1.15
 surface_resize(application_surface, cameraWidth*quality/cam_scale, cameraHeight*quality/cam_scale)
 display_set_gui_size(cameraWidth/cam_scale*gui_scale, cameraHeight/cam_scale*gui_scale)

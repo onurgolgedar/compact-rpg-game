@@ -23,6 +23,8 @@ function _net_receive_packet_COOP(code, pureData, socketID_sender) {
 			case CODE_CONNECT_COOP:
 				if (global.socketID_COOP_player == undefined)
 					global.socketID_COOP_player = data
+					
+				alarm[3] = SEC
 			
 				if (global.clientID == "Local" and global.coopID == "")	
 					with (contClient)

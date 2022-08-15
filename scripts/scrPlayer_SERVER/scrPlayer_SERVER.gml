@@ -37,9 +37,9 @@ function player_recalculate_statistics_SERVER() {
 	mana = min(mana, maxMana)
 	movementSpeed = movementSpeed_base+movementSpeed_add
 	
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_MAXHP, json_stringify({ socketID: socketID, maxHp: maxHp }), BUFFER_TYPE_STRING, true)
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_MAXMANA, json_stringify({ socketID: socketID, maxMana: maxMana }), BUFFER_TYPE_STRING, true)
-	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ENERGY, json_stringify({ i: socketID, v: maxEnergy }), BUFFER_TYPE_STRING, true)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_MAXHP, round(maxHp), BUFFER_TYPE_STRING, true, location, socketID)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_MAXMANA, round(maxMana), BUFFER_TYPE_STRING, true, location, socketID)
+	net_server_send(SOCKET_ID_ALL, CODE_TELL_PLAYER_ENERGY, round(maxEnergy), BUFFER_TYPE_STRING, true, location, socketID)
 }
 
 function player_spawn_SERVER(socketID) {	

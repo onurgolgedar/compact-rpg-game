@@ -1,11 +1,11 @@
-function net_client_send(code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = false, bufferinfo = BUFFER_INFO_DEFAULT, forCOOP = false) {
+function net_client_send(code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = false, bufferinfo = BUFFER_INFO_DEFAULT, forCOOP = false, coopInfo = BUFFER_INFO_DEFAULT) {
 	if (!is_net_local(global.serverIP, global.coopID) or forCOOP) {
 		isUDP = global.all_tcp_mode ? false : isUDP
 		
-		if (global.coopID != "" and bufferinfo == BUFFER_INFO_DEFAULT)
-			bufferinfo = global.socket_CLIENT
+		if (global.coopID != "" and coopInfo == BUFFER_INFO_DEFAULT)
+			coopInfo = global.socket_CLIENT
 
-		var buffer = net_make_buffer(code, data, bufferType, bufferinfo)
+		var buffer = net_make_buffer(code, data, bufferType, bufferinfo, coopInfo)
 
 		var socket = net_get_client_socket(forCOOP)
 		if (isUDP)
@@ -19,7 +19,7 @@ function net_client_send(code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = 
 		_net_receive_packet(code, data, global.socketID_player, bufferinfo)
 }
 
-function net_server_send(socketID, code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = false, location = 0, bufferinfo = 65535) {
+function net_server_send(socketID, code, data = 0, bufferType = BUFFER_TYPE_BOOL, isUDP = false, location = 0, bufferinfo = BUFFER_INFO_DEFAULT, coopInfo = BUFFER_INFO_DEFAULT) {
 	var buffer = undefined	
 	
 	if (socketID != global.socketID_player) {
@@ -38,22 +38,21 @@ function net_server_send(socketID, code, data = 0, bufferType = BUFFER_TYPE_BOOL
 				
 				if (location == 0 or _location == location) {
 					var _socketID = _playerRow[? PLAYERS_SOCKETID_SERVER]
-					var buffer = net_make_buffer(code, data, bufferType, bufferinfo)
+					var buffer = net_make_buffer(code, data, bufferType, bufferinfo, coopInfo)
 			
 					if (_socketID != global.socketID_player) {
-						if (isUDP) {
+						if (isUDP)
 							network_send_udp(_socketID, _playerRow[? PLAYERS_IP_SERVER], PORT_UDP, buffer, buffer_tell(buffer))
-						}
 						else
 							network_send_packet(_socketID, buffer, buffer_tell(buffer))
 					}
 					else
-						_net_receive_packet(code, data, _socketID, bufferinfo)
+						_net_receive_packet(code, data, _socketID, bufferinfo, bufferType, undefined, coopInfo)
 				}
 			}
 		}
 		else {
-			var buffer = net_make_buffer(code, data, bufferType, bufferinfo)
+			var buffer = net_make_buffer(code, data, bufferType, bufferinfo, coopInfo)
 			
 			if (socketID != global.socketID_player) {
 				if (isUDP) {
@@ -73,20 +72,21 @@ function net_server_send(socketID, code, data = 0, bufferType = BUFFER_TYPE_BOOL
 			buffer_delete(buffer)
 	}
 	else
-		_net_receive_packet(code, data, socketID, bufferinfo)
+		_net_receive_packet(code, data, socketID, bufferinfo, bufferType,, coopInfo)
 }
 
 function net_buffer_read(buffer) {
 	buffer_seek(buffer, buffer_seek_start, 0)
 	var bufferType = net_buffer_get_type(buffer_read(buffer, buffer_u8))
-	var code = buffer_read(buffer, buffer_u16)
+	var code = buffer_read(buffer, buffer_u8)
 
 	if (bufferType != undefined and code != undefined) {
 		var returned
 		returned[0] = code
 		returned[1] = buffer_read(buffer, bufferType)
-		returned[2] = buffer_read(buffer, buffer_u16)
-		returned[3] = bufferType
+		returned[2] = buffer_read(buffer, buffer_u8)
+		returned[3] = buffer_read(buffer, buffer_u8)
+		returned[4] = bufferType
 		
 		return returned
 	}
@@ -94,13 +94,14 @@ function net_buffer_read(buffer) {
 		return undefined
 }
 
-function net_make_buffer(code, data, bufferType, bufferinfo) {
-	var buffer = buffer_create(36, buffer_grow, 1)
+function net_make_buffer(code, data, bufferType, bufferinfo, coopInfo) {
+	var buffer = buffer_create(40, buffer_grow, 1)
 	buffer_seek(buffer, buffer_seek_start, 0)
 	buffer_write(buffer, buffer_u8, bufferType)
-	buffer_write(buffer, buffer_u16, code)
+	buffer_write(buffer, buffer_u8, code)
 	buffer_write(buffer, net_buffer_get_type(bufferType), data)
-	buffer_write(buffer, buffer_u16, bufferinfo)
+	buffer_write(buffer, buffer_u8, bufferinfo)
+	buffer_write(buffer, buffer_u8, coopInfo)
 	return buffer
 }
 
